@@ -3,6 +3,7 @@ APP_ENV=staging
 APP_KEY=
 APP_DEBUG=true
 APP_URL=https://autom8-dev.oslabs.com.br
+ASSET_URL=
 
 APP_LOCALE=pt_BR
 APP_FALLBACK_LOCALE=pt_BR

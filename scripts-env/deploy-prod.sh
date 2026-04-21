@@ -22,7 +22,7 @@ docker compose -p "${PROJECT_NAME}" -f "${COMPOSE_FILE}" exec -T app composer in
 
 echo "[5/11] Garantindo permissões..."
 if [ -x ./fix-permissions.sh ]; then
-  ./fix-permissions.sh "${APP_DIR}"
+  sudo ./fix-permissions.sh "${APP_DIR}"
 fi
 
 echo "[6/11] Buildando frontend..."
