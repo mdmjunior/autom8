@@ -4,29 +4,65 @@
 
 ### Added
 
-- lançamento inicial do AutoM8
-- suporte a geração de builds para Ubuntu e Fedora
-- seleção por perfis e por pacotes individuais
-- ações de sistema integradas ao build
-- wizard completo de geração
-- preview antes da criação do build
-- geração de ZIP com manifesto e hash SHA-256
-- histórico de builds com busca e filtros
-- reutilização de build anterior como base
-- exclusão de builds
-- logs básicos do pipeline
-- limpeza de builds antigos e órfãos
-- testes automatizados do fluxo principal
+- lançamento funcional inicial do AutoM8
+- wizard para geração de builds
+- seleção de distro, perfis, pacotes e ações
+- suporte a inputs para ações de sistema
+- validação de hostname
+- validação de timezone
+- preview técnico da seleção
+- geração de manifesto
+- geração de script de instalação
+- geração de README do build
+- empacotamento em ZIP
+- cálculo de hash SHA-256
+- persistência de builds gerados
+- histórico de builds
+- download de builds gerados
+- reutilização de builds anteriores como base
+- ações iniciais no histórico
+- limpeza de builds e artefatos antigos
+- logs básicos de operação
 
-### Infrastructure
+### Catalog
 
-- estrutura preparada para ambientes separados de desenvolvimento e produção
-- deploy em Docker na VPS
+- estrutura de catálogo para distros, perfis, pacotes e ações
+- suporte a versionamento de catálogo
+- sincronização/publicação básica de catálogo
+
+### Admin
+
+- painel admin base
+- CRUD inicial de perfis
+- CRUD inicial de pacotes
+
+### Infra
+
+- ambiente local de desenvolvimento
+- ambiente dev em VPS com Docker
+- ambiente prod em VPS com Docker
 - reverse proxy com Nginx
-- suporte a HTTPS
-- ambiente dev protegido por autenticação
+- HTTPS em desenvolvimento e produção
+- proteção por autenticação no ambiente dev
+- scripts operacionais de deploy
+- isolamento entre ambientes dev e prod
+
+### CI/CD
+
+- pipeline de testes com GitHub Actions
+- deploy automático no ambiente dev via `develop`
+- deploy automático no ambiente prod via `main`
+
+### Tests
+
+- testes do resolver
+- testes do gerador de build
+- testes de download
+- testes de prune
+- testes de validação do wizard
+- ajustes da suíte para o schema atual do projeto
 
 ### Notes
 
-- esta versão marca a primeira release funcional do AutoM8
-- foco em geração de builds, operação estável e base para evolução futura
+- esta release representa a primeira versão operacional do AutoM8
+- foco da versão: geração de builds, histórico, base de catálogo e fundação operacional
