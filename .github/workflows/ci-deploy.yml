@@ -51,7 +51,7 @@ jobs:
             echo "APP_ENV=testing"
             echo "APP_DEBUG=true"
             echo "DB_CONNECTION=sqlite"
-            echo "DB_DATABASE=$(pwd)/database/database.sqlite"
+            echo "DB_DATABASE=database/database.sqlite"
             echo "CACHE_STORE=array"
             echo "SESSION_DRIVER=array"
             echo "QUEUE_CONNECTION=sync"
