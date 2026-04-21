@@ -3,6 +3,7 @@ APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
 APP_URL=https://autom8.oslabs.com.br
+ASSET_URL=
 
 APP_LOCALE=pt_BR
 APP_FALLBACK_LOCALE=pt_BR
