@@ -3,7 +3,7 @@
         <div>
             <p class="text-sm uppercase tracking-[0.25em] text-emerald-400">Administração</p>
             <h2 class="mt-2 text-4xl font-bold">Pacotes</h2>
-            <p class="mt-3 text-zinc-400">Gerencie os pacotes disponíveis no catálogo do AutoM8.</p>
+            <p class="mt-3 text-zinc-400">Gerencie os pacotes lógicos do catálogo e suas variantes por distro.</p>
         </div>
 
         <a href="{{ route('autom8.admin.packages.create') }}"
@@ -24,7 +24,7 @@
                 <label class="mb-2 block text-sm text-zinc-400">Buscar</label>
                 <input type="text"
                     wire:model.live.debounce.300ms="search"
-                    placeholder="Nome, slug, categoria ou descrição..."
+                    placeholder="Nome, slug, website, categoria..."
                     class="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-emerald-400">
             </div>
 
@@ -81,9 +81,22 @@
                             <span class="rounded-full bg-sky-500/15 px-3 py-1 text-xs font-semibold text-sky-300">
                                 {{ $package->category }}
                             </span>
+
+                            <span class="rounded-full bg-amber-500/15 px-3 py-1 text-xs font-semibold text-amber-300">
+                                {{ $package->variants_count }} variante(s)
+                            </span>
                         </div>
 
                         <p class="mt-2 text-sm uppercase tracking-wide text-emerald-400">{{ $package->slug }}</p>
+
+                        @if ($package->website)
+                        <p class="mt-2 text-sm">
+                            <a href="{{ $package->website }}" target="_blank" class="text-sky-400 hover:underline">
+                                {{ $package->website }}
+                            </a>
+                        </p>
+                        @endif
+
                         <p class="mt-3 text-zinc-400">{{ $package->description ?: 'Sem descrição.' }}</p>
                     </div>
 
@@ -91,6 +104,11 @@
                         <a href="{{ route('autom8.admin.packages.edit', $package) }}"
                             class="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium hover:bg-zinc-800 text-center">
                             Editar
+                        </a>
+
+                        <a href="{{ route('autom8.admin.packages.variants.index', $package) }}"
+                            class="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium hover:bg-zinc-800 text-center">
+                            Variantes
                         </a>
 
                         <button type="button"

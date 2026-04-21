@@ -2,6 +2,8 @@
 
 use App\Livewire\Admin\Packages\Form as AdminPackageForm;
 use App\Livewire\Admin\Packages\Index as AdminPackagesIndex;
+use App\Livewire\Admin\Packages\Variants\Form as AdminPackageVariantForm;
+use App\Livewire\Admin\Packages\Variants\Index as AdminPackageVariantsIndex;
 use App\Livewire\Admin\Profiles\Form as AdminProfileForm;
 use App\Livewire\Admin\Profiles\Index as AdminProfilesIndex;
 use App\Models\GeneratedBuild;
@@ -28,6 +30,10 @@ Route::prefix('projetos/autom8')->name('autom8.')->group(function () {
         Route::get('/packages', AdminPackagesIndex::class)->name('packages.index');
         Route::get('/packages/create', AdminPackageForm::class)->name('packages.create');
         Route::get('/packages/{package}/edit', AdminPackageForm::class)->name('packages.edit');
+
+        Route::get('/packages/{package}/variants', AdminPackageVariantsIndex::class)->name('packages.variants.index');
+        Route::get('/packages/{package}/variants/create', AdminPackageVariantForm::class)->name('packages.variants.create');
+        Route::get('/packages/{package}/variants/{variant}/edit', AdminPackageVariantForm::class)->name('packages.variants.edit');
     });
 
     Route::get('/builds/{build:uuid}/download', function (GeneratedBuild $build) {
