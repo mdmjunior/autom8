@@ -14,8 +14,4 @@ mkdir -p bootstrap/cache
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
 
-if [ -f artisan ]; then
-  php artisan optimize:clear || true
-fi
-
 exec php-fpm
