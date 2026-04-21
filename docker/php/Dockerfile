@@ -1,6 +1,6 @@
 FROM node:22-bookworm-slim AS node_runtime
 
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
     git \
