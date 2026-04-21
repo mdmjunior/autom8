@@ -85,13 +85,13 @@ jobs:
         run: ./vendor/bin/pest
 
   deploy-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    if: success() && github.event_name == 'push' && github.ref_name == 'develop'
     needs: test
     runs-on: ubuntu-latest
     environment: development
 
     steps:
-      - name: Deploy to development VPS
+      - name: Deploy to development VPS - Development Environment
         uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -104,13 +104,13 @@ jobs:
             ./deploy-dev.sh
 
   deploy-prod:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: success() && github.event_name == 'push' && github.ref_name == 'main'
     needs: test
     runs-on: ubuntu-latest
     environment: production
 
     steps:
-      - name: Deploy to production VPS
+      - name: Deploy to production VPS - Production Environment
         uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.SSH_HOST }}
