@@ -1,0 +1,343 @@
+packages:
+  - name: Visual Studio Code
+    slug: vscode
+    category: IDEs
+    description: Editor de código da Microsoft.
+    icon: vscode
+    homepage_url: https://code.visualstudio.com
+    install_method: script
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: true
+    is_active: true
+    is_featured: true
+    tags:
+      - editor
+      - ide
+      - code
+    variants:
+      ubuntu:
+        is_supported: true
+        repository_setup_command: |
+          sudo apt update
+          sudo apt install -y wget gpg
+          wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+          sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+          echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+          rm -f packages.microsoft.gpg
+          sudo apt update
+        install_command: |
+          sudo apt install -y code
+      fedora:
+        is_supported: true
+        repository_setup_command: |
+          sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+          printf "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc\n" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+          sudo dnf check-update || true
+        install_command: |
+          sudo dnf install -y code
+
+  - name: Git
+    slug: git
+    category: Utilities
+    description: Sistema de versionamento distribuído.
+    icon: git-branch
+    homepage_url: https://git-scm.com
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: true
+    tags:
+      - git
+      - scm
+      - version-control
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y git
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y git
+
+  - name: Docker
+    slug: docker
+    category: Containers
+    description: Plataforma de containers.
+    icon: container
+    homepage_url: https://www.docker.com
+    install_method: script
+    risk_level: medium
+    requires_reboot: false
+    requires_third_party_repo: true
+    is_active: true
+    is_featured: true
+    tags:
+      - docker
+      - containers
+      - devops
+    variants:
+      ubuntu:
+        is_supported: true
+        repository_setup_command: |
+          sudo apt update
+          sudo apt install -y ca-certificates curl gnupg
+          sudo install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+          sudo chmod a+r /etc/apt/keyrings/docker.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt update
+        install_command: |
+          sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+      fedora:
+        is_supported: true
+        repository_setup_command: |
+          sudo dnf -y install dnf-plugins-core
+          sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
+        install_command: |
+          sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+  - name: Node.js
+    slug: nodejs
+    category: Development
+    description: Runtime JavaScript para aplicações e ferramentas de desenvolvimento.
+    icon: box
+    homepage_url: https://nodejs.org
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: true
+    tags:
+      - node
+      - javascript
+      - npm
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y nodejs npm
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y nodejs npm
+
+  - name: PHP
+    slug: php
+    category: Development
+    description: Linguagem PHP e ferramentas de linha de comando.
+    icon: file-code-2
+    homepage_url: https://www.php.net
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: false
+    tags:
+      - php
+      - cli
+      - backend
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y php php-cli php-curl php-mbstring php-xml php-zip php-bcmath php-intl
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y php php-cli php-curl php-mbstring php-xml php-zip php-bcmath php-intl
+
+  - name: curl
+    slug: curl
+    category: Utilities
+    description: Ferramenta para transferência de dados por URL.
+    icon: terminal
+    homepage_url: https://curl.se
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: false
+    tags:
+      - curl
+      - http
+      - cli
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y curl
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y curl
+
+  - name: Steam
+    slug: steam
+    category: Gaming
+    description: Plataforma de jogos.
+    icon: gamepad-2
+    homepage_url: https://store.steampowered.com
+    install_method: script
+    risk_level: medium
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: true
+    tags:
+      - games
+      - steam
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y steam
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y steam
+
+  - name: Discord
+    slug: discord
+    category: Communication
+    description: Aplicativo de comunicação por voz e texto.
+    icon: message-circle
+    homepage_url: https://discord.com
+    install_method: script
+    risk_level: medium
+    requires_reboot: false
+    requires_third_party_repo: true
+    is_active: true
+    is_featured: false
+    tags:
+      - chat
+      - voice
+      - communication
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo snap install discord
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y discord
+
+  - name: VLC
+    slug: vlc
+    category: Media
+    description: Reprodutor multimídia.
+    icon: play-circle
+    homepage_url: https://www.videolan.org
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: false
+    tags:
+      - media
+      - video
+      - audio
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y vlc
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y vlc
+
+  - name: GIMP
+    slug: gimp
+    category: Design
+    description: Editor de imagens.
+    icon: image
+    homepage_url: https://www.gimp.org
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: false
+    tags:
+      - design
+      - image
+      - editor
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y gimp
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y gimp
+
+  - name: Krita
+    slug: krita
+    category: Design
+    description: Ferramenta de pintura digital.
+    icon: brush
+    homepage_url: https://krita.org
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: false
+    tags:
+      - design
+      - drawing
+      - painting
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y krita
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y krita
+
+  - name: Inkscape
+    slug: inkscape
+    category: Design
+    description: Editor de gráficos vetoriais.
+    icon: pen-tool
+    homepage_url: https://inkscape.org
+    install_method: apt
+    risk_level: low
+    requires_reboot: false
+    requires_third_party_repo: false
+    is_active: true
+    is_featured: false
+    tags:
+      - design
+      - vector
+      - svg
+    variants:
+      ubuntu:
+        is_supported: true
+        install_command: |
+          sudo apt update
+          sudo apt install -y inkscape
+      fedora:
+        is_supported: true
+        install_command: |
+          sudo dnf install -y inkscape

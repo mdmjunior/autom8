@@ -1,0 +1,51 @@
+system_actions:
+  - name: Atualizar sistema
+    slug: system-update
+    description: Atualiza os índices e os pacotes instalados do sistema.
+    input_type: boolean
+    validation_rules: nullable|boolean
+    script_template_ubuntu: |
+      sudo apt update
+      sudo apt upgrade -y
+    script_template_fedora: |
+      sudo dnf upgrade --refresh -y
+    is_active: true
+
+  - name: Alterar hostname
+    slug: set-hostname
+    description: Define o hostname da máquina.
+    input_type: text
+    validation_rules: nullable|string|min:1|max:63
+    script_template_ubuntu: |
+      sudo hostnamectl set-hostname "{{ value }}"
+    script_template_fedora: |
+      sudo hostnamectl set-hostname "{{ value }}"
+    is_active: true
+
+  - name: Alterar timezone
+    slug: set-timezone
+    description: Define o timezone do sistema.
+    input_type: select
+    input_options:
+      - America/Sao_Paulo
+      - UTC
+      - America/New_York
+      - Europe/Lisbon
+    validation_rules: nullable|string
+    script_template_ubuntu: |
+      sudo timedatectl set-timezone "{{ value }}"
+    script_template_fedora: |
+      sudo timedatectl set-timezone "{{ value }}"
+    is_active: true
+
+  - name: Instalar Flatpak
+    slug: install-flatpak
+    description: Instala suporte ao Flatpak.
+    input_type: boolean
+    validation_rules: nullable|boolean
+    script_template_ubuntu: |
+      sudo apt update
+      sudo apt install -y flatpak
+    script_template_fedora: |
+      sudo dnf install -y flatpak
+    is_active: true

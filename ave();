@@ -1,0 +1,6 @@
+[90m= [39m[34;4mApp\Models\PackageVariant[39;24m {#8304
+    [34mpackage_id[39m: [36mnull[39m,
+    [34mdistro_id[39m: [36mnull[39m,
+    [34minstall_command[39m: [32m"[39m[32msudo apt install -y git[39m[32m"[39m,
+    [34mis_supported[39m: [36mtrue[39m,
+  }

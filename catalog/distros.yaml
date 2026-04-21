@@ -1,0 +1,8 @@
+distros:
+  - name: Ubuntu
+    slug: ubuntu
+    is_active: true
+
+  - name: Fedora
+    slug: fedora
+    is_active: true

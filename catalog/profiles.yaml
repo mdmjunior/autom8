@@ -1,0 +1,31 @@
+profiles:
+  - name: Developer
+    slug: developer
+    description: Ambiente para desenvolvimento web, backend, automação e containers.
+    icon: code-2
+    packages:
+      - vscode
+      - git
+      - docker
+      - nodejs
+      - php
+      - curl
+
+  - name: Gamer
+    slug: gamer
+    description: Pacotes para jogos, comunicação e mídia.
+    icon: gamepad-2
+    packages:
+      - steam
+      - discord
+      - vlc
+
+  - name: Designer
+    slug: designer
+    description: Ferramentas para edição de imagens e criação gráfica.
+    icon: palette
+    packages:
+      - gimp
+      - krita
+      - inkscape
+      - vlc
