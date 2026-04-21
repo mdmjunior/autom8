@@ -10,6 +10,7 @@ class Distro extends Model
     protected $fillable = [
         'name',
         'slug',
+        'package_manager',
         'description',
         'is_active',
     ];
@@ -18,8 +19,8 @@ class Distro extends Model
         'is_active' => 'boolean',
     ];
 
-    public function packages(): HasMany
+    public function packageVariants(): HasMany
     {
-        return $this->hasMany(Package::class);
+        return $this->hasMany(PackageVariant::class);
     }
 }

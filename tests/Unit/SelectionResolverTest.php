@@ -16,7 +16,6 @@ it('resolves profiles manual packages and actions', function () {
     $distro = Distro::query()->create([
         'name' => 'Fedora',
         'slug' => 'fedora',
-        'package_manager' => 'dnf',
         'is_active' => true,
     ]);
 
@@ -25,6 +24,7 @@ it('resolves profiles manual packages and actions', function () {
         'slug' => 'git',
         'category' => 'development',
         'install_method' => validPackageInstallMethod(),
+        'description' => 'Git package',
         'is_active' => true,
     ]);
 
@@ -33,6 +33,7 @@ it('resolves profiles manual packages and actions', function () {
         'slug' => 'vlc',
         'category' => 'media',
         'install_method' => validPackageInstallMethod(),
+        'description' => 'VLC package',
         'is_active' => true,
     ]);
 
@@ -40,6 +41,7 @@ it('resolves profiles manual packages and actions', function () {
         'package_id' => $git->id,
         'distro_id' => $distro->id,
         'package_name' => 'git',
+        'install_method' => validPackageInstallMethod(),
         'install_command' => 'dnf install -y git',
         'remove_command' => 'dnf remove -y git',
     ]);
@@ -48,6 +50,7 @@ it('resolves profiles manual packages and actions', function () {
         'package_id' => $vlc->id,
         'distro_id' => $distro->id,
         'package_name' => 'vlc',
+        'install_method' => validPackageInstallMethod(),
         'install_command' => 'dnf install -y vlc',
         'remove_command' => 'dnf remove -y vlc',
     ]);
