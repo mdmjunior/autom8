@@ -1,3 +1,5 @@
+name: autom8_dev
+
 services:
   app:
     build:
