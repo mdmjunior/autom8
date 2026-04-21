@@ -39,6 +39,7 @@ jobs:
       - name: Prepare SQLite database
         run: |
           mkdir -p database
+          rm -rf database/database.sqlite
           touch database/database.sqlite
 
       - name: Copy Environment File
@@ -54,7 +55,7 @@ jobs:
             echo "CACHE_STORE=array"
             echo "SESSION_DRIVER=array"
             echo "QUEUE_CONNECTION=sync"
-            echo "MAIL_MAILER=log"
+            echo "MAIL_MAILER=array"
           } >> .env
 
       - name: Add Flux credentials when available
