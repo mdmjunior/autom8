@@ -1,5 +1,0 @@
-[90m= [39m[34;4mApp\Models\Distro[39;24m {#7941
-    [34mname[39m: [32m"[39m[32mUbuntu[39m[32m"[39m,
-    [34mslug[39m: [32m"[39m[32mubuntu[39m[32m"[39m,
-    [34mis_active[39m: [36mtrue[39m,
-  }
