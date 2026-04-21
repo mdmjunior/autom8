@@ -7,16 +7,15 @@ mkdir -p storage/app/autom8/builds
 mkdir -p storage/app/autom8/artifacts
 mkdir -p storage/logs
 mkdir -p bootstrap/cache
+mkdir -p storage/framework/cache
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
 
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
-
-if [ ! -f .env ]; then
-  echo ".env not found inside container."
-fi
 
 if [ -f artisan ]; then
   php artisan optimize:clear || true
 fi
 
-php-fpm
+exec php-fpm

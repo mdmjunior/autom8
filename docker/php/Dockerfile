@@ -1,9 +1,13 @@
-FROM php:8.4-fpm
+FROM php:8.3-fpm
+
+ARG NODE_MAJOR=22
 
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     curl \
+    gnupg \
+    ca-certificates \
     libzip-dev \
     libicu-dev \
     libxml2-dev \
@@ -14,7 +18,6 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     libpq-dev \
     mariadb-client \
-    nginx \
     supervisor \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
@@ -27,6 +30,11 @@ RUN apt-get update && apt-get install -y \
     exif \
     pcntl \
     gd \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update && apt-get install -y nodejs \
+    && npm install -g npm \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
