@@ -7,6 +7,7 @@ APP_URL=https://autom8-dev.oslabs.com.br
 APP_LOCALE=pt_BR
 APP_FALLBACK_LOCALE=pt_BR
 APP_FAKER_LOCALE=pt_BR
+
 APP_MAINTENANCE_DRIVER=file
 
 APP_TIMEZONE=America/Sao_Paulo
