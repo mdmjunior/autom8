@@ -5,19 +5,23 @@ services:
       dockerfile: docker/php/Dockerfile
     container_name: autom8-dev-app
     working_dir: /var/www/html
+    env_file:
+      - .env
     volumes:
       - ./:/var/www/html
       - autom8_dev_storage:/var/www/html/storage
       - autom8_dev_bootstrap_cache:/var/www/html/bootstrap/cache
-    env_file:
-      - .env
     depends_on:
       - db
     restart: unless-stopped
+    networks:
+      - autom8_dev_net
 
   web:
     image: nginx:stable
     container_name: autom8-dev-web
+    depends_on:
+      - app
     ports:
       - "127.0.0.1:8082:80"
     volumes:
@@ -25,9 +29,9 @@ services:
       - autom8_dev_storage:/var/www/html/storage
       - autom8_dev_bootstrap_cache:/var/www/html/bootstrap/cache
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - app
     restart: unless-stopped
+    networks:
+      - autom8_dev_net
 
   db:
     image: mariadb:11
@@ -40,8 +44,14 @@ services:
     volumes:
       - autom8_dev_db:/var/lib/mysql
     restart: unless-stopped
+    networks:
+      - autom8_dev_net
 
 volumes:
   autom8_dev_db:
   autom8_dev_storage:
   autom8_dev_bootstrap_cache:
+
+networks:
+  autom8_dev_net:
+    driver: bridge
