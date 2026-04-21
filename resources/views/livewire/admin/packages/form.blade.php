@@ -6,7 +6,7 @@
                 {{ $package ? 'Editar pacote' : 'Novo pacote' }}
             </h2>
             <p class="mt-3 text-zinc-400">
-                {{ $package ? 'Atualize os dados do pacote do catálogo.' : 'Crie um novo pacote para o catálogo do AutoM8.' }}
+                {{ $package ? 'Atualize os dados do pacote lógico.' : 'Crie um novo pacote lógico para o catálogo.' }}
             </p>
         </div>
 
@@ -19,7 +19,7 @@
     <form wire:submit="save" class="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
         <div class="grid gap-6">
             <div>
-                <label class="mb-2 block text-sm text-zinc-400">Nome</label>
+                <label class="mb-2 block text-sm text-zinc-400">Nome do pacote</label>
                 <input type="text"
                     wire:model.live="name"
                     class="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-emerald-400">
@@ -35,21 +35,21 @@
             </div>
 
             <div>
-                <label class="mb-2 block text-sm text-zinc-400">Categoria</label>
-                <input type="text"
-                    wire:model.live="category"
-                    placeholder="Ex.: development, media, system..."
+                <label class="mb-2 block text-sm text-zinc-400">Website</label>
+                <input type="url"
+                    wire:model.live="website"
+                    placeholder="https://..."
                     class="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-emerald-400">
-                @error('category') <p class="mt-2 text-sm text-red-400">{{ $message }}</p> @enderror
+                @error('website') <p class="mt-2 text-sm text-red-400">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label class="mb-2 block text-sm text-zinc-400">Método de instalação</label>
+                <label class="mb-2 block text-sm text-zinc-400">Categoria</label>
                 <input type="text"
-                    wire:model.live="install_method"
-                    placeholder="Ex.: package_manager"
+                    wire:model.live="category"
+                    placeholder="Ex.: browser, development, media..."
                     class="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-emerald-400">
-                @error('install_method') <p class="mt-2 text-sm text-red-400">{{ $message }}</p> @enderror
+                @error('category') <p class="mt-2 text-sm text-red-400">{{ $message }}</p> @enderror
             </div>
 
             <div>
