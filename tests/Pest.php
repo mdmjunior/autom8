@@ -15,7 +15,7 @@ use Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
- // ->use(RefreshDatabase::class)
+    // ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -47,4 +47,35 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+use Illuminate\Support\Facades\DB;
+
+if (! function_exists('validPackageInstallMethod')) {
+    function validPackageInstallMethod(): string
+    {
+        $row = DB::selectOne("
+            select sql
+            from sqlite_master
+            where type = 'table'
+              and name = 'packages'
+        ");
+
+        $sql = $row->sql ?? '';
+
+        if (preg_match('/install_method[^,]*check\s*\(\s*["`]?install_method["`]?\s+in\s*\(([^)]*)\)\s*\)/i', $sql, $matches)) {
+            $values = array_map(
+                static fn($value) => trim($value, " \t\n\r\0\x0B'\""),
+                explode(',', $matches[1])
+            );
+
+            $values = array_values(array_filter($values));
+
+            if ($values !== []) {
+                return $values[0];
+            }
+        }
+
+        return 'apt';
+    }
 }

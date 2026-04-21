@@ -11,16 +11,13 @@ class PackageVariant extends Model
         'package_id',
         'distro_id',
         'package_name',
-        'repository_setup_command',
-        'pre_install_command',
         'install_command',
-        'post_install_command',
         'remove_command',
-        'is_supported',
+        'is_active',
     ];
 
     protected $casts = [
-        'is_supported' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function package(): BelongsTo
