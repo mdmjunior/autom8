@@ -4,6 +4,7 @@ use App\DTO\BuildSelectionData;
 use App\Models\CatalogVersion;
 use App\Models\Distro;
 use App\Models\Package;
+use App\Models\PackageVariant;
 use App\Models\Profile;
 use App\Models\SystemAction;
 use App\Services\Autom8\Build\BuildGeneratorService;
@@ -12,10 +13,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('generates a build record', function () {
-    Distro::query()->create([
+    $distro = Distro::query()->create([
         'name' => 'Fedora',
         'slug' => 'fedora',
-        'package_manager' => 'dnf',
         'is_active' => true,
     ]);
 
@@ -26,6 +26,15 @@ it('generates a build record', function () {
         'install_method' => validPackageInstallMethod(),
         'description' => 'Git package',
         'is_active' => true,
+    ]);
+
+    PackageVariant::query()->create([
+        'package_id' => $git->id,
+        'distro_id' => $distro->id,
+        'package_name' => 'git',
+        'install_method' => validPackageInstallMethod(),
+        'install_command' => 'dnf install -y git',
+        'remove_command' => 'dnf remove -y git',
     ]);
 
     $profile = Profile::query()->create([

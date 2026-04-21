@@ -11,7 +11,6 @@ class Profile extends Model
         'name',
         'slug',
         'description',
-        'icon',
         'is_active',
     ];
 
@@ -21,8 +20,6 @@ class Profile extends Model
 
     public function packages(): BelongsToMany
     {
-        return $this->belongsToMany(Package::class, 'profile_package')
-            ->withPivot('is_default')
-            ->withTimestamps();
+        return $this->belongsToMany(Package::class, 'package_profile');
     }
 }

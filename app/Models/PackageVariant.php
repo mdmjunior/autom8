@@ -11,8 +11,10 @@ class PackageVariant extends Model
         'package_id',
         'distro_id',
         'package_name',
+        'install_method',
         'install_command',
         'remove_command',
+        'notes',
         'is_active',
     ];
 
