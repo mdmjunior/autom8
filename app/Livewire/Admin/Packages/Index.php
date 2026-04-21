@@ -54,12 +54,15 @@ class Index extends Component
 
     public function render()
     {
-        $query = Package::query()->latest();
+        $query = Package::query()
+            ->withCount('variants')
+            ->latest();
 
         if ($this->search !== '') {
             $query->where(function ($builder) {
                 $builder->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('slug', 'like', '%' . $this->search . '%')
+                    ->orWhere('website', 'like', '%' . $this->search . '%')
                     ->orWhere('description', 'like', '%' . $this->search . '%')
                     ->orWhere('category', 'like', '%' . $this->search . '%');
             });

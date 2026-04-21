@@ -12,8 +12,8 @@ class Form extends Component
 
     public string $name = '';
     public string $slug = '';
+    public string $website = '';
     public string $category = '';
-    public string $install_method = 'package_manager';
     public string $description = '';
     public bool $is_active = true;
 
@@ -23,8 +23,8 @@ class Form extends Component
             $this->package = $package;
             $this->name = $package->name;
             $this->slug = $package->slug;
+            $this->website = $package->website ?? '';
             $this->category = $package->category ?? '';
-            $this->install_method = $package->install_method ?? 'package_manager';
             $this->description = $package->description ?? '';
             $this->is_active = (bool) $package->is_active;
         }
@@ -42,20 +42,21 @@ class Form extends Component
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:packages,slug,' . ($this->package?->id ?? 'NULL')],
+            'website' => ['nullable', 'url', 'max:255'],
             'category' => ['required', 'string', 'max:255'],
-            'install_method' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'is_active' => ['boolean'],
         ], [
             'slug.alpha_dash' => 'O slug deve conter apenas letras, números, hífens e underscores.',
             'category.required' => 'Informe a categoria do pacote.',
-            'install_method.required' => 'Informe o método de instalação.',
+            'website.url' => 'Informe uma URL válida para o website.',
         ]);
 
         if ($this->package) {
             $this->package->update($validated);
             session()->flash('status', 'Pacote atualizado com sucesso.');
         } else {
+            $validated['install_method'] = validPackageInstallMethod();
             Package::query()->create($validated);
             session()->flash('status', 'Pacote criado com sucesso.');
         }
