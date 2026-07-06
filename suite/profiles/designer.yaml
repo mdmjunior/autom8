@@ -1,0 +1,17 @@
+id: designer
+name: Designer
+description: Perfil para criação visual, edição de imagens e mídia.
+modes:
+  safe:
+    apps:
+      - gimp
+      - inkscape
+    tweaks: []
+  complete:
+    apps:
+      - gimp
+      - inkscape
+      - krita
+      - blender
+    tweaks:
+      - enable_flathub

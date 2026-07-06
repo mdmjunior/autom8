@@ -1,0 +1,23 @@
+id: devops
+name: DevOps
+description: Perfil para containers, infraestrutura, cloud e automação.
+modes:
+  safe:
+    apps:
+      - git
+      - curl
+      - jq
+      - docker
+    tweaks: []
+  complete:
+    apps:
+      - git
+      - curl
+      - jq
+      - docker
+      - terraform
+      - kubectl
+      - helm
+    tweaks:
+      - enable_external_repos
+      - enable_docker_service

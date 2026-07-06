@@ -1,0 +1,18 @@
+id: domestico
+name: Doméstico
+description: Perfil para uso cotidiano, internet, mídia, escritório e manutenção básica.
+modes:
+  safe:
+    apps:
+      - firefox
+      - libreoffice
+      - vlc
+    tweaks: []
+  complete:
+    apps:
+      - firefox
+      - libreoffice
+      - vlc
+      - flatpak
+    tweaks:
+      - enable_flathub

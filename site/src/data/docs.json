@@ -1,0 +1,42 @@
+[
+  {
+    "command": "autom8",
+    "description": "Abre o menu interativo no terminal."
+  },
+  {
+    "command": "autom8 update",
+    "description": "Atualiza pacotes do sistema após confirmação."
+  },
+  {
+    "command": "autom8 clean",
+    "description": "Executa limpeza segura automaticamente."
+  },
+  {
+    "command": "autom8 clean --dry-run",
+    "description": "Simula a limpeza sem remover arquivos."
+  },
+  {
+    "command": "autom8 diagnose",
+    "description": "Gera relatório local de diagnóstico."
+  },
+  {
+    "command": "autom8 security",
+    "description": "Executa checagens básicas de segurança."
+  },
+  {
+    "command": "autom8 docker",
+    "description": "Mostra status e consumo do Docker quando disponível."
+  },
+  {
+    "command": "autom8 users",
+    "description": "Lista usuários com login permitido e dados básicos."
+  },
+  {
+    "command": "autom8 report",
+    "description": "Lista e exporta relatórios."
+  },
+  {
+    "command": "autom8 --version",
+    "description": "Mostra a versão instalada."
+  }
+]

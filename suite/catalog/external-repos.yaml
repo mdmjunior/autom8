@@ -1,0 +1,12 @@
+repos:
+  - id: vscode
+    name: Microsoft Visual Studio Code
+    requires_confirmation: true
+
+  - id: docker
+    name: Docker Official Repository
+    requires_confirmation: true
+
+  - id: hashicorp
+    name: HashiCorp Official Repository
+    requires_confirmation: true

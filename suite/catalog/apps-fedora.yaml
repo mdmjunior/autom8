@@ -1,0 +1,27 @@
+apps:
+  - id: git
+    name: Git
+    description: Sistema de controle de versão.
+    category: desenvolvimento
+    source: native
+    distros: [fedora]
+    install: "dnf install -y git"
+    remove: "dnf remove -y git"
+
+  - id: curl
+    name: curl
+    description: Cliente para transferências HTTP e outras URLs.
+    category: sistema
+    source: native
+    distros: [fedora]
+    install: "dnf install -y curl"
+    remove: "dnf remove -y curl"
+
+  - id: jq
+    name: jq
+    description: Processador JSON de linha de comando.
+    category: sistema
+    source: native
+    distros: [fedora]
+    install: "dnf install -y jq"
+    remove: "dnf remove -y jq"

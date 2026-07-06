@@ -1,0 +1,12 @@
+[
+  {
+    "version": "0.1.0",
+    "date": "Em desenvolvimento",
+    "changes": [
+      "Estrutura inicial da suíte AutoM8.",
+      "Primeiro instalador local e remoto.",
+      "Primeiro site oficial.",
+      "Módulos iniciais de diagnóstico, update e limpeza segura."
+    ]
+  }
+]

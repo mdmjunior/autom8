@@ -1,0 +1,30 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs/temp
+*.log
+tmp/
+suite/logs/*
+suite/tmp/*
+suite/backups/*
+suite/reports/*
+!suite/logs/.keep
+!suite/tmp/.keep
+!suite/backups/.keep
+!suite/reports/.keep
+
+# Node/Astro
+site/node_modules/
+site/dist/
+site/.astro/
+
+# Packages
+dist/
+*.tar.gz
+
+# Env
+.env
+.env.*

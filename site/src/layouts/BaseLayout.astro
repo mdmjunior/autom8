@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+
+const {
+  title = 'AutoM8 - Linux Management Suite',
+  description = 'Suíte local de gerenciamento Linux da OSLabs.'
+} = Astro.props;
+
+const nav = [
+  ['Início', '/'],
+  ['Módulos', '/modules'],
+  ['Perfis', '/profiles'],
+  ['Docs', '/docs'],
+  ['Roadmap', '/roadmap'],
+  ['Changelog', '/changelog'],
+  ['GitHub', 'https://github.com/mdmjunior/autom8'],
+  ['Instalar', '/install']
+];
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="sticky top-0 z-40 border-b border-slate-700/60 bg-slate-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <a href="/" class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/40 bg-blue-500/10 font-black text-blue-300">
+            A8
+          </div>
+          <div>
+            <div class="font-bold tracking-tight">AutoM8</div>
+            <div class="text-xs text-slate-400">Linux Management Suite</div>
+          </div>
+        </a>
+
+        <nav class="hidden items-center gap-5 text-sm text-slate-300 lg:flex">
+          {nav.map(([label, href]) => (
+            <a
+              href={href}
+              class="transition hover:text-blue-300"
+              target={href.startsWith('http') ? '_blank' : undefined}
+              rel={href.startsWith('http') ? 'noreferrer' : undefined}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-slate-800 px-6 py-10 text-center text-sm text-slate-500">
+      <p>AutoM8 - Linux Management Suite · OSLabs</p>
+      <p class="mt-2">Ferramenta local para Linux. Poderosa, modular e segura por padrão.</p>
+    </footer>
+  </body>
+</html>

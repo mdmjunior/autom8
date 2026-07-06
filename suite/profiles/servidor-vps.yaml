@@ -1,0 +1,20 @@
+id: servidor-vps
+name: Servidor/VPS
+description: Perfil para servidores locais ou VPS.
+modes:
+  safe:
+    apps:
+      - curl
+      - rsync
+      - htop
+    tweaks: []
+  complete:
+    apps:
+      - curl
+      - rsync
+      - htop
+      - docker
+      - nmap
+    tweaks:
+      - check_firewall
+      - check_ssh

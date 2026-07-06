@@ -1,0 +1,4 @@
+apps: []
+policy:
+  install_snapd_automatically: false
+  use_only_when_snap_exists: true

@@ -1,0 +1,54 @@
+[
+  {
+    "version": "0.1.0",
+    "title": "Base funcional",
+    "items": [
+      "Estrutura /opt/autom8",
+      "Instalador install.sh",
+      "Comando autom8",
+      "Detecção de distro",
+      "Logs próprios",
+      "Menu com gum",
+      "Diagnóstico",
+      "Update básico",
+      "Limpeza segura",
+      "Site inicial"
+    ]
+  },
+  {
+    "version": "0.2.0",
+    "title": "Apps e perfis",
+    "items": [
+      "Catálogo YAML",
+      "Instalação e remoção de apps",
+      "Perfis YAML",
+      "Modo mínimo seguro",
+      "Modo completo",
+      "Seleção individual de apps",
+      "Flatpak e Flathub"
+    ]
+  },
+  {
+    "version": "0.3.0",
+    "title": "Segurança, usuários e Docker",
+    "items": [
+      "Módulo security",
+      "Módulo users",
+      "Módulo docker",
+      "Relatórios exportáveis",
+      "Backups críticos",
+      "Rollback parcial"
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "title": "Primeira versão estável",
+    "items": [
+      "Suporte testado nas distros oficiais",
+      "Documentação completa",
+      "Changelog versionado",
+      "Instalação estável",
+      "Rollback documentado"
+    ]
+  }
+]

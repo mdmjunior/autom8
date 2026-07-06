@@ -1,0 +1,264 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+AUTOM8_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/constants.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/config.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/logger.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/ui.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/detect.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/sudo.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/summary.sh"
+
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/diagnose.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/update.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/clean.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/upgrade_distro.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/apps.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/profiles.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/backup.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/security.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/docker.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/users.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/config_menu.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/report.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/self_update.sh"
+
+autom8_usage() {
+  cat <<EOF_USAGE
+AutoM8 - Linux Management Suite
+
+Uso:
+  autom8
+  autom8 update [--dry-run]
+  autom8 upgrade-distro
+  autom8 clean [--dry-run]
+  autom8 apps
+  autom8 profiles
+  autom8 backup
+  autom8 diagnose
+  autom8 security
+  autom8 docker
+  autom8 users
+  autom8 config
+  autom8 report
+  autom8 report export
+  autom8 self-update
+  autom8 --version
+  autom8 --help
+EOF_USAGE
+}
+
+autom8_dashboard() {
+  autom8_title "AutoM8 Dashboard"
+
+  echo "Produto: $AUTOM8_NAME"
+  echo "Versão: $AUTOM8_VERSION"
+  echo "Usuário: $USER"
+  echo "Root: $AUTOM8_ROOT"
+  echo
+
+  autom8_print_detection
+  echo
+
+  echo "Permissões:"
+  echo "Pode usar sudo: $AUTOM8_CAN_SUDO"
+  echo "Modo somente leitura: $AUTOM8_READ_ONLY"
+  echo
+
+  echo "Uso de disco:"
+  df -h / 2>/dev/null || true
+  echo
+
+  echo "Memória:"
+  free -h 2>/dev/null || true
+  echo
+
+  echo "Docker:"
+  if command -v docker >/dev/null 2>&1; then
+    docker --version 2>/dev/null || true
+  else
+    echo "Docker não encontrado"
+  fi
+  echo
+
+  echo "Firewall:"
+  if command -v ufw >/dev/null 2>&1; then
+    ufw status 2>/dev/null | head -n 5 || true
+  elif command -v firewall-cmd >/dev/null 2>&1; then
+    firewall-cmd --state 2>/dev/null || true
+  else
+    echo "Firewall conhecido não encontrado"
+  fi
+}
+
+autom8_menu() {
+  while true; do
+    clear || true
+    autom8_dashboard
+
+    local choice
+    choice="$(autom8_choose "Menu principal" \
+      "Atualizar Sistema" \
+      "Limpeza" \
+      "Apps" \
+      "Perfis" \
+      "Backup" \
+      "Diagnóstico" \
+      "Segurança" \
+      "Docker" \
+      "Usuários" \
+      "Configurações" \
+      "Relatórios" \
+      "Sair")" || exit 0
+
+    clear || true
+
+    case "$choice" in
+      "Atualizar Sistema") autom8_module_update ;;
+      "Limpeza") autom8_module_clean ;;
+      "Apps") autom8_module_apps ;;
+      "Perfis") autom8_module_profiles ;;
+      "Backup") autom8_module_backup ;;
+      "Diagnóstico") autom8_module_diagnose ;;
+      "Segurança") autom8_module_security ;;
+      "Docker") autom8_module_docker ;;
+      "Usuários") autom8_module_users ;;
+      "Configurações") autom8_module_config ;;
+      "Relatórios") autom8_module_report ;;
+      "Sair") break ;;
+    esac
+
+    echo
+    autom8_print_summary
+    echo
+    autom8_pause
+  done
+}
+
+autom8_bootstrap() {
+  autom8_block_root
+  autom8_load_config
+  autom8_detect_distro
+  autom8_detect_sudo
+  autom8_log_start
+
+  if [[ "$AUTOM8_SUPPORTED_DISTRO" != "true" ]]; then
+    autom8_warn_ui "Distro não suportada oficialmente. Apenas diagnóstico será permitido."
+    autom8_log_warn "security" "Unsupported distro detected: $AUTOM8_DISTRO_ID"
+  fi
+}
+
+autom8_parse_global_flags() {
+  AUTOM8_DRY_RUN="false"
+
+  for arg in "$@"; do
+    case "$arg" in
+      --dry-run)
+        AUTOM8_DRY_RUN="true"
+        ;;
+    esac
+  done
+}
+
+main() {
+  autom8_parse_global_flags "$@"
+
+  case "${1:-}" in
+    --version|-v)
+      echo "AutoM8 $AUTOM8_VERSION"
+      exit 0
+      ;;
+    --help|-h|help)
+      autom8_usage
+      exit 0
+      ;;
+  esac
+
+  autom8_bootstrap
+
+  case "${1:-menu}" in
+    menu|"")
+      autom8_menu
+      ;;
+    update)
+      autom8_module_update
+      ;;
+    upgrade-distro)
+      autom8_module_upgrade_distro
+      ;;
+    clean)
+      autom8_module_clean
+      ;;
+    apps)
+      autom8_module_apps
+      ;;
+    profiles)
+      autom8_module_profiles
+      ;;
+    backup)
+      autom8_module_backup
+      ;;
+    diagnose)
+      autom8_module_diagnose
+      ;;
+    security)
+      autom8_module_security
+      ;;
+    docker)
+      autom8_module_docker
+      ;;
+    users)
+      autom8_module_users
+      ;;
+    config)
+      autom8_module_config
+      ;;
+    report)
+      if [[ "${2:-}" == "export" ]]; then
+        mkdir -p "$AUTOM8_REPORT_DIR"
+        output="$AUTOM8_REPORT_DIR/autom8-export-$(date '+%Y-%m-%d-%H%M').tar.gz"
+        tar -czf "$output" -C "$AUTOM8_ROOT" logs reports 2>/dev/null || true
+        autom8_success "Exportado: $output"
+        autom8_summary_ok "Relatório/histórico exportado"
+      else
+        autom8_module_report
+      fi
+      ;;
+    self-update)
+      autom8_module_self_update
+      ;;
+    *)
+      autom8_error_ui "Comando desconhecido: ${1:-}"
+      autom8_usage
+      autom8_summary_fail "Comando desconhecido"
+      ;;
+  esac
+
+  echo
+  autom8_print_summary
+  autom8_log_end
+}
+
+main "$@"

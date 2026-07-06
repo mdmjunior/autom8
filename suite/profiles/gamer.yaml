@@ -1,0 +1,16 @@
+id: gamer
+name: Gamer
+description: Perfil para jogos no Linux.
+modes:
+  safe:
+    apps:
+      - steam
+    tweaks: []
+  complete:
+    apps:
+      - steam
+      - lutris
+      - heroic
+    tweaks:
+      - enable_flathub
+      - check_gpu_drivers

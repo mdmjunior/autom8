@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Doméstico",
+    "description": "Uso cotidiano, internet, mídia, escritório e manutenção básica."
+  },
+  {
+    "name": "Desenvolvedor",
+    "description": "Ferramentas para programação, terminal, editores, runtimes e produtividade técnica."
+  },
+  {
+    "name": "DevOps",
+    "description": "Containers, infraestrutura, cloud, automação e ferramentas de operação."
+  },
+  {
+    "name": "Administrador de Sistemas",
+    "description": "Diagnóstico, rede, segurança básica, serviços e manutenção."
+  },
+  {
+    "name": "Designer",
+    "description": "Criação visual, edição de imagens, ilustração e mídia."
+  },
+  {
+    "name": "Gamer",
+    "description": "Jogos no Linux, clientes, launchers e ajustes relacionados."
+  },
+  {
+    "name": "Servidor/VPS",
+    "description": "Base para servidores locais ou VPS com foco em segurança e operação."
+  }
+]

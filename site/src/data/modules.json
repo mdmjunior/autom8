@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Atualização do Sistema",
+    "slug": "update",
+    "description": "Atualize repositórios, pacotes e prepare upgrades de versão da distro com confirmação e logs."
+  },
+  {
+    "name": "Limpeza",
+    "slug": "clean",
+    "description": "Limpeza segura, avançada e agressiva com proteção para caches de navegadores e dados pessoais."
+  },
+  {
+    "name": "Apps",
+    "slug": "apps",
+    "description": "Instale e remova apps por categoria usando repositórios nativos, Flatpak, Snap existente, AppImage e fontes oficiais."
+  },
+  {
+    "name": "Perfis",
+    "slug": "profiles",
+    "description": "Aplique perfis como Desenvolvedor, DevOps, Gamer, Designer e Servidor/VPS em modo seguro ou completo."
+  },
+  {
+    "name": "Backup",
+    "slug": "backup",
+    "description": "Gere backups simples em tar.gz e preserve configurações críticas antes de alterações sensíveis."
+  },
+  {
+    "name": "Diagnóstico",
+    "slug": "diagnose",
+    "description": "Crie relatórios locais com sistema, kernel, hardware, rede, Docker, firewall, usuários e serviços."
+  },
+  {
+    "name": "Segurança",
+    "slug": "security",
+    "description": "Verifique firewall, portas abertas, SSH, usuários administrativos, updates pendentes e serviços expostos."
+  },
+  {
+    "name": "Docker",
+    "slug": "docker",
+    "description": "Verifique containers, imagens, volumes, consumo e faça limpezas com confirmação."
+  },
+  {
+    "name": "Usuários",
+    "slug": "users",
+    "description": "Liste usuários com login permitido, diretórios home, shells, grupos e permissões administrativas."
+  }
+]
