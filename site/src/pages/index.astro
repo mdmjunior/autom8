@@ -1,35 +1,163 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
+
+const highlights = [
+  {
+    title: 'Escolha',
+    description: 'Selecione módulos, perfis ou ações do sistema conforme o que você precisa preparar.'
+  },
+  {
+    title: 'Revise',
+    description: 'Entenda o que será executado antes de aplicar alterações no seu Linux.'
+  },
+  {
+    title: 'Execute',
+    description: 'Automatize tarefas repetitivas com clareza, logs e controle sobre cada etapa.'
+  }
+];
+
+const audiences = [
+  'Usuários iniciantes que querem configurar o Linux sem complicação.',
+  'Usuários intermediários que desejam economizar tempo em tarefas repetitivas.',
+  'Desenvolvedores que precisam preparar ambientes de trabalho com rapidez.',
+  'Administradores e usuários avançados que valorizam automações auditáveis.'
+];
+
+const trustItems = [
+  'Gratuito e open source',
+  'Execução local',
+  'Scripts claros',
+  'Instalação com usuário comum e sudo',
+  'Diagnóstico e logs',
+  'Roadmap público'
+];
 ---
 
 <BaseLayout>
-  <section class="px-6 py-24">
-    <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+  <section class="px-6 py-20 md:py-28">
+    <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
       <div>
-        <div class="mb-5 inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-200">
-          OSLabs · Linux automation toolkit
+        <div class="autom8-kicker">
+          AutoM8 by OSLabs · gratuito e open source
         </div>
 
-        <h1 class="max-w-3xl text-5xl font-black leading-tight tracking-tight text-white md:text-6xl">
-          AutoM8 - Linux Management Suite
+        <h1 class="mt-7 max-w-4xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
+          Seu Linux pronto, do seu jeito.
         </h1>
 
-        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-          Uma suíte local para atualizar, limpar, diagnosticar, configurar e preparar estações Linux com perfis inteligentes e uma CLI moderna.
+        <p class="mt-7 max-w-2xl text-xl leading-9 text-slate-300">
+          O AutoM8 automatiza instalações, configurações e tarefas do sistema para usuários Linux de todos os níveis.
+          Configure menos, produza mais e mantenha controle sobre o que será executado.
         </p>
 
-        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-          <a href="/install" class="rounded-xl bg-blue-500 px-6 py-3 text-center font-bold text-white transition hover:bg-blue-400">
+        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+          <a href="/install" class="rounded-xl bg-blue-600 px-7 py-4 text-center font-black text-white shadow-xl shadow-blue-950/40 transition hover:bg-blue-500">
             Instalar agora
           </a>
-          <a href="/docs" class="rounded-xl border border-slate-600 px-6 py-3 text-center font-bold text-slate-200 transition hover:border-blue-400 hover:text-blue-200">
-            Ver comandos
+          <a href="https://github.com/mdmjunior/autom8" target="_blank" rel="noreferrer" class="rounded-xl border border-slate-600 px-7 py-4 text-center font-black text-slate-200 transition hover:border-blue-400 hover:text-blue-200">
+            Ver no GitHub
           </a>
         </div>
 
-        <div class="mt-8 rounded-2xl border border-slate-700 bg-slate-950/60 p-4 font-mono text-sm text-blue-100">
+        <div class="mt-8 rounded-2xl border border-slate-700 bg-slate-950/70 p-4 font-mono text-sm text-blue-100">
           curl -fsSL https://autom8.oslabs.com.br/install.sh | bash
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3 text-sm font-bold text-slate-300">
+          {['Linux desktop', 'CLI moderna', 'Perfis YAML', 'Scripts auditáveis'].map((item) => (
+            <span class="rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2">{item}</span>
+          ))}
+        </div>
+      </div>
+
+      <div class="autom8-card m8-mascot rounded-3xl p-6">
+        <div class="m8-robot" aria-label="Mascote M8">
+          <div class="m8-robot__antenna"></div>
+          <div class="m8-robot__head">
+            <div class="m8-robot__visor">&gt;_</div>
+          </div>
+          <div class="m8-robot__body">8</div>
+        </div>
+
+        <div class="m8-bubble">
+          <strong>M8:</strong> escolha o que precisa. Eu preparo o caminho e você revisa antes de executar.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="px-6 py-16">
+    <div class="mx-auto max-w-7xl">
+      <div class="max-w-3xl">
+        <p class="text-sm font-black uppercase tracking-[0.22em] text-blue-300">Como funciona</p>
+        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Escolha. Revise. Execute.</h2>
+        <p class="mt-4 text-lg leading-8 text-slate-400">
+          O AutoM8 foi pensado para automatizar sem esconder o processo. O usuário mantém controle sobre as ações,
+          entende o que será feito e ganha tempo nas tarefas repetitivas.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        {highlights.map((item, index) => (
+          <article class="autom8-card rounded-2xl p-7">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/10 text-lg font-black text-blue-200">
+              {index + 1}
+            </div>
+            <h3 class="mt-5 text-2xl font-black text-white">{item.title}</h3>
+            <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="recursos" class="px-6 py-16">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <p class="text-sm font-black uppercase tracking-[0.22em] text-green-300">Recursos</p>
+          <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Módulos principais</h2>
+          <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-400">
+            A base atual já cobre tarefas essenciais e prepara o caminho para apps, perfis e automações mais completas.
+          </p>
+        </div>
+        <a href="/modules" class="text-sm font-black text-blue-300 hover:text-blue-200">
+          Ver todos os módulos
+        </a>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {modules.slice(0, 6).map((item) => (
+          <article class="autom8-card rounded-2xl p-6 transition hover:border-blue-400/40">
+            <div class="mb-5 inline-flex rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-1 font-mono text-xs font-bold text-green-300">
+              autom8 {item.slug}
+            </div>
+            <h3 class="text-xl font-black text-white">{item.name}</h3>
+            <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="seguranca" class="px-6 py-16">
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="autom8-card rounded-3xl p-7">
+        <p class="text-sm font-black uppercase tracking-[0.22em] text-amber-300">Segurança e transparência</p>
+        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Automação com controle.</h2>
+        <p class="mt-5 text-lg leading-8 text-slate-400">
+          O AutoM8 não foi criado para esconder comandos ou incentivar execução cega. A proposta é organizar tarefas,
+          reduzir repetição e manter o usuário consciente sobre cada ação.
+        </p>
+
+        <div class="mt-7 grid gap-3">
+          {trustItems.map((item) => (
+            <div class="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-slate-300">
+              <span class="h-2.5 w-2.5 rounded-full bg-green-400 shadow-lg shadow-green-500/40"></span>
+              <span class="font-semibold">{item}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -40,40 +168,36 @@ import modules from '../data/modules.json';
           <span class="h-3 w-3 rounded-full bg-green-400"></span>
         </div>
 
-        <p class="terminal-line text-slate-200">autom8 diagnose</p>
-        <p class="terminal-output mt-2">Gerando relatório do sistema...</p>
-        <p class="terminal-output">Docker: ativo · Firewall: ativo · Updates: 12</p>
+        <p class="terminal-line text-slate-200">autom8 doctor</p>
+        <p class="terminal-output mt-2">Validando instalação, PATH, permissões, logs e estrutura...</p>
+        <p class="terminal-output">Status: pronto para uso</p>
 
         <p class="terminal-line mt-6 text-slate-200">autom8 clean --dry-run</p>
         <p class="terminal-output mt-2">Simulando limpeza segura...</p>
-        <p class="terminal-output">Caches protegidos: browsers, projetos e arquivos recentes</p>
+        <p class="terminal-output">Nenhum arquivo pessoal será removido sem revisão.</p>
+
+        <p class="terminal-line mt-6 text-slate-200">autom8 diagnose</p>
+        <p class="terminal-output mt-2">Gerando relatório local do sistema...</p>
+        <p class="terminal-output">Docker: ativo · Firewall: ativo · Updates: 12</p>
 
         <p class="terminal-line mt-6 text-slate-200">autom8 profiles</p>
-        <p class="terminal-output mt-2">Perfis disponíveis: DevOps, Desenvolvedor, Gamer, Designer...</p>
+        <p class="terminal-output mt-2">Perfis disponíveis: Desenvolvedor, DevOps, Gamer, Designer...</p>
       </div>
     </div>
   </section>
 
   <section class="px-6 py-16">
-    <div class="mx-auto max-w-7xl">
-      <div class="mb-10 flex items-end justify-between gap-6">
-        <div>
-          <h2 class="text-3xl font-black text-white">Módulos principais</h2>
-          <p class="mt-3 max-w-2xl text-slate-400">
-            A v0.1.0 começa com base sólida e evolui para uma suíte completa.
-          </p>
-        </div>
-        <a href="/modules" class="hidden text-sm font-bold text-blue-300 hover:text-blue-200 md:block">
-          Ver todos
-        </a>
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2">
+      <div>
+        <p class="text-sm font-black uppercase tracking-[0.22em] text-blue-300">Para quem é</p>
+        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Do iniciante ao usuário avançado.</h2>
       </div>
 
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {modules.slice(0, 6).map((item) => (
-          <article class="rounded-2xl border border-slate-700/80 bg-slate-900/50 p-6">
-            <h3 class="text-xl font-bold text-white">{item.name}</h3>
-            <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
-          </article>
+      <div class="grid gap-4">
+        {audiences.map((item) => (
+          <div class="autom8-card rounded-2xl p-5 text-lg leading-8 text-slate-300">
+            {item}
+          </div>
         ))}
       </div>
     </div>
@@ -81,11 +205,43 @@ import modules from '../data/modules.json';
 
   <section class="px-6 py-16">
     <div class="mx-auto max-w-7xl rounded-3xl border border-blue-400/20 bg-blue-500/10 p-8 md:p-12">
-      <h2 class="text-3xl font-black text-white">Distros oficialmente planejadas</h2>
-      <div class="mt-6 flex flex-wrap gap-3 text-sm font-bold text-blue-100">
-        {['Ubuntu', 'Debian', 'Fedora', 'Rocky Linux', 'AlmaLinux', 'openSUSE', 'Arch Linux', 'Manjaro'].map((distro) => (
-          <span class="rounded-full border border-blue-300/30 bg-slate-950/40 px-4 py-2">{distro}</span>
-        ))}
+      <div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+        <div>
+          <p class="text-sm font-black uppercase tracking-[0.22em] text-blue-200">Criador</p>
+          <h2 class="mt-3 text-4xl font-black tracking-tight text-white">
+            Criado por Marcio Moreira Junior na OSLabs.
+          </h2>
+          <p class="mt-5 max-w-3xl text-lg leading-8 text-blue-100/80">
+            O AutoM8 nasce como uma ferramenta gratuita para a comunidade Linux, unindo simplicidade para iniciantes,
+            transparência para usuários avançados e uma experiência moderna de automação.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-700 bg-slate-950/50 p-6">
+          <p class="font-mono text-sm text-green-300">AutoM8 by OSLabs</p>
+          <p class="mt-3 text-2xl font-black text-white">Automação Linux para todos.</p>
+          <p class="mt-3 leading-7 text-slate-400">Configure menos. Produza mais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="text-4xl font-black tracking-tight text-white md:text-5xl">
+        Pronto para automatizar seu Linux?
+      </h2>
+      <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-400">
+        Instale o AutoM8, revise as ações e comece a transformar tarefas repetitivas em automações claras.
+      </p>
+
+      <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+        <a href="/install" class="rounded-xl bg-blue-600 px-7 py-4 text-center font-black text-white shadow-xl shadow-blue-950/40 transition hover:bg-blue-500">
+          Instalar AutoM8
+        </a>
+        <a href="/roadmap" class="rounded-xl border border-slate-600 px-7 py-4 text-center font-black text-slate-200 transition hover:border-blue-400 hover:text-blue-200">
+          Ver roadmap
+        </a>
       </div>
     </div>
   </section>
