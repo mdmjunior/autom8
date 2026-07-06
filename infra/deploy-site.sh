@@ -14,11 +14,6 @@ echo "Sincronizando install.sh público..."
 cp installer/install.sh site/public/install.sh
 chmod +x site/public/install.sh
 
-echo "Gerando package-lock se necessário..."
-cd site
-npm install
-cd ..
-
 echo "Construindo imagem Docker..."
 docker build -t autom8-site:latest ./site
 
