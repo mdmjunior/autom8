@@ -2,17 +2,17 @@
 import '../styles/global.css';
 
 const {
-  title = 'AutoM8 - Linux Management Suite',
-  description = 'Suíte local de gerenciamento Linux da OSLabs.'
+  title = 'AutoM8 · Automação Linux para todos',
+  description = 'AutoM8 é uma suíte gratuita e open source para automatizar instalações, configurações e tarefas no Linux desktop.'
 } = Astro.props;
 
 const nav = [
   ['Início', '/'],
-  ['Módulos', '/modules'],
-  ['Perfis', '/profiles'],
+  ['Como funciona', '/#como-funciona'],
+  ['Recursos', '/#recursos'],
+  ['Segurança', '/#seguranca'],
   ['Docs', '/docs'],
   ['Roadmap', '/roadmap'],
-  ['Changelog', '/changelog'],
   ['GitHub', 'https://github.com/mdmjunior/autom8'],
   ['Instalar', '/install']
 ];
@@ -24,26 +24,35 @@ const nav = [
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0B1220" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <title>{title}</title>
   </head>
   <body>
-    <header class="sticky top-0 z-40 border-b border-slate-700/60 bg-slate-950/70 backdrop-blur">
+    <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="/" class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/40 bg-blue-500/10 font-black text-blue-300">
-            A8
+        <a href="/" class="group flex items-center gap-3" aria-label="AutoM8">
+          <div class="brand-mark" aria-hidden="true">
+            <span class="brand-mark__eyes">&gt;_</span>
+            <span class="brand-mark__eight">8</span>
           </div>
           <div>
-            <div class="font-bold tracking-tight">AutoM8</div>
-            <div class="text-xs text-slate-400">Linux Management Suite</div>
+            <div class="text-lg font-black tracking-tight text-white">
+              Auto<span class="text-blue-400">M8</span>
+            </div>
+            <div class="text-xs font-medium text-slate-400">by OSLabs</div>
           </div>
         </a>
 
-        <nav class="hidden items-center gap-5 text-sm text-slate-300 lg:flex">
+        <nav class="hidden items-center gap-5 text-sm font-semibold text-slate-300 lg:flex">
           {nav.map(([label, href]) => (
             <a
               href={href}
-              class="transition hover:text-blue-300"
+              class={label === 'Instalar'
+                ? 'rounded-xl bg-blue-600 px-4 py-2 text-white shadow-lg shadow-blue-950/40 transition hover:bg-blue-500'
+                : 'transition hover:text-blue-300'}
               target={href.startsWith('http') ? '_blank' : undefined}
               rel={href.startsWith('http') ? 'noreferrer' : undefined}
             >
@@ -59,8 +68,11 @@ const nav = [
     </main>
 
     <footer class="border-t border-slate-800 px-6 py-10 text-center text-sm text-slate-500">
-      <p>AutoM8 - Linux Management Suite · OSLabs</p>
-      <p class="mt-2">Ferramenta local para Linux. Poderosa, modular e segura por padrão.</p>
+      <div class="mx-auto max-w-7xl">
+        <p class="font-semibold text-slate-300">AutoM8 by OSLabs</p>
+        <p class="mt-2">Criado por Marcio Moreira Junior para a comunidade Linux.</p>
+        <p class="mt-2 text-slate-600">Automação Linux para todos. Configure menos. Produza mais.</p>
+      </div>
     </footer>
   </body>
 </html>
