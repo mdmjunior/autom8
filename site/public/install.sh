@@ -25,6 +25,30 @@ require_not_root() {
   fi
 }
 
+require_sudo() {
+  if ! command -v sudo >/dev/null 2>&1; then
+    error "sudo não está instalado. Instale sudo manualmente antes de continuar."
+    exit 1
+  fi
+
+  if ! sudo -v; then
+    error "O usuário atual não conseguiu autenticar com sudo."
+    exit 1
+  fi
+}
+
+detect_os() {
+  AUTOM8_OS_ID="unknown"
+  AUTOM8_OS_NAME="unknown"
+
+  if [[ -f /etc/os-release ]]; then
+    # shellcheck source=/dev/null
+    source /etc/os-release
+    AUTOM8_OS_ID="${ID:-unknown}"
+    AUTOM8_OS_NAME="${PRETTY_NAME:-${NAME:-unknown}}"
+  fi
+}
+
 detect_pm() {
   if command -v apt >/dev/null 2>&1; then
     echo "apt"
@@ -39,43 +63,237 @@ detect_pm() {
   fi
 }
 
-install_deps() {
+install_common_deps_apt() {
+  sudo apt update
+  sudo apt install -y \
+    ca-certificates \
+    curl \
+    tar \
+    gzip \
+    coreutils \
+    findutils \
+    gawk \
+    sed \
+    grep \
+    util-linux \
+    procps \
+    iproute2 \
+    sudo \
+    jq \
+    rsync \
+    lsof \
+    nmap \
+    gnupg
+}
+
+install_common_deps_dnf() {
+  sudo dnf install -y \
+    ca-certificates \
+    curl \
+    tar \
+    gzip \
+    coreutils \
+    findutils \
+    gawk \
+    sed \
+    grep \
+    util-linux \
+    procps-ng \
+    iproute \
+    sudo \
+    jq \
+    rsync \
+    lsof \
+    nmap
+}
+
+install_common_deps_zypper() {
+  sudo zypper refresh
+  sudo zypper install -y \
+    ca-certificates \
+    curl \
+    tar \
+    gzip \
+    coreutils \
+    findutils \
+    gawk \
+    sed \
+    grep \
+    util-linux \
+    procps \
+    iproute2 \
+    sudo \
+    jq \
+    rsync \
+    lsof \
+    nmap
+}
+
+install_common_deps_pacman() {
+  sudo pacman -Sy --needed --noconfirm \
+    ca-certificates \
+    curl \
+    tar \
+    gzip \
+    coreutils \
+    findutils \
+    gawk \
+    sed \
+    grep \
+    util-linux \
+    procps-ng \
+    iproute2 \
+    sudo \
+    jq \
+    rsync \
+    lsof \
+    nmap
+}
+
+install_common_deps() {
   local pm="$1"
 
-  info "Instalando dependências essenciais..."
+  info "Instalando dependências obrigatórias para $AUTOM8_OS_NAME..."
 
   case "$pm" in
     apt)
-      sudo apt update
-      sudo apt install -y curl tar gzip coreutils findutils gawk sed grep util-linux procps iproute2 sudo
-      if ! command -v gum >/dev/null 2>&1; then
-        warn "gum não encontrado nos repositórios padrão. O AutoM8 funcionará com fallback simples."
-      fi
+      install_common_deps_apt
       ;;
     dnf)
-      sudo dnf install -y curl tar gzip coreutils findutils gawk sed grep util-linux procps-ng iproute sudo
-      if ! command -v gum >/dev/null 2>&1; then
-        sudo dnf install -y gum || warn "Não foi possível instalar gum. O AutoM8 usará fallback simples."
-      fi
+      install_common_deps_dnf
       ;;
     zypper)
-      sudo zypper refresh
-      sudo zypper install -y curl tar gzip coreutils findutils gawk sed grep util-linux procps iproute2 sudo
-      if ! command -v gum >/dev/null 2>&1; then
-        sudo zypper install -y gum || warn "Não foi possível instalar gum. O AutoM8 usará fallback simples."
-      fi
+      install_common_deps_zypper
       ;;
     pacman)
-      sudo pacman -Sy --needed --noconfirm curl tar gzip coreutils findutils gawk sed grep util-linux procps-ng iproute2 sudo
-      if ! command -v gum >/dev/null 2>&1; then
-        sudo pacman -S --needed --noconfirm gum || warn "Não foi possível instalar gum. O AutoM8 usará fallback simples."
-      fi
+      install_common_deps_pacman
       ;;
     *)
       error "Gerenciador de pacotes não reconhecido."
       exit 1
       ;;
   esac
+}
+
+install_gum_apt() {
+  sudo mkdir -p /etc/apt/keyrings
+
+  if [[ ! -f /etc/apt/keyrings/charm.gpg ]]; then
+    curl -fsSL https://repo.charm.sh/apt/gpg.key \
+      | sudo gpg --dearmor --yes -o /etc/apt/keyrings/charm.gpg
+  fi
+
+  echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" \
+    | sudo tee /etc/apt/sources.list.d/charm.list >/dev/null
+
+  sudo apt update
+  sudo apt install -y gum
+}
+
+install_gum_dnf() {
+  if sudo dnf install -y gum; then
+    return 0
+  fi
+
+  warn "gum não foi encontrado no repositório atual. Habilitando repositório Charm."
+
+  cat <<'EOF_REPO' | sudo tee /etc/yum.repos.d/charm.repo >/dev/null
+[charm]
+name=Charm
+baseurl=https://repo.charm.sh/yum/
+enabled=1
+gpgcheck=1
+gpgkey=https://repo.charm.sh/yum/gpg.key
+EOF_REPO
+
+  sudo rpm --import https://repo.charm.sh/yum/gpg.key
+  sudo dnf install -y gum
+}
+
+install_gum_zypper() {
+  if sudo zypper install -y gum; then
+    return 0
+  fi
+
+  warn "gum não foi encontrado no repositório atual. Habilitando repositório Charm."
+
+  sudo rpm --import https://repo.charm.sh/yum/gpg.key
+  sudo zypper addrepo -f https://repo.charm.sh/yum/ charm || true
+  sudo zypper refresh
+  sudo zypper install -y gum
+}
+
+install_gum_pacman() {
+  sudo pacman -Sy --needed --noconfirm gum
+}
+
+install_gum() {
+  local pm="$1"
+
+  if command -v gum >/dev/null 2>&1; then
+    info "gum já está instalado."
+    return 0
+  fi
+
+  info "Instalando gum para interface interativa."
+
+  case "$pm" in
+    apt)
+      install_gum_apt
+      ;;
+    dnf)
+      install_gum_dnf
+      ;;
+    zypper)
+      install_gum_zypper
+      ;;
+    pacman)
+      install_gum_pacman
+      ;;
+    *)
+      error "Não foi possível instalar gum: gerenciador desconhecido."
+      exit 1
+      ;;
+  esac
+}
+
+verify_required_commands() {
+  info "Validando dependências instaladas..."
+
+  local missing=0
+  local required_commands=(
+    bash
+    awk
+    sed
+    grep
+    find
+    tar
+    gzip
+    curl
+    sudo
+    jq
+    rsync
+    lsof
+    nmap
+    ip
+    ss
+    gum
+  )
+
+  for cmd in "${required_commands[@]}"; do
+    if command -v "$cmd" >/dev/null 2>&1; then
+      printf '  [OK] %s\n' "$cmd"
+    else
+      printf '  [FALHA] %s\n' "$cmd"
+      missing=$((missing + 1))
+    fi
+  done
+
+  if [[ "$missing" -gt 0 ]]; then
+    error "Existem $missing dependência(s) obrigatória(s) ausente(s)."
+    error "A instalação foi interrompida para evitar uma instalação incompleta."
+    exit 1
+  fi
 }
 
 ask_scope() {
@@ -110,8 +328,18 @@ install_package() {
     sudo cp "$AUTOM8_INSTALL_DIR/config/autom8.conf.example" "$AUTOM8_INSTALL_DIR/config/autom8.conf"
   fi
 
-  sudo mkdir -p "$AUTOM8_INSTALL_DIR/logs" "$AUTOM8_INSTALL_DIR/backups" "$AUTOM8_INSTALL_DIR/reports" "$AUTOM8_INSTALL_DIR/tmp"
-  sudo chown -R "$USER:$USER" "$AUTOM8_INSTALL_DIR/logs" "$AUTOM8_INSTALL_DIR/backups" "$AUTOM8_INSTALL_DIR/reports" "$AUTOM8_INSTALL_DIR/tmp" "$AUTOM8_INSTALL_DIR/config"
+  sudo mkdir -p \
+    "$AUTOM8_INSTALL_DIR/logs" \
+    "$AUTOM8_INSTALL_DIR/backups" \
+    "$AUTOM8_INSTALL_DIR/reports" \
+    "$AUTOM8_INSTALL_DIR/tmp"
+
+  sudo chown -R "$USER:$USER" \
+    "$AUTOM8_INSTALL_DIR/logs" \
+    "$AUTOM8_INSTALL_DIR/backups" \
+    "$AUTOM8_INSTALL_DIR/reports" \
+    "$AUTOM8_INSTALL_DIR/tmp" \
+    "$AUTOM8_INSTALL_DIR/config"
 
   rm -rf "$tmp_dir"
 }
@@ -122,6 +350,8 @@ add_path_user() {
   if [[ -n "${ZSH_VERSION:-}" || "${SHELL:-}" == *"zsh"* ]]; then
     shell_file="$HOME/.zshrc"
   fi
+
+  touch "$shell_file"
 
   if ! grep -q "/opt/autom8/bin" "$shell_file" 2>/dev/null; then
     {
@@ -143,17 +373,35 @@ add_path_global() {
   info "PATH global criado em: $profile_file"
 }
 
+run_post_install_check() {
+  info "Executando validação pós-instalação..."
+
+  if [[ ! -x "$AUTOM8_INSTALL_DIR/bin/autom8" ]]; then
+    error "Executável não encontrado ou sem permissão: $AUTOM8_INSTALL_DIR/bin/autom8"
+    exit 1
+  fi
+
+  "$AUTOM8_INSTALL_DIR/bin/autom8" --version
+  "$AUTOM8_INSTALL_DIR/bin/autom8" doctor || {
+    warn "O doctor encontrou avisos/falhas. Revise a saída acima."
+  }
+}
+
 main() {
   require_not_root
-
-  info "Iniciando instalação do AutoM8 - Linux Management Suite"
+  require_sudo
+  detect_os
 
   local pm
   pm="$(detect_pm)"
 
+  info "Iniciando instalação do AutoM8 - Linux Management Suite"
+  info "Sistema detectado: $AUTOM8_OS_NAME"
   info "Gerenciador detectado: $pm"
 
-  install_deps "$pm"
+  install_common_deps "$pm"
+  install_gum "$pm"
+  verify_required_commands
   install_package
 
   local scope
@@ -164,6 +412,8 @@ main() {
   else
     add_path_user
   fi
+
+  run_post_install_check
 
   echo
   info "Instalação concluída."
