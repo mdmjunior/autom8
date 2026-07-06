@@ -25,6 +25,7 @@ const nav = [
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0B1220" />
+    <link rel="icon" type="image/svg+xml" href="/branding/favicon.svg" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -35,17 +36,11 @@ const nav = [
     <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a href="/" class="group flex items-center gap-3" aria-label="AutoM8">
-          <div class="brand-mark" aria-hidden="true">
-            <span class="brand-mark__eyes">&gt;_</span>
-            <span class="brand-mark__eight">8</span>
-          </div>
-
-          <div>
-            <div class="text-lg font-black tracking-tight text-white">
-              Auto<span class="text-blue-400">M8</span>
-            </div>
-            <div class="text-xs font-medium text-slate-400">by OSLabs</div>
-          </div>
+          <img
+            src="/branding/logo-autom8-horizontal.svg"
+            alt="AutoM8 by OSLabs"
+            class="h-12 w-auto max-w-[220px]"
+          />
         </a>
 
         <nav class="hidden items-center gap-5 text-sm font-semibold text-slate-300 lg:flex">
