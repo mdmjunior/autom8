@@ -2,20 +2,21 @@ services:
   autom8_site:
     image: autom8-site:latest
     networks:
-      - traefik_public
+      - groomix-public
     deploy:
       replicas: 1
       restart_policy:
         condition: any
       labels:
         - "traefik.enable=true"
-        - "traefik.docker.network=traefik_public"
+        - "traefik.docker.network=groomix-public"
         - "traefik.http.routers.autom8.rule=Host(`autom8.oslabs.com.br`)"
         - "traefik.http.routers.autom8.entrypoints=websecure"
         - "traefik.http.routers.autom8.tls=true"
         - "traefik.http.routers.autom8.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.autom8.service=autom8"
         - "traefik.http.services.autom8.loadbalancer.server.port=80"
 
 networks:
-  traefik_public:
+  groomix-public:
     external: true
