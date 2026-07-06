@@ -68,4 +68,8 @@ https://autom8.oslabs.com.br
 
 ## Status
 
-Versão inicial em desenvolvimento: 0.1.0.
+Versão inicial publicada: 0.1.0.
+
+## Versão atual
+
+0.1.0 publicada em 2026-07-06.
