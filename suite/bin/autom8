@@ -21,6 +21,8 @@ source "$AUTOM8_ROOT/core/summary.sh"
 # shellcheck source=/dev/null
 source "$AUTOM8_ROOT/modules/diagnose.sh"
 # shellcheck source=/dev/null
+source "$AUTOM8_ROOT/modules/doctor.sh"
+# shellcheck source=/dev/null
 source "$AUTOM8_ROOT/modules/update.sh"
 # shellcheck source=/dev/null
 source "$AUTOM8_ROOT/modules/clean.sh"
@@ -58,6 +60,7 @@ Uso:
   autom8 profiles
   autom8 backup
   autom8 diagnose
+  autom8 doctor
   autom8 security
   autom8 docker
   autom8 users
@@ -126,6 +129,7 @@ autom8_menu() {
       "Perfis" \
       "Backup" \
       "Diagnóstico" \
+      "Doctor" \
       "Segurança" \
       "Docker" \
       "Usuários" \
@@ -142,6 +146,7 @@ autom8_menu() {
       "Perfis") autom8_module_profiles ;;
       "Backup") autom8_module_backup ;;
       "Diagnóstico") autom8_module_diagnose ;;
+      "Doctor") autom8_module_doctor ;;
       "Segurança") autom8_module_security ;;
       "Docker") autom8_module_docker ;;
       "Usuários") autom8_module_users ;;
@@ -222,6 +227,9 @@ main() {
       ;;
     diagnose)
       autom8_module_diagnose
+      ;;
+    doctor)
+      autom8_module_doctor
       ;;
     security)
       autom8_module_security

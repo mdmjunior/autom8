@@ -6,7 +6,10 @@
       "Estrutura inicial da suíte AutoM8.",
       "Primeiro instalador local e remoto.",
       "Primeiro site oficial.",
-      "Módulos iniciais de diagnóstico, update e limpeza segura."
+      "Módulos iniciais de diagnóstico, update e limpeza segura.",
+      "Adicionado comando autom8 doctor.",
+      "Melhorado comportamento do autom8 clean --dry-run para simulação sem remoção.",
+      "Ajustado deploy da VPS para não depender de npm instalado no host."
     ]
   }
 ]

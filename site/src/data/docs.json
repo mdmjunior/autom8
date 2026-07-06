@@ -20,6 +20,10 @@
     "description": "Gera relatório local de diagnóstico."
   },
   {
+    "command": "autom8 doctor",
+    "description": "Valida instalação, estrutura, permissões, comandos obrigatórios, PATH, logs e relatórios."
+  },
+  {
     "command": "autom8 security",
     "description": "Executa checagens básicas de segurança."
   },
