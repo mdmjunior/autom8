@@ -88,8 +88,16 @@ else
     --notes "Release estável do AutoM8 ${VERSION}."
 fi
 
+log "Validando release publicada..."
+gh release view "$TAG" \
+  --repo "$REPO" \
+  --json tagName,name,url,isDraft,isPrerelease,publishedAt
+
 log "Validando assets publicados..."
-gh release view "$TAG" --repo "$REPO" --json tagName,name,isLatest,url
+gh release view "$TAG" \
+  --repo "$REPO" \
+  --json assets \
+  --jq '.assets[].name'
 
 log "Release estável publicada."
 log "URL estável usada pelo install.sh:"
