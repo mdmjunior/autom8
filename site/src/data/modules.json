@@ -2,46 +2,46 @@
   {
     "name": "Atualização do Sistema",
     "slug": "update",
-    "description": "Atualize repositórios, pacotes e prepare upgrades de versão da distro com confirmação e logs."
+    "description": "Atualize repositórios e pacotes com confirmação, registro em log e foco em previsibilidade."
   },
   {
     "name": "Limpeza",
     "slug": "clean",
-    "description": "Limpeza segura, avançada e agressiva com proteção para caches de navegadores e dados pessoais."
+    "description": "Remova caches e arquivos dispensáveis com modos seguros, simulação prévia e proteção contra exclusões perigosas."
   },
   {
     "name": "Apps",
     "slug": "apps",
-    "description": "Instale e remova apps por categoria usando repositórios nativos, Flatpak, Snap existente, AppImage e fontes oficiais."
+    "description": "Prepare a instalação e remoção de aplicativos por categorias, usando fontes adequadas para cada distribuição."
   },
   {
     "name": "Perfis",
     "slug": "profiles",
-    "description": "Aplique perfis como Desenvolvedor, DevOps, Gamer, Designer e Servidor/VPS em modo seguro ou completo."
+    "description": "Aplique conjuntos de ferramentas para usos como desenvolvimento, DevOps, design, jogos, administração e servidores."
   },
   {
     "name": "Backup",
     "slug": "backup",
-    "description": "Gere backups simples em tar.gz e preserve configurações críticas antes de alterações sensíveis."
+    "description": "Crie cópias simples de configurações e arquivos importantes antes de operações sensíveis."
   },
   {
     "name": "Diagnóstico",
     "slug": "diagnose",
-    "description": "Crie relatórios locais com sistema, kernel, hardware, rede, Docker, firewall, usuários e serviços."
+    "description": "Gere relatórios locais com informações de sistema, hardware, rede, Docker, firewall, usuários e serviços."
   },
   {
     "name": "Segurança",
     "slug": "security",
-    "description": "Verifique firewall, portas abertas, SSH, usuários administrativos, updates pendentes e serviços expostos."
+    "description": "Revise portas abertas, firewall, SSH, usuários administrativos, atualizações pendentes e serviços expostos."
   },
   {
     "name": "Docker",
     "slug": "docker",
-    "description": "Verifique containers, imagens, volumes, consumo e faça limpezas com confirmação."
+    "description": "Consulte containers, imagens, volumes e consumo para manter ambientes Docker mais fáceis de revisar."
   },
   {
     "name": "Usuários",
     "slug": "users",
-    "description": "Liste usuários com login permitido, diretórios home, shells, grupos e permissões administrativas."
+    "description": "Liste usuários com login permitido, shells, diretórios home, grupos e permissões administrativas."
   }
 ]
