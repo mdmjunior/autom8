@@ -117,11 +117,6 @@ const moduleIcons = {
   users: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.31 0-6 1.79-6 4v1h12v-1c0-2.21-2.69-4-6-4Zm8-1a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm0 2a5.8 5.8 0 0 0-2.2.43A4.57 4.57 0 0 1 17 19h4v-1c0-1.66-1.79-3-4-3Z"/></svg>`
 };
 
-const productStats = [
-  { label: 'CLI local', value: '100%' },
-  { label: 'Open source', value: 'MIT' },
-  { label: 'Versão atual', value: '0.1.0' }
-];
 ---
 
 <BaseLayout>
@@ -133,7 +128,7 @@ const productStats = [
         </h1>
 
         <p class="mt-7 max-w-2xl text-xl leading-9 text-slate-300">
-          Uma CLI local para instalar, diagnosticar, limpar e preparar ambientes Linux com comandos claros, seguros e auditáveis.
+          Uma ferramenta local para instalar, diagnosticar, limpar e preparar ambientes Linux com comandos claros, seguros e auditáveis.
         </p>
 
         <div class="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -145,14 +140,6 @@ const productStats = [
           </a>
         </div>
 
-        <div class="mt-8 grid gap-3 sm:grid-cols-3">
-          {productStats.map((item) => (
-            <div class="product-stat">
-              <strong>{item.value}</strong>
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
       <div class="product-console-shell">
@@ -175,18 +162,6 @@ const productStats = [
     </div>
   </section>
 
-  <section class="px-6 py-10">
-    <div class="mx-auto max-w-7xl">
-      <div class="platform-strip">
-        {distros.map((distro) => (
-          <div class="platform-pill">
-            <img src={`/branding/distros/${distro.slug}.svg`} alt={`Ícone ${distro.name}`} />
-            <span>{distro.name}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <section class="px-6 py-16">
     <div class="mx-auto max-w-7xl">
