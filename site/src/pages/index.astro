@@ -2,39 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
 
-const highlights = [
-  {
-    title: 'Escolha',
-    description: 'Selecione módulos, perfis ou ações do sistema conforme o que você precisa preparar.',
-    icon: '01'
-  },
-  {
-    title: 'Revise',
-    description: 'Veja comandos, modo seguro e impactos antes de aplicar qualquer alteração no seu Linux.',
-    icon: '02'
-  },
-  {
-    title: 'Execute',
-    description: 'Automatize tarefas repetitivas com logs, relatórios e controle em cada etapa.',
-    icon: '03'
-  }
-];
 
-const audiences = [
-  'Usuários iniciantes que querem configurar o Linux sem complicação.',
-  'Usuários intermediários que desejam economizar tempo em tarefas repetitivas.',
-  'Desenvolvedores que precisam preparar ambientes de trabalho com rapidez.',
-  'Administradores e usuários avançados que valorizam automações auditáveis.'
-];
 
-const trustItems = [
-  'Gratuito e open source',
-  'Execução local',
-  'Scripts claros',
-  'Instalação com usuário comum e sudo',
-  'Diagnóstico e logs',
-  'Roadmap público'
-];
 
 const terminalSessions = [
   {
@@ -169,19 +138,8 @@ const moduleIcons = {
         <p class="section-eyebrow text-blue-300">Como funciona</p>
         <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Escolha. Revise. Execute.</h2>
         <p class="mt-4 text-lg leading-8 text-slate-400">
-          O AutoM8 foi pensado para automatizar sem esconder o processo. O usuário mantém controle sobre as ações,
-          entende o que será feito e ganha tempo nas tarefas repetitivas.
+          O AutoM8 automatiza o que é repetitivo sem esconder o processo. Você entende o que será executado antes de aplicar.
         </p>
-      </div>
-
-      <div class="mt-10 grid gap-5 md:grid-cols-3">
-        {highlights.map((item) => (
-          <article class="modern-step-card">
-            <div class="step-number">{item.icon}</div>
-            <h3 class="mt-5 text-2xl font-black text-white">{item.title}</h3>
-            <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
-          </article>
-        ))}
       </div>
     </div>
   </section>
@@ -219,78 +177,31 @@ const moduleIcons = {
   </section>
 
   <section class="px-6 py-16">
-    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-      <div class="modern-security-card">
-        <p class="section-eyebrow text-amber-300">Segurança e transparência</p>
-        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Automação com controle.</h2>
-        <p class="mt-5 text-lg leading-8 text-slate-400">
-          O AutoM8 não foi criado para esconder comandos ou incentivar execução cega. A proposta é organizar tarefas,
-          reduzir repetição e manter o usuário consciente sobre cada ação.
-        </p>
-
-        <div class="mt-7 grid gap-3">
-          {trustItems.map((item) => (
-            <div class="trust-row">
-              <span></span>
-              <strong>{item}</strong>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div class="modern-terminal-panel">
-        <div class="terminal-mini-header">
-          <span>safe-run preview</span>
-          <strong>autom8 clean --dry-run</strong>
-        </div>
-
-        <pre><code>Simulação de limpeza segura
-Nada será removido neste modo.
-
-Gerenciador de pacotes detectado: apt
-Ações simuladas:
-- apt clean
-- apt autoremove -y
-
-Flatpak não encontrado.
-Snap não encontrado.
-Simulação de limpeza segura concluída</code></pre>
-      </div>
+    <div class="mx-auto max-w-7xl">
+      <p class="section-eyebrow text-amber-300">Segurança e transparência</p>
+      <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Automação com controle.</h2>
+      <p class="mt-5 max-w-4xl text-lg leading-8 text-slate-400">
+        O AutoM8 foi feito para evitar execução cega. A proposta é organizar tarefas, reduzir repetição e manter o usuário consciente.
+      </p>
     </div>
   </section>
 
   <section class="px-6 py-16">
-    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2">
-      <div>
-        <p class="section-eyebrow text-blue-300">Para quem é</p>
-        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Do iniciante ao usuário avançado.</h2>
-        <p class="mt-4 max-w-xl text-lg leading-8 text-slate-400">
-          Uma suíte para quem quer usar Linux com menos fricção, mantendo visibilidade sobre o que está acontecendo.
-        </p>
-      </div>
-
-      <div class="grid gap-4">
-        {audiences.map((item) => (
-          <div class="audience-card">
-            {item}
-          </div>
-        ))}
-      </div>
+    <div class="mx-auto max-w-7xl">
+      <p class="section-eyebrow text-blue-300">Para quem é</p>
+      <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Do iniciante ao usuário avançado.</h2>
+      <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-400">
+        Uma suíte para quem quer usar Linux com menos fricção e mais visibilidade.
+      </p>
     </div>
   </section>
 
 
   <section class="px-6 py-16">
     <div class="mx-auto max-w-7xl">
-      <div class="mb-8 max-w-3xl">
-        <p class="section-eyebrow text-cyan-300">Compatibilidade</p>
-        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Distros planejadas</h2>
-        <p class="mt-4 text-lg leading-8 text-slate-400">
-          A visão do AutoM8 é atender as principais famílias Linux com uma experiência consistente e segura.
-        </p>
-      </div>
+      <p class="section-eyebrow text-cyan-300">Compatibilidade</p>
 
-      <div class="distro-grid">
+      <div class="mt-8 distro-grid">
         {distros.map((distro) => (
           <article class="distro-card">
             <img src={`/branding/distros/${distro.slug}.svg`} alt={`Ícone ${distro.name}`} />
