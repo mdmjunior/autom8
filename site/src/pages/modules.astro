@@ -3,20 +3,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
 ---
 
-<BaseLayout title="Módulos · AutoM8">
-  <section class="px-6 py-20">
-    <div class="mx-auto max-w-7xl">
-      <h1 class="text-4xl font-black text-white">Módulos</h1>
-      <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-        O AutoM8 é dividido em módulos para manter segurança, clareza e evolução independente.
+<BaseLayout
+  title="Módulos · AutoM8"
+  description="Conheça os módulos do AutoM8 para atualização, limpeza, apps, perfis, backup, diagnóstico, segurança, Docker e usuários."
+>
+  <section class="site-page-hero">
+    <div class="site-page-hero__inner">
+      <p class="page-eyebrow">Módulos</p>
+      <h1 class="page-title">Uma suíte modular para manter o Linux em ordem.</h1>
+      <p class="page-description">
+        Cada módulo resolve uma tarefa específica e mantém o AutoM8 simples de evoluir, testar e auditar.
       </p>
+    </div>
+  </section>
 
-      <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+  <section class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-green-300">Recursos</p>
+        <h2>Módulos disponíveis e planejados</h2>
+        <p>A base inicial cobre manutenção, diagnóstico e preparação do sistema, com evolução incremental por versão.</p>
+      </div>
+
+      <div class="autom8-content-grid autom8-content-grid--three">
         {modules.map((item) => (
-          <article class="rounded-2xl border border-slate-700/80 bg-slate-900/50 p-6">
-            <div class="mb-4 text-sm font-bold uppercase tracking-widest text-blue-300">{item.slug}</div>
-            <h2 class="text-xl font-bold text-white">{item.name}</h2>
-            <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
+          <article class="autom8-standard-card autom8-standard-card--module">
+            <div class="module-card-top">
+              <span class="autom8-card-kicker">{item.slug}</span>
+              <span class="module-command">autom8 {item.slug}</span>
+            </div>
+            <h3>{item.name}</h3>
+            <p>{item.description}</p>
           </article>
         ))}
       </div>

@@ -3,31 +3,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import docs from '../data/docs.json';
 ---
 
-<BaseLayout title="Docs · AutoM8">
-  <section class="px-6 py-20">
-    <div class="mx-auto max-w-7xl">
-      <h1 class="text-4xl font-black text-white">Documentação inicial</h1>
-      <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-        Comandos principais da primeira versão da suíte.
+<BaseLayout
+  title="Docs · AutoM8"
+  description="Documentação inicial dos comandos principais do AutoM8 para Linux desktop."
+>
+  <section class="site-page-hero">
+    <div class="site-page-hero__inner">
+      <p class="page-eyebrow">Documentação</p>
+      <h1 class="page-title">Comandos claros para tarefas reais.</h1>
+      <p class="page-description">
+        A primeira versão do AutoM8 prioriza comandos essenciais, validação local e relatórios simples para manter o usuário no controle.
       </p>
+    </div>
+  </section>
 
-      <div class="mt-10 overflow-hidden rounded-2xl border border-slate-700">
-        <table class="w-full border-collapse text-left">
-          <thead class="bg-slate-900">
+  <section class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-blue-300">Referência rápida</p>
+        <h2>Comandos principais</h2>
+        <p>Use esta tabela como ponto de partida para instalação, diagnóstico, limpeza, segurança e relatórios.</p>
+      </div>
+
+      <div class="autom8-table-card">
+        <table class="autom8-data-table">
+          <thead>
             <tr>
-              <th class="px-5 py-4 text-sm uppercase tracking-widest text-blue-300">Comando</th>
-              <th class="px-5 py-4 text-sm uppercase tracking-widest text-blue-300">Descrição</th>
+              <th>Comando</th>
+              <th>Descrição</th>
             </tr>
           </thead>
           <tbody>
             {docs.map((item) => (
-              <tr class="border-t border-slate-800 bg-slate-950/40">
-                <td class="px-5 py-4 font-mono text-sm text-blue-100">{item.command}</td>
-                <td class="px-5 py-4 text-slate-300">{item.description}</td>
+              <tr>
+                <td><code>{item.command}</code></td>
+                <td>{item.description}</td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div class="autom8-content-grid autom8-content-grid--three mt-8">
+        <article class="autom8-standard-card">
+          <span class="autom8-card-kicker">check</span>
+          <h3>Valide primeiro</h3>
+          <p>Comece por <code>autom8 doctor</code> para conferir instalação, permissões e dependências.</p>
+        </article>
+
+        <article class="autom8-standard-card">
+          <span class="autom8-card-kicker">dry</span>
+          <h3>Simule antes</h3>
+          <p>Use <code>autom8 clean --dry-run</code> para revisar ações antes de remover arquivos.</p>
+        </article>
+
+        <article class="autom8-standard-card">
+          <span class="autom8-card-kicker">logs</span>
+          <h3>Gere relatórios</h3>
+          <p>Os relatórios ficam locais e ajudam a revisar o estado da máquina com mais segurança.</p>
+        </article>
       </div>
     </div>
   </section>
