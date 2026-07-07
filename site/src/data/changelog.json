@@ -13,7 +13,7 @@
       "Primeira versão funcional publicada.",
       "Site oficial publicado em https://autom8.oslabs.com.br.",
       "Instalador público disponível em /install.sh.",
-      "Pacotes públicos disponíveis em /downloads/autom8-latest.tar.gz e /downloads/autom8-0.1.0.tar.gz."
+      "Pacotes estáveis passam a ser distribuídos por GitHub Releases."
     ],
     "status": "published"
   }

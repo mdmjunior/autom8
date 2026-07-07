@@ -12,7 +12,8 @@
       "Diagnóstico",
       "Update básico",
       "Limpeza segura",
-      "Site inicial"
+      "Site inicial",
+      "Distribuição estável via GitHub Releases"
     ]
   },
   {
@@ -48,7 +49,8 @@
       "Documentação completa",
       "Changelog versionado",
       "Instalação estável",
-      "Rollback documentado"
+      "Rollback documentado",
+      "Pipeline de release estável documentado"
     ]
   }
 ]

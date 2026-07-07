@@ -3,14 +3,20 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SUITE_DIR="$PROJECT_ROOT/suite"
-DIST_DIR="$PROJECT_ROOT/dist"
 
 VERSION="$(tr -d '[:space:]' < "$SUITE_DIR/VERSION")"
 
-mkdir -p "$DIST_DIR"
+if [[ -z "$VERSION" ]]; then
+  echo "ERRO: suite/VERSION está vazio." >&2
+  exit 1
+fi
 
-PACKAGE_VERSIONED="$DIST_DIR/autom8-${VERSION}.tar.gz"
-PACKAGE_LATEST="$DIST_DIR/autom8-latest.tar.gz"
+OUTPUT_DIR="${AUTOM8_PACKAGE_OUTPUT_DIR:-$(mktemp -d /tmp/autom8-package-${VERSION}-XXXXXX)}"
+
+mkdir -p "$OUTPUT_DIR"
+
+PACKAGE_VERSIONED="$OUTPUT_DIR/autom8-${VERSION}.tar.gz"
+PACKAGE_LATEST="$OUTPUT_DIR/autom8-latest.tar.gz"
 
 tar \
   --exclude='logs/*' \
@@ -22,13 +28,13 @@ tar \
 
 cp "$PACKAGE_VERSIONED" "$PACKAGE_LATEST"
 
-mkdir -p "$PROJECT_ROOT/site/public/downloads"
-cp "$PACKAGE_VERSIONED" "$PROJECT_ROOT/site/public/downloads/"
-cp "$PACKAGE_LATEST" "$PROJECT_ROOT/site/public/downloads/"
-
-echo "Pacotes gerados:"
+echo "Pacotes gerados temporariamente:"
 echo "$PACKAGE_VERSIONED"
 echo "$PACKAGE_LATEST"
 echo
-echo "Copiados para:"
-echo "$PROJECT_ROOT/site/public/downloads/"
+echo "Diretório temporário:"
+echo "$OUTPUT_DIR"
+echo
+echo "Observação:"
+echo "Os pacotes não são copiados para o site, VPS ou repositório local."
+echo "Use scripts/release-stable.sh para publicar no GitHub Releases."
