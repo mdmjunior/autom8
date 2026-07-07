@@ -76,8 +76,8 @@ const terminalSessions = [
     output: [
       { text: 'Diagnóstico do sistema', type: 'muted' },
       { text: '== Sistema ==', type: 'plain' },
-      { text: 'Hostname: linux-workstation', type: 'plain' },
-      { text: 'Kernel: 6.8.0-generic', type: 'plain' },
+      { text: 'Hostname: workstation', type: 'plain' },
+      { text: 'Kernel: 6.x-generic', type: 'plain' },
       { text: 'Arquitetura: x86_64', type: 'plain' },
       { text: '== Docker ==', type: 'plain' },
       { text: 'Docker version 27.x', type: 'ok' },
@@ -128,15 +128,7 @@ const productStats = [
   <section class="modern-hero px-6 py-14 md:py-20">
     <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
       <div class="hero-copy">
-        <div class="hero-brand-mark">
-          <img src="/branding/logo-autom8-icon.svg" alt="AutoM8" />
-        </div>
-
-        <div class="autom8-kicker mt-7">
-          AutoM8 by OSLabs · automação Linux moderna
-        </div>
-
-        <h1 class="mt-7 max-w-4xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
+        <h1 class="max-w-4xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
           Configure menos. Produza mais.
         </h1>
 
@@ -172,29 +164,13 @@ const productStats = [
             <span class="console-dot bg-yellow-400"></span>
             <span class="console-dot bg-green-400"></span>
           </div>
-          <span>autom8@linux:~</span>
+          <span>user@linux: ~</span>
         </div>
 
         <div class="autom8-live-terminal" data-autom8-terminal>
-          <div class="terminal-screen" data-terminal-screen>
-            <div class="live-terminal-line terminal-muted">AutoM8 terminal session ready.</div>
-          </div>
+          <div class="terminal-screen" data-terminal-screen></div>
         </div>
 
-        <div class="console-footer-grid">
-          <div>
-            <span>modo</span>
-            <strong>local</strong>
-          </div>
-          <div>
-            <span>execução</span>
-            <strong>revisável</strong>
-          </div>
-          <div>
-            <span>logs</span>
-            <strong>ativos</strong>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -373,7 +349,7 @@ Simulação de limpeza segura concluída</code></pre>
 
       const prompt = document.createElement('span');
       prompt.className = 'terminal-prompt';
-      prompt.textContent = 'marcio@linux:~$ ';
+      prompt.textContent = 'user@linux:~$ ';
 
       const typed = document.createElement('span');
       typed.className = 'terminal-typed is-typing';
@@ -397,10 +373,6 @@ Simulação de limpeza segura concluída</code></pre>
       while (true) {
         const session = sessions[index % sessions.length];
         screen.innerHTML = '';
-
-        addLine('AutoM8 Linux Management Suite', 'muted');
-        addLine('Sessão local · comandos auditáveis · modo seguro', 'note');
-        await sleep(450);
 
         await typeCommand(session.command);
         await sleep(350);

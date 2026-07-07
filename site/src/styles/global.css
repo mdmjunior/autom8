@@ -819,3 +819,65 @@ a {
 }
 
 /* === /AutoM8 refinement v1 === */
+
+/* === AutoM8 hero terminal refinement v1 === */
+
+.hero-copy {
+  align-self: center;
+}
+
+.product-console-shell {
+  border-radius: 1.35rem;
+  background: #020617;
+  box-shadow:
+    0 34px 110px rgba(2, 6, 23, 0.72),
+    inset 0 1px 0 rgba(248, 250, 252, 0.06);
+}
+
+.product-console-header {
+  background: #0f172a;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  padding: 0.85rem 1rem;
+}
+
+.autom8-live-terminal {
+  min-height: 25rem;
+  padding: 0;
+}
+
+.terminal-screen {
+  height: 25rem;
+  border: 0;
+  border-radius: 0 0 1.35rem 1.35rem;
+  background:
+    linear-gradient(rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.98)),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(248, 250, 252, 0.026),
+      rgba(248, 250, 252, 0.026) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  padding: 1.25rem;
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.terminal-command-line {
+  margin-bottom: 0.45rem;
+}
+
+.terminal-prompt {
+  color: #22c55e;
+}
+
+.terminal-typed {
+  color: #f8fafc;
+}
+
+.product-console-glow,
+.console-footer-grid {
+  display: none;
+}
+
+/* === /AutoM8 hero terminal refinement v1 === */
