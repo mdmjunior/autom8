@@ -1,0 +1,15 @@
+AutoM8 help: autom8 update
+
+Status: available
+Desde: 0.1.0
+
+Atualiza repositórios e pacotes do sistema com confirmação.
+
+Detalhes:
+- Suporta apt, dnf, zypper e pacman.
+- Bloqueia execução em distros não suportadas oficialmente.
+- Exige sudo e registra a execução em logs.
+
+Exemplos:
+  autom8 update
+  autom8 update --dry-run

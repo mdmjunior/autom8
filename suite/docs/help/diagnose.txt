@@ -1,0 +1,13 @@
+AutoM8 help: autom8 diagnose
+
+Status: available
+Desde: 0.1.0
+
+Gera diagnóstico local do sistema.
+
+Detalhes:
+- Coleta informações de sistema, kernel, CPU, memória, disco, rede, DNS, serviços, firewall, portas, Docker, usuários e sessão gráfica.
+- Gera relatório em reports/diagnostic-<data>.txt.
+
+Exemplos:
+  autom8 diagnose

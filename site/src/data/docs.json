@@ -1,50 +1,114 @@
 [
   {
     "command": "autom8",
-    "description": "Abre o menu interativo principal no terminal."
+    "description": "Abre o menu interativo principal.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "menu"
   },
   {
     "command": "autom8 --version",
-    "description": "Mostra a versão instalada do AutoM8."
+    "description": "Mostra a versão instalada.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "version"
   },
   {
     "command": "autom8 doctor",
-    "description": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios."
+    "description": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "doctor"
   },
   {
     "command": "autom8 diagnose",
-    "description": "Gera um relatório local com informações úteis sobre o sistema."
+    "description": "Gera diagnóstico local do sistema.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "diagnose"
   },
   {
     "command": "autom8 update",
-    "description": "Atualiza pacotes do sistema com confirmação e registro de execução."
+    "description": "Atualiza repositórios e pacotes do sistema com confirmação.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "update"
   },
   {
     "command": "autom8 clean",
-    "description": "Executa limpeza segura de caches e arquivos dispensáveis."
-  },
-  {
-    "command": "autom8 clean --dry-run",
-    "description": "Simula a limpeza antes de remover qualquer arquivo."
+    "description": "Executa limpeza segura de caches, temporários e arquivos antigos.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "clean"
   },
   {
     "command": "autom8 security",
-    "description": "Executa checagens básicas de segurança local."
+    "description": "Executa checagem básica de segurança local.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "security"
   },
   {
     "command": "autom8 docker",
-    "description": "Mostra status e informações de uso do Docker quando disponível."
+    "description": "Mostra informações do Docker quando disponível.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "docker"
   },
   {
     "command": "autom8 users",
-    "description": "Lista usuários locais relevantes e permissões administrativas."
+    "description": "Lista usuários locais e grupos administrativos.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "users"
+  },
+  {
+    "command": "autom8 config",
+    "description": "Permite alterar configurações básicas da suíte.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "config"
   },
   {
     "command": "autom8 report",
-    "description": "Lista relatórios gerados pelo AutoM8."
+    "description": "Lista e exporta relatórios gerados.",
+    "status": "available",
+    "since": "0.1.0",
+    "slug": "report"
+  },
+  {
+    "command": "autom8 apps",
+    "description": "Instalação e remoção de aplicativos por catálogo.",
+    "status": "planned",
+    "since": "0.2.0",
+    "slug": "apps"
+  },
+  {
+    "command": "autom8 profiles",
+    "description": "Aplicação de perfis YAML para preparar ambientes.",
+    "status": "planned",
+    "since": "0.2.0",
+    "slug": "profiles"
+  },
+  {
+    "command": "autom8 backup",
+    "description": "Backups simples antes de operações sensíveis.",
+    "status": "planned",
+    "since": "0.3.0",
+    "slug": "backup"
+  },
+  {
+    "command": "autom8 upgrade-distro",
+    "description": "Preparação futura para upgrade de versão da distro.",
+    "status": "planned",
+    "since": "future",
+    "slug": "upgrade-distro"
   },
   {
     "command": "autom8 self-update",
-    "description": "Atualiza o AutoM8 quando houver uma nova versão publicada."
+    "description": "Valida o pacote estável mais recente publicado no GitHub Releases.",
+    "status": "partial",
+    "since": "0.1.0",
+    "slug": "self-update"
   }
 ]

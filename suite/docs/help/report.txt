@@ -1,0 +1,15 @@
+AutoM8 help: autom8 report
+
+Status: available
+Desde: 0.1.0
+
+Lista e exporta relatórios gerados.
+
+Detalhes:
+- Lista arquivos em reports/.
+- Pode exportar relatórios em tar.gz pelo menu.
+- Também aceita autom8 report export para exportar logs e relatórios.
+
+Exemplos:
+  autom8 report
+  autom8 report export

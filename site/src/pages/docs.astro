@@ -1,28 +1,124 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import docs from '../data/docs.json';
+import documentation from '../data/documentation.json';
+
+const availableCommands = documentation.commands.filter((item) => item.status === 'available');
+const partialCommands = documentation.commands.filter((item) => item.status === 'partial');
+const plannedCommands = documentation.commands.filter((item) => item.status === 'planned');
+
+const statusLabel = {
+  available: 'Disponível',
+  partial: 'Parcial',
+  planned: 'Planejado'
+};
+
+const statusClass = {
+  available: 'autom8-status-badge',
+  partial: 'autom8-version-badge',
+  planned: 'autom8-card-kicker'
+};
 ---
 
 <BaseLayout
   title="Docs · AutoM8"
-  description="Documentação inicial dos comandos principais do AutoM8 para Linux desktop."
+  description="Documentação oficial do AutoM8: instalação, comandos, módulos, releases, variáveis e solução de problemas."
 >
   <section class="site-page-hero">
     <div class="site-page-hero__inner">
       <p class="page-eyebrow">Documentação</p>
-      <h1 class="page-title">Comandos claros para tarefas reais.</h1>
+      <h1 class="page-title">Documentação oficial do AutoM8.</h1>
       <p class="page-description">
-        A primeira versão do AutoM8 prioriza comandos essenciais, validação local e relatórios simples para manter o usuário no controle.
+        Instale, valide, diagnostique e mantenha ambientes Linux com comandos claros, documentação versionada e distribuição estável via GitHub Releases.
       </p>
+
+      <div class="page-actions">
+        <a href="#instalacao" class="autom8-primary-button">Instalar</a>
+        <a href="#comandos" class="autom8-secondary-button">Ver comandos</a>
+      </div>
     </div>
   </section>
 
-  <section class="site-page-section">
+  <section id="visao-geral" class="site-page-section">
     <div class="site-page-section__inner">
       <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Referência rápida</p>
-        <h2>Comandos principais</h2>
-        <p>Use esta tabela como ponto de partida para instalação, diagnóstico, limpeza, segurança e relatórios.</p>
+        <p class="section-eyebrow text-blue-300">Visão geral</p>
+        <h2>{documentation.product.fullName}</h2>
+        <p>{documentation.product.summary}</p>
+      </div>
+
+      <div class="autom8-content-grid autom8-content-grid--three">
+        <article class="autom8-standard-card">
+          <span class="autom8-card-kicker">local</span>
+          <h3>Execução local</h3>
+          <p>O AutoM8 roda na própria máquina Linux e mantém relatórios, logs e configurações dentro da instalação local.</p>
+        </article>
+
+        <article class="autom8-standard-card">
+          <span class="autom8-card-kicker">controle</span>
+          <h3>Ações revisáveis</h3>
+          <p>Comandos administrativos exigem sudo, usam confirmações quando necessário e registram ações em logs.</p>
+        </article>
+
+        <article class="autom8-standard-card">
+          <span class="autom8-card-kicker">release</span>
+          <h3>Pacote estável</h3>
+          <p>O instalador baixa a última versão estável publicada no GitHub Releases, não pacotes locais ou da VPS.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="instalacao" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-green-300">Instalação</p>
+        <h2>Instale com um comando.</h2>
+        <p>Execute com usuário comum que tenha permissão de sudo. Não execute diretamente como root.</p>
+      </div>
+
+      <div class="autom8-command-panel">
+        <div class="autom8-command-panel__header">
+          <span>terminal</span>
+          <strong>install.sh</strong>
+        </div>
+        <pre><code>{documentation.install.command}</code></pre>
+      </div>
+
+      <div class="autom8-content-grid autom8-content-grid--three mt-8">
+        {documentation.install.notes.map((note) => (
+          <article class="autom8-standard-card">
+            <span class="autom8-card-kicker">nota</span>
+            <p>{note}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="requisitos" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-blue-300">Requisitos</p>
+        <h2>Base necessária</h2>
+        <p>O instalador prepara dependências comuns, mas estes pontos ajudam a entender o ambiente esperado.</p>
+      </div>
+
+      <div class="autom8-timeline">
+        {documentation.requirements.map((item) => (
+          <article class="autom8-release-card">
+            <p>{item}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="comandos" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-green-300">CLI</p>
+        <h2>Comandos disponíveis</h2>
+        <p>Estes comandos estão disponíveis na versão atual da suíte.</p>
       </div>
 
       <div class="autom8-table-card">
@@ -30,38 +126,129 @@ import docs from '../data/docs.json';
           <thead>
             <tr>
               <th>Comando</th>
+              <th>Status</th>
               <th>Descrição</th>
             </tr>
           </thead>
           <tbody>
-            {docs.map((item) => (
+            {availableCommands.map((item) => (
               <tr>
                 <td><code>{item.command}</code></td>
-                <td>{item.description}</td>
+                <td><span class={statusClass[item.status]}>{statusLabel[item.status]}</span></td>
+                <td>{item.summary}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div class="autom8-content-grid autom8-content-grid--three mt-8">
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">check</span>
-          <h3>Valide primeiro</h3>
-          <p>Comece por <code>autom8 doctor</code> para conferir instalação, permissões e dependências.</p>
-        </article>
+      <div class="section-heading mt-12">
+        <h2>Comandos parciais e planejados</h2>
+        <p>Esses comandos já aparecem no menu ou na CLI, mas ainda não representam funcionalidade completa.</p>
+      </div>
 
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">dry</span>
-          <h3>Simule antes</h3>
-          <p>Use <code>autom8 clean --dry-run</code> para revisar ações antes de remover arquivos.</p>
-        </article>
+      <div class="autom8-content-grid autom8-content-grid--three">
+        {[...partialCommands, ...plannedCommands].map((item) => (
+          <article class="autom8-standard-card">
+            <span class={statusClass[item.status]}>{statusLabel[item.status]}</span>
+            <h3><code>{item.command}</code></h3>
+            <p>{item.summary}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">logs</span>
-          <h3>Gere relatórios</h3>
-          <p>Os relatórios ficam locais e ajudam a revisar o estado da máquina com mais segurança.</p>
-        </article>
+  <section id="modulos" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-blue-300">Módulos</p>
+        <h2>Módulos da suíte</h2>
+        <p>Cada módulo tem status explícito para evitar prometer funcionalidades ainda planejadas.</p>
+      </div>
+
+      <div class="autom8-content-grid autom8-content-grid--three">
+        {documentation.modules.map((item) => (
+          <article class="autom8-standard-card autom8-standard-card--module">
+            <div class="module-card-top">
+              <span class={statusClass[item.status]}>{statusLabel[item.status]}</span>
+              <span class="module-command">{item.command}</span>
+            </div>
+            <h3>{item.name}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="variaveis" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-green-300">Variáveis</p>
+        <h2>Configuração por ambiente</h2>
+        <p>Essas variáveis controlam instalação, release, empacotamento e deploy.</p>
+      </div>
+
+      <div class="autom8-table-card">
+        <table class="autom8-data-table">
+          <thead>
+            <tr>
+              <th>Variável</th>
+              <th>Padrão</th>
+              <th>Escopo</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            {documentation.variables.map((item) => (
+              <tr>
+                <td><code>{item.name}</code></td>
+                <td><code>{item.default}</code></td>
+                <td>{item.scope}</td>
+                <td>{item.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="release" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-blue-300">Release estável</p>
+        <h2>Distribuição via GitHub Releases</h2>
+        <p>{documentation.releasePolicy.sitePackagePolicy}</p>
+      </div>
+
+      <div class="autom8-command-panel">
+        <div class="autom8-command-panel__header">
+          <span>latest package</span>
+          <strong>GitHub Releases</strong>
+        </div>
+        <pre><code>{documentation.releasePolicy.latestPackageUrl}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="troubleshooting" class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-green-300">Troubleshooting</p>
+        <h2>Problemas comuns</h2>
+        <p>Primeiros pontos de verificação quando algo não sair como esperado.</p>
+      </div>
+
+      <div class="autom8-content-grid autom8-content-grid--three">
+        {documentation.troubleshooting.map((item) => (
+          <article class="autom8-standard-card">
+            <span class="autom8-card-kicker">fix</span>
+            <h3>{item.title}</h3>
+            <p>{item.solution}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>

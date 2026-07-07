@@ -1,18 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
+
+const statusLabel = {
+  available: 'Disponível',
+  partial: 'Parcial',
+  planned: 'Planejado'
+};
+
+const statusClass = {
+  available: 'autom8-status-badge',
+  partial: 'autom8-version-badge',
+  planned: 'autom8-card-kicker'
+};
 ---
 
 <BaseLayout
   title="Módulos · AutoM8"
-  description="Conheça os módulos do AutoM8 para atualização, limpeza, apps, perfis, backup, diagnóstico, segurança, Docker e usuários."
+  description="Conheça os módulos disponíveis, parciais e planejados do AutoM8."
 >
   <section class="site-page-hero">
     <div class="site-page-hero__inner">
       <p class="page-eyebrow">Módulos</p>
       <h1 class="page-title">Uma suíte modular para manter o Linux em ordem.</h1>
       <p class="page-description">
-        Cada módulo resolve uma tarefa específica e mantém o AutoM8 simples de evoluir, testar e auditar.
+        Cada módulo resolve uma tarefa específica e possui status explícito para separar o que já está disponível do que está planejado.
       </p>
     </div>
   </section>
@@ -29,8 +41,8 @@ import modules from '../data/modules.json';
         {modules.map((item) => (
           <article class="autom8-standard-card autom8-standard-card--module">
             <div class="module-card-top">
-              <span class="autom8-card-kicker">{item.slug}</span>
-              <span class="module-command">autom8 {item.slug}</span>
+              <span class={statusClass[item.status]}>{statusLabel[item.status]}</span>
+              <span class="module-command">{item.command}</span>
             </div>
             <h3>{item.name}</h3>
             <p>{item.description}</p>

@@ -5,6 +5,8 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
+./scripts/sync-docs.sh
+
 cp installer/install.sh site/public/install.sh
 chmod +x site/public/install.sh
 

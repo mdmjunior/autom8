@@ -1,0 +1,17 @@
+AutoM8 help: autom8 clean
+
+Status: available
+Desde: 0.1.0
+
+Executa limpeza segura de caches, temporários e arquivos antigos.
+
+Detalhes:
+- Limpa cache do gerenciador de pacotes conforme a distro.
+- Remove temporários antigos em /tmp e /var/tmp.
+- Remove logs rotacionados antigos.
+- Pode limpar caches seguros de usuários, preservando caches de navegadores conhecidos.
+- Suporta simulação com --dry-run.
+
+Exemplos:
+  autom8 clean
+  autom8 clean --dry-run

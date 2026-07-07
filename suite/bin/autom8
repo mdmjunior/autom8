@@ -17,6 +17,8 @@ source "$AUTOM8_ROOT/core/detect.sh"
 source "$AUTOM8_ROOT/core/sudo.sh"
 # shellcheck source=/dev/null
 source "$AUTOM8_ROOT/core/summary.sh"
+# shellcheck source=/dev/null
+source "$AUTOM8_ROOT/core/help.sh"
 
 # shellcheck source=/dev/null
 source "$AUTOM8_ROOT/modules/diagnose.sh"
@@ -48,31 +50,8 @@ source "$AUTOM8_ROOT/modules/report.sh"
 source "$AUTOM8_ROOT/modules/self_update.sh"
 
 autom8_usage() {
-  cat <<EOF_USAGE
-AutoM8 - Linux Management Suite
-
-Uso:
-  autom8
-  autom8 update [--dry-run]
-  autom8 upgrade-distro
-  autom8 clean [--dry-run]
-  autom8 apps
-  autom8 profiles
-  autom8 backup
-  autom8 diagnose
-  autom8 doctor
-  autom8 security
-  autom8 docker
-  autom8 users
-  autom8 config
-  autom8 report
-  autom8 report export
-  autom8 self-update
-  autom8 --version
-  autom8 --help
-EOF_USAGE
+  autom8_help_index
 }
-
 autom8_dashboard() {
   autom8_title "AutoM8 Dashboard"
 
@@ -195,8 +174,16 @@ main() {
       echo "AutoM8 $AUTOM8_VERSION"
       exit 0
       ;;
-    --help|-h|help)
+    --help|-h)
       autom8_usage
+      exit 0
+      ;;
+    help)
+      if [[ -n "${2:-}" ]]; then
+        autom8_help_command "$2"
+      else
+        autom8_help_index
+      fi
       exit 0
       ;;
   esac

@@ -1,0 +1,12 @@
+AutoM8 help: autom8 --version
+
+Status: available
+Desde: 0.1.0
+
+Mostra a versão instalada.
+
+Detalhes:
+- Lê a versão instalada a partir do arquivo VERSION dentro da suíte.
+
+Exemplos:
+  autom8 --version

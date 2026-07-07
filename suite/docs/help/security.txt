@@ -1,0 +1,14 @@
+AutoM8 help: autom8 security
+
+Status: available
+Desde: 0.1.0
+
+Executa checagem básica de segurança local.
+
+Detalhes:
+- Mostra status de firewall conhecido.
+- Lista portas em escuta.
+- Verifica status básico de SSH.
+
+Exemplos:
+  autom8 security

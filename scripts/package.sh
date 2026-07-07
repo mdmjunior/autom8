@@ -6,6 +6,10 @@ SUITE_DIR="$PROJECT_ROOT/suite"
 
 VERSION="$(tr -d '[:space:]' < "$SUITE_DIR/VERSION")"
 
+if [[ -x "$PROJECT_ROOT/scripts/sync-docs.sh" && "${AUTOM8_SKIP_DOC_SYNC:-0}" != "1" ]]; then
+  "$PROJECT_ROOT/scripts/sync-docs.sh"
+fi
+
 if [[ -z "$VERSION" ]]; then
   echo "ERRO: suite/VERSION está vazio." >&2
   exit 1
