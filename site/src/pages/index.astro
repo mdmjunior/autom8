@@ -96,13 +96,14 @@ const carouselItems = [
     type: 'text',
     icon: '03'
   },
-  ...distros.map((distro) => ({
+  {
     eyebrow: 'Compatibilidade',
-    title: distro.name,
-    description: 'Planejada',
-    type: 'distro',
-    icon: distro.slug
-  }))
+    title: '',
+    description: '',
+    type: 'distroGroup',
+    icon: 'distros',
+    distros
+  }
 ];
 
 
@@ -187,12 +188,8 @@ const moduleIcons = {
         {carouselItems.map((item) => (
           <article class="home-carousel-card">
             <div class="home-carousel-card__top">
-              {item.type === 'distro' ? (
-                <img
-                  src={`/branding/distros/${item.icon}.svg`}
-                  alt={`Ícone ${item.title}`}
-                  class="home-carousel-card__distro-icon"
-                />
+              {item.type === 'distroGroup' ? (
+                <span class="home-carousel-card__number">OS</span>
               ) : (
                 <span class="home-carousel-card__number">{item.icon}</span>
               )}
@@ -200,8 +197,22 @@ const moduleIcons = {
               <span class="home-carousel-card__eyebrow">{item.eyebrow}</span>
             </div>
 
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
+            {item.type === 'distroGroup' ? (
+              <div class="home-carousel-distro-icons">
+                {item.distros.map((distro) => (
+                  <img
+                    src={`/branding/distros/${distro.slug}.svg`}
+                    alt={`Ícone ${distro.name}`}
+                    title={distro.name}
+                  />
+                ))}
+              </div>
+            ) : (
+              <>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </>
+            )}
           </article>
         ))}
       </div>

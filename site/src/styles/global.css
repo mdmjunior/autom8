@@ -957,3 +957,40 @@ a {
 }
 
 /* === /AutoM8 home info carousel v1 === */
+
+/* === AutoM8 carousel compatibility card v1 === */
+
+.home-carousel-distro-icons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.25rem;
+}
+
+.home-carousel-distro-icons img {
+  width: 4rem;
+  height: 4rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 1.15rem;
+  background: rgba(15, 23, 42, 0.58);
+  padding: 0.55rem;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.home-carousel-distro-icons img:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+@media (max-width: 767px) {
+  .home-carousel-distro-icons {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .home-carousel-distro-icons img {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+}
+
+/* === /AutoM8 carousel compatibility card v1 === */
