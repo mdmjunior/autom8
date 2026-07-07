@@ -829,3 +829,131 @@ a {
 }
 
 /* === /AutoM8 hero terminal refinement v1 === */
+
+/* === AutoM8 home info carousel v1 === */
+
+.home-carousel-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.home-carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.home-carousel-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.75);
+  color: #f8fafc;
+  font-size: 2rem;
+  line-height: 1;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.home-carousel-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.55);
+  background: rgba(37, 99, 235, 0.18);
+}
+
+.home-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(19rem, 31rem);
+  gap: 1.25rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding: 0.25rem 0 1rem;
+  scrollbar-width: thin;
+}
+
+.home-carousel-card {
+  scroll-snap-align: start;
+  min-height: 17rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 80% 15%, rgba(56, 189, 248, 0.10), transparent 34%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.76), rgba(15, 23, 42, 0.42)),
+    rgba(2, 6, 23, 0.38);
+  padding: 1.6rem;
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.22);
+}
+
+.home-carousel-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.home-carousel-card__number,
+.home-carousel-card__distro-icon {
+  display: inline-flex;
+  width: 3.35rem;
+  height: 3.35rem;
+  flex: 0 0 auto;
+  border-radius: 1rem;
+}
+
+.home-carousel-card__number {
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  background: rgba(37, 99, 235, 0.13);
+  color: #93c5fd;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-weight: 950;
+}
+
+.home-carousel-card__distro-icon {
+  background: rgba(15, 23, 42, 0.58);
+}
+
+.home-carousel-card__eyebrow {
+  color: #93c5fd;
+  font-size: 0.75rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.home-carousel-card h3 {
+  color: #f8fafc;
+  font-size: 1.75rem;
+  font-weight: 950;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+}
+
+.home-carousel-card p {
+  margin-top: 1rem;
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+@media (max-width: 767px) {
+  .home-carousel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .home-carousel {
+    grid-auto-columns: minmax(17rem, 85vw);
+  }
+}
+
+/* === /AutoM8 home info carousel v1 === */
