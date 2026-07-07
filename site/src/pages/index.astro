@@ -5,15 +5,18 @@ import modules from '../data/modules.json';
 const highlights = [
   {
     title: 'Escolha',
-    description: 'Selecione módulos, perfis ou ações do sistema conforme o que você precisa preparar.'
+    description: 'Selecione módulos, perfis ou ações do sistema conforme o que você precisa preparar.',
+    icon: '01'
   },
   {
     title: 'Revise',
-    description: 'Entenda o que será executado antes de aplicar alterações no seu Linux.'
+    description: 'Veja comandos, modo seguro e impactos antes de aplicar qualquer alteração no seu Linux.',
+    icon: '02'
   },
   {
     title: 'Execute',
-    description: 'Automatize tarefas repetitivas com clareza, logs e controle sobre cada etapa.'
+    description: 'Automatize tarefas repetitivas com logs, relatórios e controle em cada etapa.',
+    icon: '03'
   }
 ];
 
@@ -32,57 +35,164 @@ const trustItems = [
   'Diagnóstico e logs',
   'Roadmap público'
 ];
+
+const terminalSessions = [
+  {
+    command: 'autom8 --version',
+    output: [
+      { text: 'AutoM8 0.1.0', type: 'success' }
+    ]
+  },
+  {
+    command: 'autom8 doctor',
+    output: [
+      { text: 'AutoM8 Doctor', type: 'muted' },
+      { text: '[OK] Diretório OK: /opt/autom8', type: 'ok' },
+      { text: '[OK] Arquivo OK: /opt/autom8/bin/autom8', type: 'ok' },
+      { text: '[OK] Comando encontrado: bash', type: 'ok' },
+      { text: '[OK] Comando encontrado: curl', type: 'ok' },
+      { text: '[OK] Comando encontrado: sudo', type: 'ok' },
+      { text: '[OK] Comando encontrado: jq', type: 'ok' },
+      { text: 'Doctor finalizado sem falhas críticas.', type: 'success' },
+      { text: 'Relatório: /opt/autom8/reports/doctor-2026-07-06-2120.txt', type: 'note' }
+    ]
+  },
+  {
+    command: 'autom8 clean --dry-run',
+    output: [
+      { text: 'Simulação de limpeza segura', type: 'muted' },
+      { text: 'Nada será removido neste modo.', type: 'note' },
+      { text: 'Gerenciador de pacotes detectado: apt', type: 'plain' },
+      { text: 'Ações simuladas:', type: 'plain' },
+      { text: '- apt clean', type: 'ok' },
+      { text: '- apt autoremove -y', type: 'ok' },
+      { text: 'Flatpak não encontrado.', type: 'warn' },
+      { text: 'Snap não encontrado.', type: 'warn' },
+      { text: 'Simulação de limpeza segura concluída', type: 'success' }
+    ]
+  },
+  {
+    command: 'autom8 diagnose',
+    output: [
+      { text: 'Diagnóstico do sistema', type: 'muted' },
+      { text: '== Sistema ==', type: 'plain' },
+      { text: 'Hostname: linux-workstation', type: 'plain' },
+      { text: 'Kernel: 6.8.0-generic', type: 'plain' },
+      { text: 'Arquitetura: x86_64', type: 'plain' },
+      { text: '== Docker ==', type: 'plain' },
+      { text: 'Docker version 27.x', type: 'ok' },
+      { text: 'Relatório gerado em: /opt/autom8/reports/diagnostic-2026-07-06-2124.txt', type: 'success' }
+    ]
+  },
+  {
+    command: 'autom8 profiles',
+    output: [
+      { text: 'Perfis', type: 'muted' },
+      { text: 'Módulo de perfis YAML será implementado na v0.2.0.', type: 'warn' },
+      { text: 'Perfis ainda não implementado', type: 'warn' }
+    ]
+  }
+];
+
+const distros = [
+  { name: 'Ubuntu', slug: 'ubuntu', status: 'Planejada' },
+  { name: 'Debian', slug: 'debian', status: 'Planejada' },
+  { name: 'Fedora', slug: 'fedora', status: 'Planejada' },
+  { name: 'Rocky Linux', slug: 'rocky', status: 'Planejada' },
+  { name: 'AlmaLinux', slug: 'alma', status: 'Planejada' },
+  { name: 'openSUSE', slug: 'opensuse', status: 'Planejada' },
+  { name: 'Arch Linux', slug: 'arch', status: 'Planejada' },
+  { name: 'Manjaro', slug: 'manjaro', status: 'Planejada' }
+];
+
+const productStats = [
+  { label: 'CLI local', value: '100%' },
+  { label: 'Open source', value: 'MIT' },
+  { label: 'Versão atual', value: '0.1.0' }
+];
 ---
 
 <BaseLayout>
-  <section class="px-6 py-20 md:py-28">
-    <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-      <div>
+  <section class="modern-hero px-6 py-16 md:py-24">
+    <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+      <div class="hero-copy">
         <div class="autom8-kicker">
-          AutoM8 by OSLabs · gratuito e open source
+          AutoM8 by OSLabs · automação Linux moderna
         </div>
 
         <h1 class="mt-7 max-w-4xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
-          Seu Linux pronto, do seu jeito.
+          Seu Linux pronto, seguro e produtivo em minutos.
         </h1>
 
         <p class="mt-7 max-w-2xl text-xl leading-9 text-slate-300">
-          O AutoM8 automatiza instalações, configurações e tarefas do sistema para usuários Linux de todos os níveis.
-          Configure menos, produza mais e mantenha controle sobre o que será executado.
+          O AutoM8 transforma comandos repetitivos de instalação, diagnóstico, limpeza e configuração em uma experiência guiada,
+          clara e auditável para usuários Linux de todos os níveis.
         </p>
 
         <div class="mt-9 flex flex-col gap-4 sm:flex-row">
-          <a href="/install" class="rounded-xl bg-blue-600 px-7 py-4 text-center font-black text-white shadow-xl shadow-blue-950/40 transition hover:bg-blue-500">
+          <a href="/install" class="autom8-primary-button">
             Instalar agora
           </a>
-          <a href="/docs" class="rounded-xl border border-slate-600 px-7 py-4 text-center font-black text-slate-200 transition hover:border-blue-400 hover:text-blue-200">
+          <a href="/docs" class="autom8-secondary-button">
             Ver comandos
           </a>
         </div>
 
-        <div class="mt-8 rounded-2xl border border-slate-700 bg-slate-950/70 p-4 font-mono text-sm text-blue-100">
-          curl -fsSL https://autom8.oslabs.com.br/install.sh | bash
-        </div>
-
-        <div class="mt-8 flex flex-wrap gap-3 text-sm font-bold text-slate-300">
-          {['Linux desktop', 'CLI moderna', 'Perfis YAML', 'Scripts auditáveis'].map((item) => (
-            <span class="rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2">{item}</span>
+        <div class="mt-8 grid gap-3 sm:grid-cols-3">
+          {productStats.map((item) => (
+            <div class="product-stat">
+              <strong>{item.value}</strong>
+              <span>{item.label}</span>
+            </div>
           ))}
         </div>
       </div>
 
-      <div class="autom8-card m8-mascot rounded-3xl p-6">
-        <div class="relative z-10 flex items-center justify-center">
-          <img
-            src="/branding/mascot-m8.svg"
-            alt="Mascote M8 do AutoM8"
-            class="mx-auto h-auto w-full max-w-sm"
-          />
+      <div class="product-console-shell">
+        <div class="product-console-glow"></div>
+
+        <div class="product-console-header">
+          <div class="flex items-center gap-2">
+            <span class="console-dot bg-red-400"></span>
+            <span class="console-dot bg-yellow-400"></span>
+            <span class="console-dot bg-green-400"></span>
+          </div>
+          <span>autom8@linux:~</span>
         </div>
 
-        <div class="m8-bubble">
-          <strong>M8:</strong> escolha o que precisa. Eu preparo o caminho e você revisa antes de executar.
+        <div class="autom8-live-terminal" data-autom8-terminal>
+          <div class="terminal-screen" data-terminal-screen>
+            <div class="live-terminal-line terminal-muted">AutoM8 terminal session ready.</div>
+          </div>
         </div>
+
+        <div class="console-footer-grid">
+          <div>
+            <span>modo</span>
+            <strong>local</strong>
+          </div>
+          <div>
+            <span>execução</span>
+            <strong>revisável</strong>
+          </div>
+          <div>
+            <span>logs</span>
+            <strong>ativos</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-10">
+    <div class="mx-auto max-w-7xl">
+      <div class="platform-strip">
+        {distros.map((distro) => (
+          <div class="platform-pill">
+            <img src={`/branding/distros/${distro.slug}.svg`} alt={`Ícone ${distro.name}`} />
+            <span>{distro.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -90,7 +200,7 @@ const trustItems = [
   <section class="px-6 py-16">
     <div class="mx-auto max-w-7xl">
       <div class="max-w-3xl">
-        <p class="text-sm font-black uppercase tracking-[0.22em] text-blue-300">Como funciona</p>
+        <p class="section-eyebrow text-blue-300">Como funciona</p>
         <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Escolha. Revise. Execute.</h2>
         <p class="mt-4 text-lg leading-8 text-slate-400">
           O AutoM8 foi pensado para automatizar sem esconder o processo. O usuário mantém controle sobre as ações,
@@ -99,11 +209,9 @@ const trustItems = [
       </div>
 
       <div class="mt-10 grid gap-5 md:grid-cols-3">
-        {highlights.map((item, index) => (
-          <article class="autom8-card rounded-2xl p-7">
-            <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/10 text-lg font-black text-blue-200">
-              {index + 1}
-            </div>
+        {highlights.map((item) => (
+          <article class="modern-step-card">
+            <div class="step-number">{item.icon}</div>
             <h3 class="mt-5 text-2xl font-black text-white">{item.title}</h3>
             <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
           </article>
@@ -116,21 +224,21 @@ const trustItems = [
     <div class="mx-auto max-w-7xl">
       <div class="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div>
-          <p class="text-sm font-black uppercase tracking-[0.22em] text-green-300">Recursos</p>
+          <p class="section-eyebrow text-green-300">Recursos</p>
           <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Módulos principais</h2>
           <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-400">
             A base atual já cobre tarefas essenciais e prepara o caminho para apps, perfis e automações mais completas.
           </p>
         </div>
-        <a href="/modules" class="text-sm font-black text-blue-300 hover:text-blue-200">
+        <a href="/modules" class="modern-link">
           Ver todos
         </a>
       </div>
 
       <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {modules.slice(0, 6).map((item) => (
-          <article class="autom8-card rounded-2xl p-6 transition hover:border-blue-400/40">
-            <div class="mb-5 inline-flex rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-1 font-mono text-xs font-bold text-green-300">
+          <article class="modern-module-card">
+            <div class="module-command">
               autom8 {item.slug}
             </div>
             <h3 class="text-xl font-black text-white">{item.name}</h3>
@@ -143,8 +251,8 @@ const trustItems = [
 
   <section class="px-6 py-16">
     <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-      <div class="autom8-card rounded-3xl p-7">
-        <p class="text-sm font-black uppercase tracking-[0.22em] text-amber-300">Segurança e transparência</p>
+      <div class="modern-security-card">
+        <p class="section-eyebrow text-amber-300">Segurança e transparência</p>
         <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Automação com controle.</h2>
         <p class="mt-5 text-lg leading-8 text-slate-400">
           O AutoM8 não foi criado para esconder comandos ou incentivar execução cega. A proposta é organizar tarefas,
@@ -153,35 +261,31 @@ const trustItems = [
 
         <div class="mt-7 grid gap-3">
           {trustItems.map((item) => (
-            <div class="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-slate-300">
-              <span class="h-2.5 w-2.5 rounded-full bg-green-400 shadow-lg shadow-green-500/40"></span>
-              <span class="font-semibold">{item}</span>
+            <div class="trust-row">
+              <span></span>
+              <strong>{item}</strong>
             </div>
           ))}
         </div>
       </div>
 
-      <div class="code-window rounded-3xl p-6 font-mono text-sm">
-        <div class="mb-5 flex gap-2">
-          <span class="h-3 w-3 rounded-full bg-red-400"></span>
-          <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
-          <span class="h-3 w-3 rounded-full bg-green-400"></span>
+      <div class="modern-terminal-panel">
+        <div class="terminal-mini-header">
+          <span>safe-run preview</span>
+          <strong>autom8 clean --dry-run</strong>
         </div>
 
-        <p class="terminal-line text-slate-200">autom8 doctor</p>
-        <p class="terminal-output mt-2">Validando instalação, PATH, permissões, logs e estrutura...</p>
-        <p class="terminal-output">Status: pronto para uso</p>
+        <pre><code>Simulação de limpeza segura
+Nada será removido neste modo.
 
-        <p class="terminal-line mt-6 text-slate-200">autom8 clean --dry-run</p>
-        <p class="terminal-output mt-2">Simulando limpeza segura...</p>
-        <p class="terminal-output">Nenhum arquivo pessoal será removido sem revisão.</p>
+Gerenciador de pacotes detectado: apt
+Ações simuladas:
+- apt clean
+- apt autoremove -y
 
-        <p class="terminal-line mt-6 text-slate-200">autom8 diagnose</p>
-        <p class="terminal-output mt-2">Gerando relatório local do sistema...</p>
-        <p class="terminal-output">Docker: ativo · Firewall: ativo · Updates: 12</p>
-
-        <p class="terminal-line mt-6 text-slate-200">autom8 profiles</p>
-        <p class="terminal-output mt-2">Perfis disponíveis: Desenvolvedor, DevOps, Gamer, Designer...</p>
+Flatpak não encontrado.
+Snap não encontrado.
+Simulação de limpeza segura concluída</code></pre>
       </div>
     </div>
   </section>
@@ -189,13 +293,16 @@ const trustItems = [
   <section class="px-6 py-16">
     <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2">
       <div>
-        <p class="text-sm font-black uppercase tracking-[0.22em] text-blue-300">Para quem é</p>
+        <p class="section-eyebrow text-blue-300">Para quem é</p>
         <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Do iniciante ao usuário avançado.</h2>
+        <p class="mt-4 max-w-xl text-lg leading-8 text-slate-400">
+          Uma suíte para quem quer usar Linux com menos fricção, mantendo visibilidade sobre o que está acontecendo.
+        </p>
       </div>
 
       <div class="grid gap-4">
         {audiences.map((item) => (
-          <div class="autom8-card rounded-2xl p-5 text-lg leading-8 text-slate-300">
+          <div class="audience-card">
             {item}
           </div>
         ))}
@@ -207,7 +314,7 @@ const trustItems = [
     <div class="mx-auto max-w-7xl rounded-3xl border border-blue-400/20 bg-blue-500/10 p-8 md:p-12">
       <div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
         <div>
-          <p class="text-sm font-black uppercase tracking-[0.22em] text-blue-200">Criador</p>
+          <p class="section-eyebrow text-blue-200">Criador</p>
           <h2 class="mt-3 text-4xl font-black tracking-tight text-white">
             Criado por Marcio Moreira Junior na OSLabs.
           </h2>
@@ -217,28 +324,110 @@ const trustItems = [
           </p>
         </div>
 
-        <div class="rounded-2xl border border-slate-700 bg-slate-950/50 p-6">
+        <div class="creator-product-card">
           <img
             src="/branding/logo-autom8-icon.svg"
             alt="Ícone AutoM8"
-            class="mb-4 h-12 w-12"
+            class="h-14 w-14"
           />
-          <p class="font-mono text-sm text-green-300">AutoM8 by OSLabs</p>
-          <p class="mt-3 text-2xl font-black text-white">Automação Linux para todos.</p>
-          <p class="mt-3 leading-7 text-slate-400">Configure menos. Produza mais.</p>
+          <div>
+            <p class="font-mono text-sm text-green-300">AutoM8 by OSLabs</p>
+            <p class="mt-3 text-2xl font-black text-white">Automação Linux para todos.</p>
+            <p class="mt-3 leading-7 text-slate-400">Configure menos. Produza mais.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <section class="px-6 py-16">
-    <div class="mx-auto max-w-7xl rounded-3xl border border-blue-400/20 bg-blue-500/10 p-8 md:p-12">
-      <h2 class="text-3xl font-black text-white">Distros oficialmente planejadas</h2>
-      <div class="mt-6 flex flex-wrap gap-3 text-sm font-bold text-blue-100">
-        {['Ubuntu', 'Debian', 'Fedora', 'Rocky Linux', 'AlmaLinux', 'openSUSE', 'Arch Linux', 'Manjaro'].map((distro) => (
-          <span class="rounded-full border border-blue-300/30 bg-slate-950/40 px-4 py-2">{distro}</span>
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-8 max-w-3xl">
+        <p class="section-eyebrow text-cyan-300">Compatibilidade</p>
+        <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Distros oficialmente planejadas</h2>
+        <p class="mt-4 text-lg leading-8 text-slate-400">
+          A visão do AutoM8 é atender as principais famílias Linux com uma experiência consistente, modular e segura.
+        </p>
+      </div>
+
+      <div class="distro-grid">
+        {distros.map((distro) => (
+          <article class="distro-card">
+            <img src={`/branding/distros/${distro.slug}.svg`} alt={`Ícone ${distro.name}`} />
+            <div>
+              <h3>{distro.name}</h3>
+              <p>{distro.status}</p>
+            </div>
+          </article>
         ))}
       </div>
     </div>
   </section>
+
+  <script define:vars={{ terminalSessions }}>
+    const screen = document.querySelector('[data-terminal-screen]');
+    const sessions = terminalSessions;
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    function addLine(text, type = 'plain') {
+      const line = document.createElement('div');
+      line.className = `live-terminal-line terminal-${type}`;
+      line.textContent = text;
+      screen.appendChild(line);
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    async function typeCommand(command) {
+      const line = document.createElement('div');
+      line.className = 'live-terminal-line terminal-command-line';
+
+      const prompt = document.createElement('span');
+      prompt.className = 'terminal-prompt';
+      prompt.textContent = 'marcio@linux:~$ ';
+
+      const typed = document.createElement('span');
+      typed.className = 'terminal-typed is-typing';
+
+      line.appendChild(prompt);
+      line.appendChild(typed);
+      screen.appendChild(line);
+
+      for (const char of command) {
+        typed.textContent += char;
+        await sleep(18 + Math.random() * 22);
+      }
+
+      typed.classList.remove('is-typing');
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    async function runTerminal() {
+      let index = 0;
+
+      while (true) {
+        const session = sessions[index % sessions.length];
+        screen.innerHTML = '';
+
+        addLine('AutoM8 Linux Management Suite', 'muted');
+        addLine('Sessão local · comandos auditáveis · modo seguro', 'note');
+        await sleep(450);
+
+        await typeCommand(session.command);
+        await sleep(350);
+
+        for (const item of session.output) {
+          addLine(item.text, item.type);
+          await sleep(180);
+        }
+
+        await sleep(2600);
+        index += 1;
+      }
+    }
+
+    if (screen && Array.isArray(sessions)) {
+      runTerminal();
+    }
+  </script>
 </BaseLayout>
