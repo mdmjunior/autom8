@@ -994,3 +994,25 @@ a {
 }
 
 /* === /AutoM8 carousel compatibility card v1 === */
+
+/* === AutoM8 site logo image === */
+
+.site-brand-image {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.site-brand-image__logo {
+  display: block;
+  height: 3.2rem;
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  .site-brand-image__logo {
+    height: 2.6rem;
+  }
+}
+
+/* === /AutoM8 site logo image === */
