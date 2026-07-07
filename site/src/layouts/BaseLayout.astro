@@ -34,8 +34,8 @@ const nav = [
   </head>
 
   <body>
-    <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <header class="site-header">
+      <div class="site-header__inner">
         <a href="/" class="site-brand-image" aria-label="AutoM8">
           <img
             src="/branding/logo-autom8-site.png?v=20260707"
@@ -44,13 +44,11 @@ const nav = [
           />
         </a>
 
-        <nav class="hidden items-center gap-5 text-sm font-semibold text-slate-300 lg:flex">
+        <nav class="site-nav" aria-label="Navegação principal">
           {nav.map(([label, href]) => (
             <a
               href={href}
-              class={label === 'Instalar'
-                ? 'rounded-xl bg-blue-600 px-4 py-2 text-white shadow-lg shadow-blue-950/40 transition hover:bg-blue-500'
-                : 'transition hover:text-blue-300'}
+              class={label === 'Instalar' ? 'autom8-nav-install' : 'autom8-nav-link'}
               target={href.startsWith('http') ? '_blank' : undefined}
               rel={href.startsWith('http') ? 'noreferrer' : undefined}
             >
@@ -58,18 +56,22 @@ const nav = [
             </a>
           ))}
         </nav>
+
+        <a href="/install" class="autom8-mobile-install">
+          Instalar
+        </a>
       </div>
     </header>
 
-    <main>
+    <main class="site-main">
       <slot />
     </main>
 
-    <footer class="border-t border-slate-800 px-6 py-10 text-center text-sm text-slate-500">
-      <div class="mx-auto max-w-7xl">
-        <p class="font-semibold text-slate-300">AutoM8 by OSLabs</p>
-        <p class="mt-2">Criado por Marcio Moreira Junior para a comunidade Linux.</p>
-        <p class="mt-2 text-slate-600">Automação Linux para todos. Configure menos. Produza mais.</p>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p class="site-footer__brand">AutoM8 by OSLabs</p>
+        <p class="site-footer__text">Criado por Marcio Moreira Junior para a comunidade Linux.</p>
+        <p class="site-footer__tagline">Automação Linux para todos. Configure menos. Produza mais.</p>
       </div>
     </footer>
   </body>

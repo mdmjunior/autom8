@@ -1016,3 +1016,451 @@ a {
 }
 
 /* === /AutoM8 site logo image === */
+
+/* === AutoM8 structural standardization v1 === */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.86);
+  background: rgba(2, 6, 23, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+.site-header__inner {
+  width: min(80rem, calc(100% - 3rem));
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding-block: 0.95rem;
+}
+
+.site-nav {
+  display: none;
+  align-items: center;
+  gap: 1.15rem;
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  font-weight: 850;
+}
+
+.autom8-nav-link {
+  transition: color 160ms ease;
+}
+
+.autom8-nav-link:hover {
+  color: #7dd3fc;
+}
+
+.autom8-nav-install,
+.autom8-mobile-install {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.95rem;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 950;
+  box-shadow: 0 18px 48px rgba(37, 99, 235, 0.26);
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.autom8-nav-install {
+  padding: 0.7rem 1rem;
+}
+
+.autom8-mobile-install {
+  padding: 0.65rem 0.95rem;
+  font-size: 0.86rem;
+}
+
+.autom8-nav-install:hover,
+.autom8-mobile-install:hover {
+  transform: translateY(-1px);
+  background: #1d4ed8;
+  box-shadow: 0 22px 56px rgba(37, 99, 235, 0.34);
+}
+
+.site-main {
+  min-height: 70vh;
+}
+
+.site-footer {
+  border-top: 1px solid rgba(30, 41, 59, 0.86);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.site-footer__inner {
+  width: min(80rem, 100%);
+  margin-inline: auto;
+}
+
+.site-footer__brand {
+  color: #e2e8f0;
+  font-weight: 950;
+}
+
+.site-footer__text {
+  margin-top: 0.55rem;
+  color: #94a3b8;
+}
+
+.site-footer__tagline {
+  margin-top: 0.55rem;
+  color: #475569;
+}
+
+.site-page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 1.5rem 3.5rem;
+}
+
+.site-page-hero::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(37, 99, 235, 0.22), transparent 34%),
+    radial-gradient(circle at 82% 20%, rgba(56, 189, 248, 0.12), transparent 30%),
+    radial-gradient(circle at 48% 90%, rgba(34, 197, 94, 0.08), transparent 34%);
+  filter: blur(4px);
+}
+
+.site-page-hero__inner,
+.site-page-section__inner {
+  width: min(80rem, 100%);
+  margin-inline: auto;
+}
+
+.site-page-hero__inner {
+  max-width: 56rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.page-eyebrow {
+  color: #7dd3fc;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.page-title {
+  margin-top: 1rem;
+  color: #f8fafc;
+  font-size: clamp(2.55rem, 6vw, 5.6rem);
+  font-weight: 950;
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.page-description {
+  margin: 1.35rem auto 0;
+  max-width: 48rem;
+  color: #cbd5e1;
+  font-size: clamp(1.05rem, 2vw, 1.22rem);
+  line-height: 1.8;
+}
+
+.page-actions {
+  margin-top: 2.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.site-page-section {
+  padding: 3.75rem 1.5rem;
+}
+
+.site-page-section--compact {
+  padding-top: 1.5rem;
+}
+
+.section-heading {
+  margin-bottom: 2rem;
+  max-width: 54rem;
+}
+
+.section-heading h2 {
+  margin-top: 0.75rem;
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 950;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.section-heading p:not(.section-eyebrow) {
+  margin-top: 1rem;
+  color: #94a3b8;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.autom8-content-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.autom8-standard-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 12rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 80% 12%, rgba(56, 189, 248, 0.10), transparent 34%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.76), rgba(15, 23, 42, 0.42)),
+    rgba(2, 6, 23, 0.38);
+  padding: 1.5rem;
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.22);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.autom8-standard-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.38);
+}
+
+.autom8-standard-card h3 {
+  margin-top: 1rem;
+  color: #f8fafc;
+  font-size: 1.28rem;
+  font-weight: 950;
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+}
+
+.autom8-standard-card p {
+  margin-top: 0.8rem;
+  color: #94a3b8;
+  line-height: 1.75;
+}
+
+.autom8-standard-card code,
+.autom8-data-table code {
+  color: #bfdbfe;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.92em;
+}
+
+.autom8-standard-card--module h3 {
+  margin-top: 0;
+}
+
+.autom8-card-kicker {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 0.9rem;
+  background: rgba(37, 99, 235, 0.12);
+  padding: 0.48rem 0.68rem;
+  color: #93c5fd;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 950;
+}
+
+.autom8-command-panel {
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.20);
+  border-radius: 1.35rem;
+  background: #020617;
+  box-shadow:
+    0 34px 110px rgba(2, 6, 23, 0.62),
+    inset 0 1px 0 rgba(248, 250, 252, 0.06);
+}
+
+.autom8-command-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  background: #0f172a;
+  padding: 0.85rem 1rem;
+  color: #94a3b8;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.autom8-command-panel__header strong {
+  color: #86efac;
+}
+
+.autom8-command-panel pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 1.35rem;
+  color: #dbeafe;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.autom8-table-card {
+  overflow-x: auto;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 1.35rem;
+  background: rgba(2, 6, 23, 0.38);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.22);
+}
+
+.autom8-data-table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.autom8-data-table thead {
+  background: rgba(15, 23, 42, 0.92);
+}
+
+.autom8-data-table th {
+  padding: 1rem 1.15rem;
+  color: #7dd3fc;
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.autom8-data-table td {
+  border-top: 1px solid rgba(30, 41, 59, 0.9);
+  padding: 1rem 1.15rem;
+  color: #cbd5e1;
+  line-height: 1.65;
+}
+
+.autom8-timeline {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.autom8-release-card {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(56, 189, 248, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.42)),
+    rgba(2, 6, 23, 0.36);
+  padding: 1.5rem;
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.22);
+}
+
+.autom8-release-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.autom8-release-card h3 {
+  margin-top: 0.85rem;
+  color: #f8fafc;
+  font-size: 1.45rem;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.autom8-release-card ul {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+  color: #cbd5e1;
+}
+
+.autom8-release-card li {
+  border: 1px solid rgba(30, 41, 59, 0.82);
+  border-radius: 0.95rem;
+  background: rgba(2, 6, 23, 0.32);
+  padding: 0.85rem 1rem;
+  line-height: 1.55;
+}
+
+.autom8-version-badge,
+.autom8-status-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 950;
+}
+
+.autom8-version-badge {
+  border: 1px solid rgba(56, 189, 248, 0.30);
+  background: rgba(37, 99, 235, 0.12);
+  color: #bfdbfe;
+  padding: 0.5rem 0.8rem;
+}
+
+.autom8-status-badge {
+  border: 1px solid rgba(34, 197, 94, 0.26);
+  background: rgba(34, 197, 94, 0.10);
+  color: #86efac;
+  padding: 0.45rem 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 640px) {
+  .page-actions {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .autom8-content-grid--three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .autom8-release-card ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-nav {
+    display: flex;
+  }
+
+  .autom8-mobile-install {
+    display: none;
+  }
+
+  .autom8-content-grid--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .site-header__inner {
+    width: min(100% - 2rem, 80rem);
+  }
+
+  .site-page-hero {
+    padding-top: 3.8rem;
+  }
+
+  .autom8-command-panel pre {
+    font-size: 0.84rem;
+  }
+}
+
+/* === /AutoM8 structural standardization v1 === */

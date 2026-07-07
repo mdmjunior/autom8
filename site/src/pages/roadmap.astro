@@ -3,22 +3,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import roadmap from '../data/roadmap.json';
 ---
 
-<BaseLayout title="Roadmap · AutoM8">
-  <section class="px-6 py-20">
-    <div class="mx-auto max-w-5xl">
-      <h1 class="text-4xl font-black text-white">Roadmap</h1>
-      <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-        Planejamento inicial por versão.
+<BaseLayout
+  title="Roadmap · AutoM8"
+  description="Roadmap inicial do AutoM8 por versão."
+>
+  <section class="site-page-hero">
+    <div class="site-page-hero__inner">
+      <p class="page-eyebrow">Roadmap</p>
+      <h1 class="page-title">Evolução planejada, versão por versão.</h1>
+      <p class="page-description">
+        O AutoM8 será desenvolvido em ciclos incrementais, priorizando estabilidade, segurança e clareza antes de ampliar automações.
       </p>
+    </div>
+  </section>
 
-      <div class="mt-10 space-y-6">
+  <section class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-green-300">Planejamento</p>
+        <h2>Próximos marcos</h2>
+        <p>Cada versão adiciona recursos sem perder o foco em execução local, revisão e controle do usuário.</p>
+      </div>
+
+      <div class="autom8-timeline">
         {roadmap.map((release) => (
-          <article class="rounded-2xl border border-slate-700/80 bg-slate-900/50 p-6">
-            <div class="text-sm font-bold text-blue-300">{release.version}</div>
-            <h2 class="mt-2 text-2xl font-black text-white">{release.title}</h2>
-            <ul class="mt-5 grid gap-3 text-slate-300 md:grid-cols-2">
+          <article class="autom8-release-card">
+            <div class="autom8-release-card__header">
+              <span class="autom8-version-badge">{release.version}</span>
+              <h3>{release.title}</h3>
+            </div>
+
+            <ul>
               {release.items.map((item) => (
-                <li class="rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3">{item}</li>
+                <li>{item}</li>
               ))}
             </ul>
           </article>

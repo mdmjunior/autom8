@@ -3,24 +3,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import changelog from '../data/changelog.json';
 ---
 
-<BaseLayout title="Changelog · AutoM8">
-  <section class="px-6 py-20">
-    <div class="mx-auto max-w-5xl">
-      <h1 class="text-4xl font-black text-white">Changelog</h1>
-      <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-        Histórico versionado do AutoM8.
+<BaseLayout
+  title="Changelog · AutoM8"
+  description="Histórico versionado do AutoM8."
+>
+  <section class="site-page-hero">
+    <div class="site-page-hero__inner">
+      <p class="page-eyebrow">Changelog</p>
+      <h1 class="page-title">Histórico claro do que mudou.</h1>
+      <p class="page-description">
+        O changelog registra publicações, ajustes e evolução do produto para manter transparência com usuários e contribuidores.
       </p>
+    </div>
+  </section>
 
-      <div class="mt-10 space-y-6">
+  <section class="site-page-section">
+    <div class="site-page-section__inner">
+      <div class="section-heading">
+        <p class="section-eyebrow text-blue-300">Versões</p>
+        <h2>Publicações</h2>
+        <p>Lista de mudanças registradas por versão.</p>
+      </div>
+
+      <div class="autom8-timeline">
         {changelog.map((release) => (
-          <article class="rounded-2xl border border-slate-700/80 bg-slate-900/50 p-6">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <h2 class="text-2xl font-black text-white">{release.version}</h2>
-              <span class="rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-200">
-                {release.date}
-              </span>
+          <article class="autom8-release-card">
+            <div class="autom8-release-card__header">
+              <div>
+                <span class="autom8-version-badge">{release.version}</span>
+                <h3>{release.date}</h3>
+              </div>
+              <span class="autom8-status-badge">{release.status}</span>
             </div>
-            <ul class="mt-5 list-disc space-y-2 pl-5 text-slate-300">
+
+            <ul>
               {release.changes.map((item) => (
                 <li>{item}</li>
               ))}
