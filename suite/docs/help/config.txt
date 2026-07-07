@@ -1,0 +1,15 @@
+AutoM8 help: autom8 config
+
+Status: available
+Desde: 0.1.0
+
+Permite alterar configurações básicas da suíte.
+
+Detalhes:
+- Permite selecionar idioma.
+- Permite selecionar modo padrão.
+- Permite selecionar nível de limpeza padrão.
+- Permite visualizar a configuração atual.
+
+Exemplos:
+  autom8 config

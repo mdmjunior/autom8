@@ -1,0 +1,12 @@
+AutoM8 help: autom8 apps
+
+Status: planned
+Desde: 0.2.0
+
+Instalação e remoção de aplicativos por catálogo.
+
+Detalhes:
+- Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0.
+
+Exemplos:
+  autom8 apps

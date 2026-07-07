@@ -1,47 +1,98 @@
 [
   {
-    "name": "Atualização do Sistema",
-    "slug": "update",
-    "description": "Atualize repositórios e pacotes com confirmação, registro em log e foco em previsibilidade."
-  },
-  {
-    "name": "Limpeza",
-    "slug": "clean",
-    "description": "Remova caches e arquivos dispensáveis com modos seguros, simulação prévia e proteção contra exclusões perigosas."
-  },
-  {
-    "name": "Apps",
-    "slug": "apps",
-    "description": "Prepare a instalação e remoção de aplicativos por categorias, usando fontes adequadas para cada distribuição."
-  },
-  {
-    "name": "Perfis",
-    "slug": "profiles",
-    "description": "Aplique conjuntos de ferramentas para usos como desenvolvimento, DevOps, design, jogos, administração e servidores."
-  },
-  {
-    "name": "Backup",
-    "slug": "backup",
-    "description": "Crie cópias simples de configurações e arquivos importantes antes de operações sensíveis."
+    "name": "Doctor",
+    "slug": "doctor",
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 doctor",
+    "description": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios."
   },
   {
     "name": "Diagnóstico",
     "slug": "diagnose",
-    "description": "Gere relatórios locais com informações de sistema, hardware, rede, Docker, firewall, usuários e serviços."
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 diagnose",
+    "description": "Gera relatório local com informações de sistema, hardware, rede, firewall, Docker e usuários."
+  },
+  {
+    "name": "Atualização do Sistema",
+    "slug": "update",
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 update",
+    "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
+  },
+  {
+    "name": "Limpeza",
+    "slug": "clean",
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 clean",
+    "description": "Executa limpeza segura e suporta simulação com --dry-run."
   },
   {
     "name": "Segurança",
     "slug": "security",
-    "description": "Revise portas abertas, firewall, SSH, usuários administrativos, atualizações pendentes e serviços expostos."
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 security",
+    "description": "Mostra firewall, portas em escuta e status básico de SSH."
   },
   {
     "name": "Docker",
     "slug": "docker",
-    "description": "Consulte containers, imagens, volumes e consumo para manter ambientes Docker mais fáceis de revisar."
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 docker",
+    "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
   },
   {
     "name": "Usuários",
     "slug": "users",
-    "description": "Liste usuários com login permitido, shells, diretórios home, grupos e permissões administrativas."
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 users",
+    "description": "Lista usuários com login permitido e grupos administrativos."
+  },
+  {
+    "name": "Configurações",
+    "slug": "config",
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 config",
+    "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+  },
+  {
+    "name": "Relatórios",
+    "slug": "report",
+    "status": "available",
+    "version": "0.1.0",
+    "command": "autom8 report",
+    "description": "Lista e exporta relatórios gerados pela suíte."
+  },
+  {
+    "name": "Apps",
+    "slug": "apps",
+    "status": "planned",
+    "version": "0.2.0",
+    "command": "autom8 apps",
+    "description": "Instalação e remoção de aplicativos por catálogo. Planejado para 0.2.0."
+  },
+  {
+    "name": "Perfis",
+    "slug": "profiles",
+    "status": "planned",
+    "version": "0.2.0",
+    "command": "autom8 profiles",
+    "description": "Perfis YAML para preparar ambientes. Planejado para 0.2.0."
+  },
+  {
+    "name": "Backup",
+    "slug": "backup",
+    "status": "planned",
+    "version": "0.3.0",
+    "command": "autom8 backup",
+    "description": "Backups simples antes de operações sensíveis. Planejado para 0.3.0."
   }
 ]

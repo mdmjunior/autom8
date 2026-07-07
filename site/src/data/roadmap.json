@@ -1,54 +1,62 @@
 [
   {
     "version": "0.1.0",
-    "title": "Base funcional",
+    "title": "Base funcional e release estável",
     "items": [
-      "Estrutura /opt/autom8",
-      "Instalador install.sh",
-      "Comando autom8",
-      "Detecção de distro",
-      "Logs próprios",
-      "Menu com gum",
-      "Diagnóstico",
-      "Update básico",
-      "Limpeza segura",
-      "Site inicial"
+      "Estrutura /opt/autom8.",
+      "Instalador install.sh.",
+      "Comando autom8.",
+      "Detecção de distro e gerenciador de pacotes.",
+      "Logs próprios.",
+      "Menu interativo com gum.",
+      "Doctor.",
+      "Diagnóstico.",
+      "Update básico.",
+      "Limpeza segura com dry-run.",
+      "Checagens básicas de segurança.",
+      "Docker status.",
+      "Usuários.",
+      "Configurações.",
+      "Relatórios.",
+      "Site oficial.",
+      "Distribuição estável via GitHub Releases."
     ]
   },
   {
     "version": "0.2.0",
     "title": "Apps e perfis",
     "items": [
-      "Catálogo YAML",
-      "Instalação e remoção de apps",
-      "Perfis YAML",
-      "Modo mínimo seguro",
-      "Modo completo",
-      "Seleção individual de apps",
-      "Flatpak e Flathub"
+      "Catálogo YAML.",
+      "Instalação e remoção de apps.",
+      "Perfis YAML.",
+      "Modo mínimo seguro.",
+      "Modo completo.",
+      "Seleção individual de apps.",
+      "Flatpak e Flathub."
     ]
   },
   {
     "version": "0.3.0",
-    "title": "Segurança, usuários e Docker",
+    "title": "Operação, backups e segurança expandida",
     "items": [
-      "Módulo security",
-      "Módulo users",
-      "Módulo docker",
-      "Relatórios exportáveis",
-      "Backups críticos",
-      "Rollback parcial"
+      "Backup funcional.",
+      "Rollback parcial.",
+      "Security expandido.",
+      "Users com ações administrativas.",
+      "Docker com manutenção orientada.",
+      "Relatórios exportáveis mais completos."
     ]
   },
   {
     "version": "1.0.0",
-    "title": "Primeira versão estável",
+    "title": "Primeira versão estável completa",
     "items": [
-      "Suporte testado nas distros oficiais",
-      "Documentação completa",
-      "Changelog versionado",
-      "Instalação estável",
-      "Rollback documentado"
+      "Suporte testado nas distros oficiais.",
+      "Documentação completa.",
+      "Changelog versionado.",
+      "Instalação estável.",
+      "Self-update com rollback documentado.",
+      "Pipeline de release estável documentado."
     ]
   }
 ]

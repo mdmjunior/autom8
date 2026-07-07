@@ -1,0 +1,14 @@
+AutoM8 help: autom8 docker
+
+Status: available
+Desde: 0.1.0
+
+Mostra informações do Docker quando disponível.
+
+Detalhes:
+- Mostra versão do Docker.
+- Lista containers em execução.
+- Mostra uso de disco do Docker.
+
+Exemplos:
+  autom8 docker

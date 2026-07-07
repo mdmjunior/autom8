@@ -1,0 +1,496 @@
+{
+  "product": {
+    "name": "AutoM8",
+    "fullName": "AutoM8 - Linux Management Suite",
+    "brand": "AutoM8 by OSLabs",
+    "siteUrl": "https://autom8.oslabs.com.br",
+    "githubRepo": "mdmjunior/autom8",
+    "currentVersion": "0.1.0",
+    "currentDate": "2026-07-06",
+    "summary": "AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com clareza, logs e controle do usuário.",
+    "positioning": "Automação Linux local, segura e auditável para usuários iniciantes, técnicos e administradores."
+  },
+  "releasePolicy": {
+    "stableSource": "GitHub Releases",
+    "latestPackageUrl": "https://github.com/mdmjunior/autom8/releases/latest/download/autom8-latest.tar.gz",
+    "versionedPackagePattern": "https://github.com/mdmjunior/autom8/releases/download/v{version}/autom8-{version}.tar.gz",
+    "sitePackagePolicy": "A VPS e o build do site não devem hospedar pacotes da suíte. O site publica apenas o instalador e a documentação.",
+    "installerPolicy": "O install.sh deve baixar sempre o pacote estável mais recente publicado no GitHub Releases."
+  },
+  "variables": [
+    {
+      "name": "AUTOM8_SITE_URL",
+      "default": "https://autom8.oslabs.com.br",
+      "scope": "install, docs",
+      "description": "URL pública do site oficial do AutoM8."
+    },
+    {
+      "name": "AUTOM8_GITHUB_REPO",
+      "default": "mdmjunior/autom8",
+      "scope": "install, release, self-update",
+      "description": "Repositório GitHub usado para releases estáveis."
+    },
+    {
+      "name": "AUTOM8_PACKAGE_URL",
+      "default": "https://github.com/mdmjunior/autom8/releases/latest/download/autom8-latest.tar.gz",
+      "scope": "install, self-update",
+      "description": "URL do pacote estável usado pelo instalador e validação de atualização."
+    },
+    {
+      "name": "AUTOM8_INSTALL_DIR",
+      "default": "/opt/autom8",
+      "scope": "install, runtime",
+      "description": "Diretório onde a suíte é instalada."
+    },
+    {
+      "name": "AUTOM8_PACKAGE_OUTPUT_DIR",
+      "default": "diretório temporário em /tmp",
+      "scope": "package",
+      "description": "Diretório temporário usado para gerar pacotes antes de publicar uma release."
+    },
+    {
+      "name": "AUTOM8_REPO_DIR",
+      "default": "/opt/oslabs/repos/autom8",
+      "scope": "deploy",
+      "description": "Caminho do repositório na VPS."
+    },
+    {
+      "name": "AUTOM8_BRANCH",
+      "default": "main",
+      "scope": "deploy",
+      "description": "Branch publicada na VPS."
+    },
+    {
+      "name": "AUTOM8_DOMAIN",
+      "default": "https://autom8.oslabs.com.br",
+      "scope": "deploy",
+      "description": "Domínio validado no final do deploy."
+    },
+    {
+      "name": "AUTOM8_SERVICE_NAME",
+      "default": "",
+      "scope": "deploy",
+      "description": "Nome do serviço Docker Swarm que deve ser reiniciado após o build."
+    },
+    {
+      "name": "AUTOM8_RESTART_SERVICE",
+      "default": "1",
+      "scope": "deploy",
+      "description": "Use 0 para validar build sem reiniciar o serviço."
+    }
+  ],
+  "requirements": [
+    "Usuário comum com permissão de sudo.",
+    "bash, curl, tar, gzip, awk, sed, grep, find e sudo.",
+    "Gerenciador de pacotes suportado: apt, dnf, zypper ou pacman.",
+    "gum é instalado pelo instalador para melhorar a interface interativa.",
+    "Docker, Flatpak, Snap, jq, rsync, nmap e lsof podem ser usados por módulos específicos quando disponíveis."
+  ],
+  "install": {
+    "command": "curl -fsSL https://autom8.oslabs.com.br/install.sh | bash",
+    "after": [
+      "export PATH=\"/opt/autom8/bin:$PATH\"",
+      "autom8",
+      "autom8 doctor"
+    ],
+    "notes": [
+      "Não execute o instalador diretamente como root.",
+      "O instalador baixa o pacote estável mais recente do GitHub Releases.",
+      "A instalação padrão usa /opt/autom8.",
+      "Ao final, o instalador executa autom8 --version e autom8 doctor."
+    ]
+  },
+  "commands": [
+    {
+      "slug": "menu",
+      "command": "autom8",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Abre o menu interativo principal.",
+      "details": [
+        "Mostra o dashboard local com distro, permissões, disco, memória, Docker e firewall.",
+        "Permite acessar módulos sem decorar comandos."
+      ],
+      "examples": ["autom8"]
+    },
+    {
+      "slug": "version",
+      "command": "autom8 --version",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Mostra a versão instalada.",
+      "details": ["Lê a versão instalada a partir do arquivo VERSION dentro da suíte."],
+      "examples": ["autom8 --version"]
+    },
+    {
+      "slug": "doctor",
+      "command": "autom8 doctor",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.",
+      "details": [
+        "Gera relatório em reports/doctor-<data>.txt.",
+        "Verifica diretórios principais, arquivos obrigatórios, comandos obrigatórios e comandos opcionais.",
+        "Indicado após instalar, atualizar ou mover a suíte."
+      ],
+      "examples": ["autom8 doctor"]
+    },
+    {
+      "slug": "diagnose",
+      "command": "autom8 diagnose",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Gera diagnóstico local do sistema.",
+      "details": [
+        "Coleta informações de sistema, kernel, CPU, memória, disco, rede, DNS, serviços, firewall, portas, Docker, usuários e sessão gráfica.",
+        "Gera relatório em reports/diagnostic-<data>.txt."
+      ],
+      "examples": ["autom8 diagnose"]
+    },
+    {
+      "slug": "update",
+      "command": "autom8 update",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Atualiza repositórios e pacotes do sistema com confirmação.",
+      "details": [
+        "Suporta apt, dnf, zypper e pacman.",
+        "Bloqueia execução em distros não suportadas oficialmente.",
+        "Exige sudo e registra a execução em logs."
+      ],
+      "examples": ["autom8 update", "autom8 update --dry-run"]
+    },
+    {
+      "slug": "clean",
+      "command": "autom8 clean",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Executa limpeza segura de caches, temporários e arquivos antigos.",
+      "details": [
+        "Limpa cache do gerenciador de pacotes conforme a distro.",
+        "Remove temporários antigos em /tmp e /var/tmp.",
+        "Remove logs rotacionados antigos.",
+        "Pode limpar caches seguros de usuários, preservando caches de navegadores conhecidos.",
+        "Suporta simulação com --dry-run."
+      ],
+      "examples": ["autom8 clean", "autom8 clean --dry-run"]
+    },
+    {
+      "slug": "security",
+      "command": "autom8 security",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Executa checagem básica de segurança local.",
+      "details": [
+        "Mostra status de firewall conhecido.",
+        "Lista portas em escuta.",
+        "Verifica status básico de SSH."
+      ],
+      "examples": ["autom8 security"]
+    },
+    {
+      "slug": "docker",
+      "command": "autom8 docker",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Mostra informações do Docker quando disponível.",
+      "details": [
+        "Mostra versão do Docker.",
+        "Lista containers em execução.",
+        "Mostra uso de disco do Docker."
+      ],
+      "examples": ["autom8 docker"]
+    },
+    {
+      "slug": "users",
+      "command": "autom8 users",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Lista usuários locais e grupos administrativos.",
+      "details": [
+        "Mostra usuários com login permitido.",
+        "Mostra grupos sudo, wheel e admin quando existem.",
+        "Ações de bloqueio, shell e sudo ficam para versão futura."
+      ],
+      "examples": ["autom8 users"]
+    },
+    {
+      "slug": "config",
+      "command": "autom8 config",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Permite alterar configurações básicas da suíte.",
+      "details": [
+        "Permite selecionar idioma.",
+        "Permite selecionar modo padrão.",
+        "Permite selecionar nível de limpeza padrão.",
+        "Permite visualizar a configuração atual."
+      ],
+      "examples": ["autom8 config"]
+    },
+    {
+      "slug": "report",
+      "command": "autom8 report",
+      "status": "available",
+      "since": "0.1.0",
+      "summary": "Lista e exporta relatórios gerados.",
+      "details": [
+        "Lista arquivos em reports/.",
+        "Pode exportar relatórios em tar.gz pelo menu.",
+        "Também aceita autom8 report export para exportar logs e relatórios."
+      ],
+      "examples": ["autom8 report", "autom8 report export"]
+    },
+    {
+      "slug": "apps",
+      "command": "autom8 apps",
+      "status": "planned",
+      "since": "0.2.0",
+      "summary": "Instalação e remoção de aplicativos por catálogo.",
+      "details": ["Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0."],
+      "examples": ["autom8 apps"]
+    },
+    {
+      "slug": "profiles",
+      "command": "autom8 profiles",
+      "status": "planned",
+      "since": "0.2.0",
+      "summary": "Aplicação de perfis YAML para preparar ambientes.",
+      "details": ["Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0."],
+      "examples": ["autom8 profiles"]
+    },
+    {
+      "slug": "backup",
+      "command": "autom8 backup",
+      "status": "planned",
+      "since": "0.3.0",
+      "summary": "Backups simples antes de operações sensíveis.",
+      "details": ["Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.3.0."],
+      "examples": ["autom8 backup"]
+    },
+    {
+      "slug": "upgrade-distro",
+      "command": "autom8 upgrade-distro",
+      "status": "planned",
+      "since": "future",
+      "summary": "Preparação futura para upgrade de versão da distro.",
+      "details": ["Na versão 0.1.0, o módulo apenas informa que será implementado em versão futura."],
+      "examples": ["autom8 upgrade-distro"]
+    },
+    {
+      "slug": "self-update",
+      "command": "autom8 self-update",
+      "status": "partial",
+      "since": "0.1.0",
+      "summary": "Valida o pacote estável mais recente publicado no GitHub Releases.",
+      "details": [
+        "Na versão atual, baixa e valida o tar.gz estável quando o usuário confirma.",
+        "Atualização automática com rollback será implementada em versão futura."
+      ],
+      "examples": ["autom8 self-update"]
+    }
+  ],
+  "modules": [
+    {
+      "name": "Doctor",
+      "slug": "doctor",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 doctor",
+      "description": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios."
+    },
+    {
+      "name": "Diagnóstico",
+      "slug": "diagnose",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 diagnose",
+      "description": "Gera relatório local com informações de sistema, hardware, rede, firewall, Docker e usuários."
+    },
+    {
+      "name": "Atualização do Sistema",
+      "slug": "update",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 update",
+      "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
+    },
+    {
+      "name": "Limpeza",
+      "slug": "clean",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 clean",
+      "description": "Executa limpeza segura e suporta simulação com --dry-run."
+    },
+    {
+      "name": "Segurança",
+      "slug": "security",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 security",
+      "description": "Mostra firewall, portas em escuta e status básico de SSH."
+    },
+    {
+      "name": "Docker",
+      "slug": "docker",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 docker",
+      "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
+    },
+    {
+      "name": "Usuários",
+      "slug": "users",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 users",
+      "description": "Lista usuários com login permitido e grupos administrativos."
+    },
+    {
+      "name": "Configurações",
+      "slug": "config",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 config",
+      "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+    },
+    {
+      "name": "Relatórios",
+      "slug": "report",
+      "status": "available",
+      "version": "0.1.0",
+      "command": "autom8 report",
+      "description": "Lista e exporta relatórios gerados pela suíte."
+    },
+    {
+      "name": "Apps",
+      "slug": "apps",
+      "status": "planned",
+      "version": "0.2.0",
+      "command": "autom8 apps",
+      "description": "Instalação e remoção de aplicativos por catálogo. Planejado para 0.2.0."
+    },
+    {
+      "name": "Perfis",
+      "slug": "profiles",
+      "status": "planned",
+      "version": "0.2.0",
+      "command": "autom8 profiles",
+      "description": "Perfis YAML para preparar ambientes. Planejado para 0.2.0."
+    },
+    {
+      "name": "Backup",
+      "slug": "backup",
+      "status": "planned",
+      "version": "0.3.0",
+      "command": "autom8 backup",
+      "description": "Backups simples antes de operações sensíveis. Planejado para 0.3.0."
+    }
+  ],
+  "roadmap": [
+    {
+      "version": "0.1.0",
+      "title": "Base funcional e release estável",
+      "items": [
+        "Estrutura /opt/autom8.",
+        "Instalador install.sh.",
+        "Comando autom8.",
+        "Detecção de distro e gerenciador de pacotes.",
+        "Logs próprios.",
+        "Menu interativo com gum.",
+        "Doctor.",
+        "Diagnóstico.",
+        "Update básico.",
+        "Limpeza segura com dry-run.",
+        "Checagens básicas de segurança.",
+        "Docker status.",
+        "Usuários.",
+        "Configurações.",
+        "Relatórios.",
+        "Site oficial.",
+        "Distribuição estável via GitHub Releases."
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "title": "Apps e perfis",
+      "items": [
+        "Catálogo YAML.",
+        "Instalação e remoção de apps.",
+        "Perfis YAML.",
+        "Modo mínimo seguro.",
+        "Modo completo.",
+        "Seleção individual de apps.",
+        "Flatpak e Flathub."
+      ]
+    },
+    {
+      "version": "0.3.0",
+      "title": "Operação, backups e segurança expandida",
+      "items": [
+        "Backup funcional.",
+        "Rollback parcial.",
+        "Security expandido.",
+        "Users com ações administrativas.",
+        "Docker com manutenção orientada.",
+        "Relatórios exportáveis mais completos."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "title": "Primeira versão estável completa",
+      "items": [
+        "Suporte testado nas distros oficiais.",
+        "Documentação completa.",
+        "Changelog versionado.",
+        "Instalação estável.",
+        "Self-update com rollback documentado.",
+        "Pipeline de release estável documentado."
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-07-06",
+      "status": "published",
+      "changes": [
+        "Estrutura inicial da suíte AutoM8.",
+        "Primeiro instalador público.",
+        "Primeiro site oficial.",
+        "Comando autom8 com menu interativo.",
+        "Módulos doctor, diagnose, update e clean.",
+        "Checagens básicas de security, docker e users.",
+        "Configurações e relatórios iniciais.",
+        "Melhorado comportamento do autom8 clean --dry-run.",
+        "Distribuição estável movida para GitHub Releases.",
+        "install.sh passa a baixar o pacote estável mais recente do GitHub Releases.",
+        "Build do site deixa de publicar pacotes da suíte na VPS.",
+        "Documentação passa a usar fonte única para site, README, roadmap, changelog e help."
+      ]
+    }
+  ],
+  "troubleshooting": [
+    {
+      "title": "Comando autom8 não encontrado",
+      "solution": "Execute export PATH=\"/opt/autom8/bin:$PATH\" ou abra uma nova sessão de terminal após a instalação."
+    },
+    {
+      "title": "Instalador bloqueou execução como root",
+      "solution": "Execute o instalador com um usuário comum que tenha permissão de sudo."
+    },
+    {
+      "title": "Doctor encontrou comandos opcionais ausentes",
+      "solution": "Comandos opcionais podem ser instalados conforme necessidade. Falhas críticas aparecem separadas de avisos."
+    },
+    {
+      "title": "Distro não suportada oficialmente",
+      "solution": "Na versão atual, ações administrativas ficam bloqueadas e diagnóstico permanece disponível."
+    },
+    {
+      "title": "GitHub Release sem pacote latest",
+      "solution": "Publique a release estável com scripts/release-stable.sh a partir da branch main após merge."
+    }
+  ]
+}

@@ -2,19 +2,20 @@
   {
     "version": "0.1.0",
     "date": "2026-07-06",
+    "status": "published",
     "changes": [
       "Estrutura inicial da suíte AutoM8.",
-      "Primeiro instalador local e remoto.",
+      "Primeiro instalador público.",
       "Primeiro site oficial.",
-      "Módulos iniciais de diagnóstico, update e limpeza segura.",
-      "Adicionado comando autom8 doctor.",
-      "Melhorado comportamento do autom8 clean --dry-run para simulação sem remoção.",
-      "Ajustado deploy da VPS para não depender de npm instalado no host.",
-      "Primeira versão funcional publicada.",
-      "Site oficial publicado em https://autom8.oslabs.com.br.",
-      "Instalador público disponível em /install.sh.",
-      "Pacotes públicos disponíveis em /downloads/autom8-latest.tar.gz e /downloads/autom8-0.1.0.tar.gz."
-    ],
-    "status": "published"
+      "Comando autom8 com menu interativo.",
+      "Módulos doctor, diagnose, update e clean.",
+      "Checagens básicas de security, docker e users.",
+      "Configurações e relatórios iniciais.",
+      "Melhorado comportamento do autom8 clean --dry-run.",
+      "Distribuição estável movida para GitHub Releases.",
+      "install.sh passa a baixar o pacote estável mais recente do GitHub Releases.",
+      "Build do site deixa de publicar pacotes da suíte na VPS.",
+      "Documentação passa a usar fonte única para site, README, roadmap, changelog e help."
+    ]
   }
 ]

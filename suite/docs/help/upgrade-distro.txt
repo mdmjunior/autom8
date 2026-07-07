@@ -1,0 +1,12 @@
+AutoM8 help: autom8 upgrade-distro
+
+Status: planned
+Desde: future
+
+Preparação futura para upgrade de versão da distro.
+
+Detalhes:
+- Na versão 0.1.0, o módulo apenas informa que será implementado em versão futura.
+
+Exemplos:
+  autom8 upgrade-distro

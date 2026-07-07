@@ -1,0 +1,14 @@
+AutoM8 help: autom8 doctor
+
+Status: available
+Desde: 0.1.0
+
+Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.
+
+Detalhes:
+- Gera relatório em reports/doctor-<data>.txt.
+- Verifica diretórios principais, arquivos obrigatórios, comandos obrigatórios e comandos opcionais.
+- Indicado após instalar, atualizar ou mover a suíte.
+
+Exemplos:
+  autom8 doctor

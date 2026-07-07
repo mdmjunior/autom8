@@ -2,7 +2,8 @@
 set -euo pipefail
 
 AUTOM8_SITE_URL="${AUTOM8_SITE_URL:-https://autom8.oslabs.com.br}"
-AUTOM8_PACKAGE_URL="${AUTOM8_PACKAGE_URL:-$AUTOM8_SITE_URL/downloads/autom8-latest.tar.gz}"
+AUTOM8_GITHUB_REPO="${AUTOM8_GITHUB_REPO:-mdmjunior/autom8}"
+AUTOM8_PACKAGE_URL="${AUTOM8_PACKAGE_URL:-https://github.com/${AUTOM8_GITHUB_REPO}/releases/latest/download/autom8-latest.tar.gz}"
 AUTOM8_INSTALL_DIR="${AUTOM8_INSTALL_DIR:-/opt/autom8}"
 
 info() {
@@ -315,7 +316,8 @@ install_package() {
   local tmp_dir
   tmp_dir="$(mktemp -d)"
 
-  info "Baixando pacote: $AUTOM8_PACKAGE_URL"
+  info "Baixando última versão estável do AutoM8."
+  info "Origem: $AUTOM8_PACKAGE_URL"
   curl -fsSL "$AUTOM8_PACKAGE_URL" -o "$tmp_dir/autom8.tar.gz"
 
   info "Instalando em: $AUTOM8_INSTALL_DIR"

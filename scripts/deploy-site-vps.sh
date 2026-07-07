@@ -46,13 +46,13 @@ git checkout "$BRANCH"
 git pull --ff-only origin "$BRANCH"
 
 log "Garantindo permissão dos scripts..."
-chmod +x scripts/package.sh
 chmod +x scripts/build-site.sh
+chmod +x scripts/deploy-site-vps.sh
 
-log "Gerando pacote da suíte e build do site..."
+log "Gerando build do site..."
 ./scripts/build-site.sh
 
-log "Validando artefatos do build..."
+log "Validando artefatos do site..."
 
 if [[ ! -d "$REPO_DIR/site/dist" ]]; then
   error "Build não gerou site/dist"
@@ -64,14 +64,14 @@ if [[ ! -f "$REPO_DIR/site/dist/install.sh" ]]; then
   exit 1
 fi
 
-if [[ ! -f "$REPO_DIR/site/dist/downloads/autom8-latest.tar.gz" ]]; then
-  error "Build não gerou site/dist/downloads/autom8-latest.tar.gz"
-  exit 1
+if [[ -d "$REPO_DIR/site/dist/downloads" ]]; then
+  warn "Diretório site/dist/downloads encontrado."
+  warn "Pacotes da suíte não devem mais ser publicados pela VPS."
+  warn "Revise se há arquivos legados no site/public/downloads."
 fi
 
-log "Artefatos validados:"
+log "Artefatos do site validados:"
 ls -lah "$REPO_DIR/site/dist" | head
-ls -lah "$REPO_DIR/site/dist/downloads"
 
 if [[ "$RESTART_SERVICE" == "1" ]]; then
   if [[ -n "$SERVICE_NAME" ]]; then
@@ -90,5 +90,6 @@ fi
 
 log "Testando domínio..."
 curl -I "$DOMAIN" || true
+curl -I "$DOMAIN/install.sh" || true
 
 log "Deploy finalizado."

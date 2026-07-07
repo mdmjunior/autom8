@@ -1,0 +1,13 @@
+AutoM8 help: autom8 self-update
+
+Status: partial
+Desde: 0.1.0
+
+Valida o pacote estável mais recente publicado no GitHub Releases.
+
+Detalhes:
+- Na versão atual, baixa e valida o tar.gz estável quando o usuário confirma.
+- Atualização automática com rollback será implementada em versão futura.
+
+Exemplos:
+  autom8 self-update

@@ -1,0 +1,14 @@
+AutoM8 help: autom8 users
+
+Status: available
+Desde: 0.1.0
+
+Lista usuários locais e grupos administrativos.
+
+Detalhes:
+- Mostra usuários com login permitido.
+- Mostra grupos sudo, wheel e admin quando existem.
+- Ações de bloqueio, shell e sudo ficam para versão futura.
+
+Exemplos:
+  autom8 users

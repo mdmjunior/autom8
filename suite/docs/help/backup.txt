@@ -1,0 +1,12 @@
+AutoM8 help: autom8 backup
+
+Status: planned
+Desde: 0.3.0
+
+Backups simples antes de operações sensíveis.
+
+Detalhes:
+- Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.3.0.
+
+Exemplos:
+  autom8 backup
