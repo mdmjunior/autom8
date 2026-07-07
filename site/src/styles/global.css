@@ -718,3 +718,104 @@ a {
 
 /* === /AutoM8 modern product landing v1 === */
 
+
+/* === AutoM8 refinement v1 === */
+
+.site-brand-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.site-brand-compact__icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 34px rgba(56, 189, 248, 0.28);
+}
+
+.site-brand-compact__name {
+  color: #f8fafc;
+  font-size: 1.15rem;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.site-brand-compact__name span {
+  color: #38bdf8;
+}
+
+.hero-brand-mark {
+  display: inline-flex;
+  padding: 0.85rem;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.18), transparent 58%),
+    rgba(15, 23, 42, 0.72);
+  box-shadow:
+    0 30px 90px rgba(37, 99, 235, 0.24),
+    inset 0 1px 0 rgba(248, 250, 252, 0.08);
+}
+
+.hero-brand-mark img {
+  width: 6.25rem;
+  height: 6.25rem;
+}
+
+.module-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.module-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.18), transparent 55%),
+    rgba(37, 99, 235, 0.10);
+  color: #38bdf8;
+  box-shadow: 0 18px 50px rgba(37, 99, 235, 0.16);
+}
+
+.module-icon svg {
+  width: 1.55rem;
+  height: 1.55rem;
+  fill: currentColor;
+}
+
+.module-card-top .module-command {
+  margin-bottom: 0;
+}
+
+.modern-module-card {
+  min-height: 14.5rem;
+}
+
+.platform-pill img,
+.distro-card img {
+  background: rgba(15, 23, 42, 0.56);
+  border-radius: 1rem;
+}
+
+@media (max-width: 767px) {
+  .site-brand-compact__name {
+    display: none;
+  }
+
+  .hero-brand-mark img {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+/* === /AutoM8 refinement v1 === */
