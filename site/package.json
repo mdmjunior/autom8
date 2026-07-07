@@ -11,7 +11,7 @@
   "dependencies": {
     "@tailwindcss/vite": "latest",
     "astro": "latest",
+    "simple-icons": "^16.25.0",
     "tailwindcss": "latest"
-  },
-  "devDependencies": {}
+  }
 }
