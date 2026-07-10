@@ -29,13 +29,83 @@ autom8_apps_require_catalog() {
 
 autom8_apps_pm_key() {
   case "$AUTOM8_PACKAGE_MANAGER" in
-    apt|dnf|zypper|pacman)
-      printf '%s\n' "$AUTOM8_PACKAGE_MANAGER"
+    apt|dnf|zypper|pacman) printf '%s\n' "$AUTOM8_PACKAGE_MANAGER" ;;
+    *) printf 'unknown\n' ;;
+  esac
+}
+
+autom8_apps_package_available() {
+  local package_name="$1"
+
+  case "$AUTOM8_PACKAGE_MANAGER" in
+    apt)
+      if command -v dpkg-query >/dev/null 2>&1 && dpkg-query -W -f='${Status}' "$package_name" 2>/dev/null | grep -q "install ok installed"; then
+        return 0
+      fi
+
+      if command -v apt-cache >/dev/null 2>&1; then
+        local candidate
+        candidate="$(apt-cache policy "$package_name" 2>/dev/null | awk '/Candidate:/ {print $2; exit}')"
+        [[ -n "$candidate" && "$candidate" != "(none)" ]]
+        return $?
+      fi
       ;;
-    *)
-      printf 'unknown\n'
+
+    dnf)
+      if command -v rpm >/dev/null 2>&1 && rpm -q "$package_name" >/dev/null 2>&1; then
+        return 0
+      fi
+
+      dnf list "$package_name" >/dev/null 2>&1
+      return $?
+      ;;
+
+    zypper)
+      if command -v rpm >/dev/null 2>&1 && rpm -q "$package_name" >/dev/null 2>&1; then
+        return 0
+      fi
+
+      zypper --non-interactive search --match-exact "$package_name" 2>/dev/null | awk -F'|' -v pkg="$package_name" '
+        NR > 2 {
+          gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2)
+          if ($2 == pkg) found=1
+        }
+        END {exit found ? 0 : 1}
+      '
+      return $?
+      ;;
+
+    pacman)
+      pacman -Qi "$package_name" >/dev/null 2>&1 || pacman -Si "$package_name" >/dev/null 2>&1
+      return $?
       ;;
   esac
+
+  return 1
+}
+
+autom8_apps_validate_packages_available() {
+  local package_name
+  local missing=0
+
+  autom8_section "Validação de pacotes"
+
+  for package_name in "$@"; do
+    if autom8_apps_package_available "$package_name"; then
+      autom8_status_ok "Pacote disponível: $package_name"
+    else
+      autom8_status_fail "Pacote indisponível: $package_name"
+      missing=$((missing + 1))
+    fi
+  done
+
+  if [[ "$missing" -gt 0 ]]; then
+    autom8_warn_ui "Um ou mais pacotes não estão disponíveis nos repositórios atuais."
+    autom8_note "Atualize o catálogo/repositórios ou habilite o repositório necessário antes de instalar."
+    return 1
+  fi
+
+  return 0
 }
 
 autom8_apps_list() {
@@ -55,7 +125,7 @@ autom8_apps_list() {
 
   jq -r '
     .apps[]
-    | "  " + (.id | .[0:18]) + " | " + (.name | .[0:28]) + " | " + (.category // "uncategorized") + " | " + (.summary // "")
+    | "  " + (.id | .[0:20]) + " | " + (.name | .[0:28]) + " | " + (.category // "uncategorized") + " | " + (.summary // "")
   ' "$catalog"
 
   autom8_summary_ok "Catálogo listado"
@@ -84,9 +154,10 @@ autom8_apps_search() {
         (.id | ascii_downcase | contains($q))
         or (.name | ascii_downcase | contains($q))
         or (.summary | ascii_downcase | contains($q))
+        or (.category | ascii_downcase | contains($q))
         or ((.tags // []) | join(" ") | ascii_downcase | contains($q))
       )
-    | "  " + .id + " | " + .name + " | " + (.summary // "")
+    | "  " + .id + " | " + .name + " | " + (.category // "uncategorized") + " | " + (.summary // "")
   ' "$catalog"
 
   autom8_summary_ok "Busca executada"
@@ -142,6 +213,16 @@ autom8_apps_show() {
   fi
 
   echo
+  autom8_section "Tags"
+  jq -r --arg id "$app_id" '
+    .apps[]
+    | select(.id == $id)
+    | (.tags // [])
+    | .[]
+    | "  - " + .
+  ' "$catalog"
+
+  echo
   autom8_section "Notas"
   jq -r --arg id "$app_id" '
     .apps[]
@@ -178,21 +259,11 @@ autom8_apps_install_command_preview() {
   local packages=("$@")
 
   case "$AUTOM8_PACKAGE_MANAGER" in
-    apt)
-      printf 'sudo apt update && sudo apt install -y %s\n' "${packages[*]}"
-      ;;
-    dnf)
-      printf 'sudo dnf install -y %s\n' "${packages[*]}"
-      ;;
-    zypper)
-      printf 'sudo zypper install -y %s\n' "${packages[*]}"
-      ;;
-    pacman)
-      printf 'sudo pacman -Sy --needed --noconfirm %s\n' "${packages[*]}"
-      ;;
-    *)
-      printf 'Gerenciador não suportado\n'
-      ;;
+    apt) printf 'sudo apt update && sudo apt install -y %s\n' "${packages[*]}" ;;
+    dnf) printf 'sudo dnf install -y %s\n' "${packages[*]}" ;;
+    zypper) printf 'sudo zypper install -y %s\n' "${packages[*]}" ;;
+    pacman) printf 'sudo pacman -Sy --needed --noconfirm %s\n' "${packages[*]}" ;;
+    *) printf 'Gerenciador não suportado\n' ;;
   esac
 }
 
@@ -257,7 +328,14 @@ autom8_apps_install() {
   autom8_section "Comando previsto"
   autom8_note "$(autom8_apps_install_command_preview "${packages[@]}")"
 
+  echo
+  if ! autom8_apps_validate_packages_available "${packages[@]}"; then
+    autom8_summary_fail "Instalação bloqueada por pacote indisponível"
+    return 1
+  fi
+
   if [[ "${AUTOM8_DRY_RUN:-false}" == "true" ]]; then
+    echo
     autom8_success "Simulação concluída. Nada foi instalado."
     autom8_summary_ok "Simulação de instalação concluída"
     return 0

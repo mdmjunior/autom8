@@ -17,6 +17,19 @@
       }
     },
     {
+      "id": "wget",
+      "name": "wget",
+      "summary": "Ferramenta para download via HTTP, HTTPS e FTP.",
+      "category": "system",
+      "tags": ["cli", "network", "download"],
+      "packages": {
+        "apt": ["wget"],
+        "dnf": ["wget"],
+        "zypper": ["wget"],
+        "pacman": ["wget"]
+      }
+    },
+    {
       "id": "git",
       "name": "Git",
       "summary": "Sistema de controle de versão distribuído.",
@@ -43,6 +56,19 @@
       }
     },
     {
+      "id": "nano",
+      "name": "nano",
+      "summary": "Editor de texto simples para terminal.",
+      "category": "development",
+      "tags": ["editor", "terminal", "simple"],
+      "packages": {
+        "apt": ["nano"],
+        "dnf": ["nano"],
+        "zypper": ["nano"],
+        "pacman": ["nano"]
+      }
+    },
+    {
       "id": "htop",
       "name": "htop",
       "summary": "Monitor interativo de processos.",
@@ -53,6 +79,19 @@
         "dnf": ["htop"],
         "zypper": ["htop"],
         "pacman": ["htop"]
+      }
+    },
+    {
+      "id": "btop",
+      "name": "btop",
+      "summary": "Monitor moderno de recursos do sistema.",
+      "category": "system",
+      "tags": ["monitoring", "terminal", "resources"],
+      "packages": {
+        "apt": ["btop"],
+        "dnf": ["btop"],
+        "zypper": ["btop"],
+        "pacman": ["btop"]
       }
     },
     {
@@ -69,26 +108,139 @@
       }
     },
     {
-      "id": "vscode",
-      "name": "Visual Studio Code",
-      "summary": "Editor moderno da Microsoft para desenvolvimento.",
+      "id": "ripgrep",
+      "name": "ripgrep",
+      "summary": "Busca rápida de texto em arquivos.",
       "category": "development",
-      "tags": ["editor", "ide", "gui"],
+      "tags": ["search", "terminal", "dev"],
       "packages": {
-        "apt": ["code"],
-        "dnf": ["code"],
-        "zypper": ["code"],
-        "pacman": ["code"]
+        "apt": ["ripgrep"],
+        "dnf": ["ripgrep"],
+        "zypper": ["ripgrep"],
+        "pacman": ["ripgrep"]
+      }
+    },
+    {
+      "id": "fd",
+      "name": "fd",
+      "summary": "Alternativa moderna ao find.",
+      "category": "development",
+      "tags": ["search", "terminal", "files"],
+      "packages": {
+        "apt": ["fd-find"],
+        "dnf": ["fd-find"],
+        "zypper": ["fd"],
+        "pacman": ["fd"]
       },
       "notes": [
-        "Pode exigir repositório externo da Microsoft em algumas distros.",
-        "Na v0.2.0 o AutoM8 apenas valida e executa pacotes disponíveis no gerenciador."
+        "No Ubuntu/Debian o binário pode ser instalado como fdfind."
+      ]
+    },
+    {
+      "id": "tree",
+      "name": "tree",
+      "summary": "Exibe diretórios em formato de árvore.",
+      "category": "system",
+      "tags": ["terminal", "files"],
+      "packages": {
+        "apt": ["tree"],
+        "dnf": ["tree"],
+        "zypper": ["tree"],
+        "pacman": ["tree"]
+      }
+    },
+    {
+      "id": "neofetch",
+      "name": "neofetch",
+      "summary": "Mostra informações do sistema no terminal.",
+      "category": "system",
+      "tags": ["terminal", "info"],
+      "packages": {
+        "apt": ["neofetch"],
+        "dnf": ["neofetch"],
+        "zypper": ["neofetch"],
+        "pacman": ["neofetch"]
+      },
+      "notes": [
+        "Pode não estar disponível em todas as versões recentes das distros."
+      ]
+    },
+    {
+      "id": "fastfetch",
+      "name": "fastfetch",
+      "summary": "Alternativa moderna ao neofetch.",
+      "category": "system",
+      "tags": ["terminal", "info"],
+      "packages": {
+        "apt": ["fastfetch"],
+        "dnf": ["fastfetch"],
+        "zypper": ["fastfetch"],
+        "pacman": ["fastfetch"]
+      },
+      "notes": [
+        "A disponibilidade depende da versão da distro e dos repositórios habilitados."
+      ]
+    },
+    {
+      "id": "tmux",
+      "name": "tmux",
+      "summary": "Multiplexador de terminal.",
+      "category": "development",
+      "tags": ["terminal", "productivity"],
+      "packages": {
+        "apt": ["tmux"],
+        "dnf": ["tmux"],
+        "zypper": ["tmux"],
+        "pacman": ["tmux"]
+      }
+    },
+    {
+      "id": "build-essential",
+      "name": "Build tools",
+      "summary": "Ferramentas básicas de compilação.",
+      "category": "development",
+      "tags": ["compiler", "build", "dev"],
+      "packages": {
+        "apt": ["build-essential"],
+        "dnf": ["gcc", "gcc-c++", "make"],
+        "zypper": ["gcc", "gcc-c++", "make"],
+        "pacman": ["base-devel"]
+      }
+    },
+    {
+      "id": "python3",
+      "name": "Python 3",
+      "summary": "Python 3, pip e ambiente virtual.",
+      "category": "development",
+      "tags": ["python", "dev"],
+      "packages": {
+        "apt": ["python3", "python3-pip", "python3-venv"],
+        "dnf": ["python3", "python3-pip"],
+        "zypper": ["python3", "python3-pip"],
+        "pacman": ["python", "python-pip"]
+      }
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js",
+      "summary": "Runtime JavaScript e npm pelos repositórios da distro.",
+      "category": "development",
+      "tags": ["node", "javascript", "web"],
+      "packages": {
+        "apt": ["nodejs", "npm"],
+        "dnf": ["nodejs", "npm"],
+        "zypper": ["nodejs", "npm"],
+        "pacman": ["nodejs", "npm"]
+      },
+      "notes": [
+        "Instala a versão disponível no repositório da distro.",
+        "Gerenciamento avançado por nvm/asdf fica para uma versão futura."
       ]
     },
     {
       "id": "docker",
       "name": "Docker",
-      "summary": "Plataforma de containers.",
+      "summary": "Plataforma de containers pelos pacotes da distro.",
       "category": "development",
       "tags": ["containers", "devops"],
       "packages": {
@@ -99,8 +251,86 @@
       },
       "notes": [
         "Instala apenas o pacote disponível no gerenciador da distro.",
-        "Configurações avançadas do Docker permanecem no módulo docker."
+        "Configurações avançadas permanecem no módulo docker."
       ]
+    },
+    {
+      "id": "flatpak",
+      "name": "Flatpak",
+      "summary": "Sistema de empacotamento universal para apps desktop.",
+      "category": "desktop",
+      "tags": ["desktop", "apps"],
+      "packages": {
+        "apt": ["flatpak"],
+        "dnf": ["flatpak"],
+        "zypper": ["flatpak"],
+        "pacman": ["flatpak"]
+      }
+    },
+    {
+      "id": "gimp",
+      "name": "GIMP",
+      "summary": "Editor de imagens.",
+      "category": "design",
+      "tags": ["image", "design", "desktop"],
+      "packages": {
+        "apt": ["gimp"],
+        "dnf": ["gimp"],
+        "zypper": ["gimp"],
+        "pacman": ["gimp"]
+      }
+    },
+    {
+      "id": "inkscape",
+      "name": "Inkscape",
+      "summary": "Editor de gráficos vetoriais.",
+      "category": "design",
+      "tags": ["vector", "design", "desktop"],
+      "packages": {
+        "apt": ["inkscape"],
+        "dnf": ["inkscape"],
+        "zypper": ["inkscape"],
+        "pacman": ["inkscape"]
+      }
+    },
+    {
+      "id": "krita",
+      "name": "Krita",
+      "summary": "Ferramenta de pintura digital.",
+      "category": "design",
+      "tags": ["drawing", "design", "desktop"],
+      "packages": {
+        "apt": ["krita"],
+        "dnf": ["krita"],
+        "zypper": ["krita"],
+        "pacman": ["krita"]
+      }
+    },
+    {
+      "id": "vlc",
+      "name": "VLC",
+      "summary": "Player multimídia.",
+      "category": "media",
+      "tags": ["video", "audio", "desktop"],
+      "packages": {
+        "apt": ["vlc"],
+        "dnf": ["vlc"],
+        "zypper": ["vlc"],
+        "pacman": ["vlc"]
+      }
+    },
+    {
+      "id": "obs-studio",
+      "name": "OBS Studio",
+      "summary": "Gravação e transmissão de vídeo.",
+      "category": "media",
+      "tags": ["video", "streaming", "recording"],
+      "packages": {
+        "apt": ["obs-studio"],
+        "dnf": ["obs-studio"],
+        "zypper": ["obs-studio"],
+        "pacman": ["obs-studio"]
+      }
     }
   ]
 }
