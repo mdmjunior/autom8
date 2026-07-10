@@ -1,12 +1,24 @@
 AutoM8 help: autom8 apps
 
-Status: planned
+Status: available
 Desde: 0.2.0
 
-Instalação e remoção de aplicativos por catálogo.
+Instala aplicativos por catálogo local atualizável online.
 
 Detalhes:
-- Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0.
+- autom8 apps abre o menu interativo do módulo.
+- autom8 apps list lista aplicativos disponíveis.
+- autom8 apps search <termo> busca por ID, nome, resumo ou tags.
+- autom8 apps show <id> mostra detalhes do app.
+- autom8 apps install <id> instala o app com confirmação explícita.
+- autom8 --dry-run apps install <id> mostra o comando previsto sem instalar.
+- autom8 apps update-catalog baixa o catálogo mais recente do repositório.
 
 Exemplos:
   autom8 apps
+  autom8 apps list
+  autom8 apps search docker
+  autom8 apps show git
+  autom8 --dry-run apps install git
+  autom8 apps install htop
+  autom8 apps update-catalog

@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "version": "0.2.0",
+  "updatedAt": "2026-07-10",
+  "apps": [
+    {
+      "id": "curl",
+      "name": "curl",
+      "summary": "Cliente HTTP de linha de comando.",
+      "category": "system",
+      "tags": ["cli", "network", "http"],
+      "packages": {
+        "apt": ["curl"],
+        "dnf": ["curl"],
+        "zypper": ["curl"],
+        "pacman": ["curl"]
+      }
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "summary": "Sistema de controle de versão distribuído.",
+      "category": "development",
+      "tags": ["dev", "scm", "github"],
+      "packages": {
+        "apt": ["git"],
+        "dnf": ["git"],
+        "zypper": ["git"],
+        "pacman": ["git"]
+      }
+    },
+    {
+      "id": "vim",
+      "name": "Vim",
+      "summary": "Editor de texto avançado para terminal.",
+      "category": "development",
+      "tags": ["editor", "terminal"],
+      "packages": {
+        "apt": ["vim"],
+        "dnf": ["vim-enhanced"],
+        "zypper": ["vim"],
+        "pacman": ["vim"]
+      }
+    },
+    {
+      "id": "htop",
+      "name": "htop",
+      "summary": "Monitor interativo de processos.",
+      "category": "system",
+      "tags": ["monitoring", "terminal"],
+      "packages": {
+        "apt": ["htop"],
+        "dnf": ["htop"],
+        "zypper": ["htop"],
+        "pacman": ["htop"]
+      }
+    },
+    {
+      "id": "jq",
+      "name": "jq",
+      "summary": "Processador JSON para linha de comando.",
+      "category": "development",
+      "tags": ["json", "cli", "automation"],
+      "packages": {
+        "apt": ["jq"],
+        "dnf": ["jq"],
+        "zypper": ["jq"],
+        "pacman": ["jq"]
+      }
+    },
+    {
+      "id": "vscode",
+      "name": "Visual Studio Code",
+      "summary": "Editor moderno da Microsoft para desenvolvimento.",
+      "category": "development",
+      "tags": ["editor", "ide", "gui"],
+      "packages": {
+        "apt": ["code"],
+        "dnf": ["code"],
+        "zypper": ["code"],
+        "pacman": ["code"]
+      },
+      "notes": [
+        "Pode exigir repositório externo da Microsoft em algumas distros.",
+        "Na v0.2.0 o AutoM8 apenas valida e executa pacotes disponíveis no gerenciador."
+      ]
+    },
+    {
+      "id": "docker",
+      "name": "Docker",
+      "summary": "Plataforma de containers.",
+      "category": "development",
+      "tags": ["containers", "devops"],
+      "packages": {
+        "apt": ["docker.io"],
+        "dnf": ["docker"],
+        "zypper": ["docker"],
+        "pacman": ["docker"]
+      },
+      "notes": [
+        "Instala apenas o pacote disponível no gerenciador da distro.",
+        "Configurações avançadas do Docker permanecem no módulo docker."
+      ]
+    }
+  ]
+}
