@@ -100,6 +100,27 @@ AutoM8 by OSLabs.
 Criado por Marcio Moreira Junior para a comunidade Linux.
 
 
+## Promoção para v0.2.0 estável
+
+A promoção para `v0.2.0` deve acontecer somente depois do RC aprovado em VM Ubuntu Desktop.
+
+Checklist:
+
+    docs/releases/0.2.0-stable-checklist.md
+
+Preparação com trava de aprovação:
+
+    ./scripts/prepare-stable-release.sh
+
+Esse script exige um resultado aprovado em:
+
+    docs/releases/results/0.2.0-rc1-ubuntu-desktop.md
+
+Depois da preparação, faça merge em `main` e publique com:
+
+    ./scripts/release-stable.sh
+
+
 ## Validação pós-RC
 
 Depois de publicar `v0.2.0-rc1`, valide em uma VM Ubuntu Desktop descartável.

@@ -150,3 +150,19 @@ Esse script valida:
 - profiles;
 - dry-runs;
 - bloqueio de app advanced.
+
+## Depois do RC aprovado
+
+Quando o RC estiver aprovado, registre o resultado em:
+
+    docs/releases/results/0.2.0-rc1-ubuntu-desktop.md
+
+Depois, na branch feature/apps-v0.2:
+
+    ./scripts/prepare-stable-release.sh
+
+Esse script ajusta `suite/VERSION` para `0.2.0`, valida catálogos, roda smoke, build e package.
+
+Depois disso, siga:
+
+    docs/releases/0.2.0-stable-checklist.md
