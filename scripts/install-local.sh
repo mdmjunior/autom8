@@ -82,11 +82,13 @@ if ! "$INSTALL_DIR/bin/autom8" --version >/dev/null; then
   exit 1
 fi
 
-if ! grep -q '/opt/autom8/bin' "$HOME/.bashrc" 2>/dev/null; then
+PATH_ENTRY="${INSTALL_DIR}/bin"
+
+if ! grep -Fq "$PATH_ENTRY" "$HOME/.bashrc" 2>/dev/null; then
   {
     echo
     echo "# AutoM8 - Linux Management Suite"
-    echo 'export PATH="/opt/autom8/bin:$PATH"'
+    printf 'export PATH="%s:%s"\n' "$PATH_ENTRY" "\$PATH"
   } >> "$HOME/.bashrc"
 fi
 
