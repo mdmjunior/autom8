@@ -99,6 +99,11 @@ if [[ -x "$PROJECT_ROOT/scripts/build-apps-catalog.sh" ]]; then
   "$PROJECT_ROOT/scripts/build-apps-catalog.sh"
 fi
 
+if [[ -x "$PROJECT_ROOT/scripts/validate-apps-catalog.sh" ]]; then
+  log "Validando catálogo de apps."
+  "$PROJECT_ROOT/scripts/validate-apps-catalog.sh"
+fi
+
 if [[ -x "$PROJECT_ROOT/scripts/sync-docs.sh" ]]; then
   log "Sincronizando documentação gerada."
   "$PROJECT_ROOT/scripts/sync-docs.sh"

@@ -26,6 +26,10 @@ fi
 
 python3 -m json.tool "$SUITE_DIR/catalog/apps.json" >/dev/null
 
+if [[ -x "$PROJECT_ROOT/scripts/validate-apps-catalog.sh" && "${AUTOM8_SKIP_APPS_CATALOG_VALIDATE:-0}" != "1" ]]; then
+  "$PROJECT_ROOT/scripts/validate-apps-catalog.sh"
+fi
+
 OUTPUT_DIR="${AUTOM8_PACKAGE_OUTPUT_DIR:-$(mktemp -d /tmp/autom8-package-${VERSION}-XXXXXX)}"
 
 mkdir -p "$OUTPUT_DIR"

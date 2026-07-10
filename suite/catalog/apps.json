@@ -1,336 +1,2108 @@
 {
-  "schema": 1,
+  "schema": 2,
   "version": "0.2.0",
   "updatedAt": "2026-07-10",
-  "apps": [
+  "source": "suite/catalog/apps/*.json",
+  "categories": [
     {
-      "id": "curl",
-      "name": "curl",
-      "summary": "Cliente HTTP de linha de comando.",
-      "category": "system",
-      "tags": ["cli", "network", "http"],
-      "packages": {
-        "apt": ["curl"],
-        "dnf": ["curl"],
-        "zypper": ["curl"],
-        "pacman": ["curl"]
-      }
+      "slug": "containers",
+      "name": "Containers",
+      "description": "Docker, Podman e ferramentas auxiliares para containers.",
+      "file": "suite/catalog/apps/containers.json"
     },
     {
-      "id": "wget",
-      "name": "wget",
-      "summary": "Ferramenta para download via HTTP, HTTPS e FTP.",
-      "category": "system",
-      "tags": ["cli", "network", "download"],
+      "slug": "desenvolvimento",
+      "name": "Desenvolvimento",
+      "description": "Editores, linguagens, compiladores e ferramentas para desenvolvimento.",
+      "file": "suite/catalog/apps/desenvolvimento.json"
+    },
+    {
+      "slug": "design",
+      "name": "Design",
+      "description": "Imagem, vetores, pintura digital e criação visual.",
+      "file": "suite/catalog/apps/design.json"
+    },
+    {
+      "slug": "escritorio",
+      "name": "Escritório",
+      "description": "Documentos, PDF, notas e ferramentas de escritório.",
+      "file": "suite/catalog/apps/escritorio.json"
+    },
+    {
+      "slug": "games",
+      "name": "Games",
+      "description": "Ferramentas para jogos, compatibilidade e desempenho.",
+      "file": "suite/catalog/apps/games.json"
+    },
+    {
+      "slug": "midia",
+      "name": "Mídia",
+      "description": "Áudio, vídeo, gravação e edição multimídia.",
+      "file": "suite/catalog/apps/midia.json"
+    },
+    {
+      "slug": "produtividade",
+      "name": "Produtividade",
+      "description": "Ferramentas para organização, acesso remoto e fluxo de trabalho.",
+      "file": "suite/catalog/apps/produtividade.json"
+    },
+    {
+      "slug": "rede",
+      "name": "Rede",
+      "description": "Ferramentas de diagnóstico e administração de rede.",
+      "file": "suite/catalog/apps/rede.json"
+    },
+    {
+      "slug": "sistema",
+      "name": "Sistema",
+      "description": "Utilitários básicos de manutenção, inspeção e suporte.",
+      "file": "suite/catalog/apps/sistema.json"
+    },
+    {
+      "slug": "usuario-local",
+      "name": "Usuário Local",
+      "description": "Ferramentas auxiliares para uso local, permissões, senhas e sessão.",
+      "file": "suite/catalog/apps/usuario-local.json"
+    }
+  ],
+  "apps": [
+    {
+      "id": "docker",
+      "name": "Docker",
+      "summary": "Engine de containers pelos pacotes da distro.",
+      "status": "available",
+      "tags": [
+        "containers"
+      ],
       "packages": {
-        "apt": ["wget"],
-        "dnf": ["wget"],
-        "zypper": ["wget"],
-        "pacman": ["wget"]
-      }
+        "apt": [
+          "docker.io"
+        ],
+        "dnf": [
+          "docker"
+        ],
+        "zypper": [
+          "docker"
+        ],
+        "pacman": [
+          "docker"
+        ]
+      },
+      "notes": [
+        "Instala apenas o pacote disponível no gerenciador da distro."
+      ],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "docker-compose",
+      "name": "Docker Compose",
+      "summary": "Orquestração local de containers.",
+      "status": "available",
+      "tags": [
+        "compose"
+      ],
+      "packages": {
+        "apt": [
+          "docker-compose-v2"
+        ],
+        "dnf": [
+          "docker-compose-plugin"
+        ],
+        "zypper": [
+          "docker-compose"
+        ],
+        "pacman": [
+          "docker-compose"
+        ]
+      },
+      "notes": [
+        "Nome do pacote pode variar conforme versão da distro."
+      ],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "podman",
+      "name": "Podman",
+      "summary": "Containers daemonless.",
+      "status": "available",
+      "tags": [
+        "containers"
+      ],
+      "packages": {
+        "apt": [
+          "podman"
+        ],
+        "dnf": [
+          "podman"
+        ],
+        "zypper": [
+          "podman"
+        ],
+        "pacman": [
+          "podman"
+        ]
+      },
+      "notes": [],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "buildah",
+      "name": "Buildah",
+      "summary": "Build de imagens OCI.",
+      "status": "available",
+      "tags": [
+        "oci"
+      ],
+      "packages": {
+        "apt": [
+          "buildah"
+        ],
+        "dnf": [
+          "buildah"
+        ],
+        "zypper": [
+          "buildah"
+        ],
+        "pacman": [
+          "buildah"
+        ]
+      },
+      "notes": [],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "skopeo",
+      "name": "Skopeo",
+      "summary": "Inspeção e cópia de imagens OCI.",
+      "status": "available",
+      "tags": [
+        "oci"
+      ],
+      "packages": {
+        "apt": [
+          "skopeo"
+        ],
+        "dnf": [
+          "skopeo"
+        ],
+        "zypper": [
+          "skopeo"
+        ],
+        "pacman": [
+          "skopeo"
+        ]
+      },
+      "notes": [],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "distrobox",
+      "name": "Distrobox",
+      "summary": "Containers integrados ao desktop.",
+      "status": "available",
+      "tags": [
+        "desktop",
+        "containers"
+      ],
+      "packages": {
+        "apt": [
+          "distrobox"
+        ],
+        "dnf": [
+          "distrobox"
+        ],
+        "zypper": [
+          "distrobox"
+        ],
+        "pacman": [
+          "distrobox"
+        ]
+      },
+      "notes": [],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "kubectl",
+      "name": "kubectl",
+      "summary": "Cliente Kubernetes.",
+      "status": "advanced",
+      "tags": [
+        "kubernetes"
+      ],
+      "packages": {
+        "apt": [
+          "kubectl"
+        ],
+        "dnf": [
+          "kubernetes-client"
+        ],
+        "zypper": [
+          "kubernetes-client"
+        ],
+        "pacman": [
+          "kubectl"
+        ]
+      },
+      "notes": [
+        "Pode exigir repositório externo ou versão específica."
+      ],
+      "category": "containers",
+      "categoryName": "Containers"
+    },
+    {
+      "id": "helm",
+      "name": "Helm",
+      "summary": "Gerenciador de charts Kubernetes.",
+      "status": "advanced",
+      "tags": [
+        "kubernetes"
+      ],
+      "packages": {
+        "apt": [
+          "helm"
+        ],
+        "dnf": [
+          "helm"
+        ],
+        "zypper": [
+          "helm"
+        ],
+        "pacman": [
+          "helm"
+        ]
+      },
+      "notes": [
+        "Pode exigir repositório externo."
+      ],
+      "category": "containers",
+      "categoryName": "Containers"
     },
     {
       "id": "git",
       "name": "Git",
-      "summary": "Sistema de controle de versão distribuído.",
-      "category": "development",
-      "tags": ["dev", "scm", "github"],
+      "summary": "Controle de versão distribuído.",
+      "status": "available",
+      "tags": [
+        "scm",
+        "github"
+      ],
       "packages": {
-        "apt": ["git"],
-        "dnf": ["git"],
-        "zypper": ["git"],
-        "pacman": ["git"]
-      }
+        "apt": [
+          "git"
+        ],
+        "dnf": [
+          "git"
+        ],
+        "zypper": [
+          "git"
+        ],
+        "pacman": [
+          "git"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "vim",
       "name": "Vim",
-      "summary": "Editor de texto avançado para terminal.",
-      "category": "development",
-      "tags": ["editor", "terminal"],
+      "summary": "Editor avançado para terminal.",
+      "status": "available",
+      "tags": [
+        "editor",
+        "terminal"
+      ],
       "packages": {
-        "apt": ["vim"],
-        "dnf": ["vim-enhanced"],
-        "zypper": ["vim"],
-        "pacman": ["vim"]
-      }
+        "apt": [
+          "vim"
+        ],
+        "dnf": [
+          "vim-enhanced"
+        ],
+        "zypper": [
+          "vim"
+        ],
+        "pacman": [
+          "vim"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "nano",
       "name": "nano",
-      "summary": "Editor de texto simples para terminal.",
-      "category": "development",
-      "tags": ["editor", "terminal", "simple"],
+      "summary": "Editor simples para terminal.",
+      "status": "available",
+      "tags": [
+        "editor",
+        "terminal"
+      ],
       "packages": {
-        "apt": ["nano"],
-        "dnf": ["nano"],
-        "zypper": ["nano"],
-        "pacman": ["nano"]
-      }
-    },
-    {
-      "id": "htop",
-      "name": "htop",
-      "summary": "Monitor interativo de processos.",
-      "category": "system",
-      "tags": ["monitoring", "terminal"],
-      "packages": {
-        "apt": ["htop"],
-        "dnf": ["htop"],
-        "zypper": ["htop"],
-        "pacman": ["htop"]
-      }
-    },
-    {
-      "id": "btop",
-      "name": "btop",
-      "summary": "Monitor moderno de recursos do sistema.",
-      "category": "system",
-      "tags": ["monitoring", "terminal", "resources"],
-      "packages": {
-        "apt": ["btop"],
-        "dnf": ["btop"],
-        "zypper": ["btop"],
-        "pacman": ["btop"]
-      }
+        "apt": [
+          "nano"
+        ],
+        "dnf": [
+          "nano"
+        ],
+        "zypper": [
+          "nano"
+        ],
+        "pacman": [
+          "nano"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "jq",
       "name": "jq",
       "summary": "Processador JSON para linha de comando.",
-      "category": "development",
-      "tags": ["json", "cli", "automation"],
+      "status": "available",
+      "tags": [
+        "json",
+        "automation"
+      ],
       "packages": {
-        "apt": ["jq"],
-        "dnf": ["jq"],
-        "zypper": ["jq"],
-        "pacman": ["jq"]
-      }
+        "apt": [
+          "jq"
+        ],
+        "dnf": [
+          "jq"
+        ],
+        "zypper": [
+          "jq"
+        ],
+        "pacman": [
+          "jq"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "ripgrep",
       "name": "ripgrep",
-      "summary": "Busca rápida de texto em arquivos.",
-      "category": "development",
-      "tags": ["search", "terminal", "dev"],
+      "summary": "Busca rápida em arquivos.",
+      "status": "available",
+      "tags": [
+        "search"
+      ],
       "packages": {
-        "apt": ["ripgrep"],
-        "dnf": ["ripgrep"],
-        "zypper": ["ripgrep"],
-        "pacman": ["ripgrep"]
-      }
+        "apt": [
+          "ripgrep"
+        ],
+        "dnf": [
+          "ripgrep"
+        ],
+        "zypper": [
+          "ripgrep"
+        ],
+        "pacman": [
+          "ripgrep"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "fd",
       "name": "fd",
       "summary": "Alternativa moderna ao find.",
-      "category": "development",
-      "tags": ["search", "terminal", "files"],
+      "status": "available",
+      "tags": [
+        "search",
+        "files"
+      ],
       "packages": {
-        "apt": ["fd-find"],
-        "dnf": ["fd-find"],
-        "zypper": ["fd"],
-        "pacman": ["fd"]
+        "apt": [
+          "fd-find"
+        ],
+        "dnf": [
+          "fd-find"
+        ],
+        "zypper": [
+          "fd"
+        ],
+        "pacman": [
+          "fd"
+        ]
       },
       "notes": [
         "No Ubuntu/Debian o binário pode ser instalado como fdfind."
-      ]
-    },
-    {
-      "id": "tree",
-      "name": "tree",
-      "summary": "Exibe diretórios em formato de árvore.",
-      "category": "system",
-      "tags": ["terminal", "files"],
-      "packages": {
-        "apt": ["tree"],
-        "dnf": ["tree"],
-        "zypper": ["tree"],
-        "pacman": ["tree"]
-      }
-    },
-    {
-      "id": "neofetch",
-      "name": "neofetch",
-      "summary": "Mostra informações do sistema no terminal.",
-      "category": "system",
-      "tags": ["terminal", "info"],
-      "packages": {
-        "apt": ["neofetch"],
-        "dnf": ["neofetch"],
-        "zypper": ["neofetch"],
-        "pacman": ["neofetch"]
-      },
-      "notes": [
-        "Pode não estar disponível em todas as versões recentes das distros."
-      ]
-    },
-    {
-      "id": "fastfetch",
-      "name": "fastfetch",
-      "summary": "Alternativa moderna ao neofetch.",
-      "category": "system",
-      "tags": ["terminal", "info"],
-      "packages": {
-        "apt": ["fastfetch"],
-        "dnf": ["fastfetch"],
-        "zypper": ["fastfetch"],
-        "pacman": ["fastfetch"]
-      },
-      "notes": [
-        "A disponibilidade depende da versão da distro e dos repositórios habilitados."
-      ]
+      ],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "tmux",
       "name": "tmux",
       "summary": "Multiplexador de terminal.",
-      "category": "development",
-      "tags": ["terminal", "productivity"],
+      "status": "available",
+      "tags": [
+        "terminal",
+        "productivity"
+      ],
       "packages": {
-        "apt": ["tmux"],
-        "dnf": ["tmux"],
-        "zypper": ["tmux"],
-        "pacman": ["tmux"]
-      }
+        "apt": [
+          "tmux"
+        ],
+        "dnf": [
+          "tmux"
+        ],
+        "zypper": [
+          "tmux"
+        ],
+        "pacman": [
+          "tmux"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "build-essential",
       "name": "Build tools",
       "summary": "Ferramentas básicas de compilação.",
-      "category": "development",
-      "tags": ["compiler", "build", "dev"],
+      "status": "available",
+      "tags": [
+        "compiler",
+        "build"
+      ],
       "packages": {
-        "apt": ["build-essential"],
-        "dnf": ["gcc", "gcc-c++", "make"],
-        "zypper": ["gcc", "gcc-c++", "make"],
-        "pacman": ["base-devel"]
-      }
+        "apt": [
+          "build-essential"
+        ],
+        "dnf": [
+          "gcc",
+          "gcc-c++",
+          "make"
+        ],
+        "zypper": [
+          "gcc",
+          "gcc-c++",
+          "make"
+        ],
+        "pacman": [
+          "base-devel"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "python3",
       "name": "Python 3",
-      "summary": "Python 3, pip e ambiente virtual.",
-      "category": "development",
-      "tags": ["python", "dev"],
+      "summary": "Python, pip e ambiente virtual.",
+      "status": "available",
+      "tags": [
+        "python"
+      ],
       "packages": {
-        "apt": ["python3", "python3-pip", "python3-venv"],
-        "dnf": ["python3", "python3-pip"],
-        "zypper": ["python3", "python3-pip"],
-        "pacman": ["python", "python-pip"]
-      }
+        "apt": [
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "dnf": [
+          "python3",
+          "python3-pip"
+        ],
+        "zypper": [
+          "python3",
+          "python3-pip"
+        ],
+        "pacman": [
+          "python",
+          "python-pip"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "nodejs",
       "name": "Node.js",
-      "summary": "Runtime JavaScript e npm pelos repositórios da distro.",
-      "category": "development",
-      "tags": ["node", "javascript", "web"],
+      "summary": "Node.js e npm pelos repositórios da distro.",
+      "status": "available",
+      "tags": [
+        "javascript",
+        "web"
+      ],
       "packages": {
-        "apt": ["nodejs", "npm"],
-        "dnf": ["nodejs", "npm"],
-        "zypper": ["nodejs", "npm"],
-        "pacman": ["nodejs", "npm"]
+        "apt": [
+          "nodejs",
+          "npm"
+        ],
+        "dnf": [
+          "nodejs",
+          "npm"
+        ],
+        "zypper": [
+          "nodejs",
+          "npm"
+        ],
+        "pacman": [
+          "nodejs",
+          "npm"
+        ]
       },
       "notes": [
-        "Instala a versão disponível no repositório da distro.",
-        "Gerenciamento avançado por nvm/asdf fica para uma versão futura."
-      ]
+        "Gerenciamento por nvm/asdf fica para versão futura."
+      ],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
-      "id": "docker",
-      "name": "Docker",
-      "summary": "Plataforma de containers pelos pacotes da distro.",
-      "category": "development",
-      "tags": ["containers", "devops"],
+      "id": "sqlite",
+      "name": "SQLite",
+      "summary": "Banco de dados local leve.",
+      "status": "available",
+      "tags": [
+        "database"
+      ],
       "packages": {
-        "apt": ["docker.io"],
-        "dnf": ["docker"],
-        "zypper": ["docker"],
-        "pacman": ["docker"]
+        "apt": [
+          "sqlite3"
+        ],
+        "dnf": [
+          "sqlite"
+        ],
+        "zypper": [
+          "sqlite3"
+        ],
+        "pacman": [
+          "sqlite"
+        ]
       },
-      "notes": [
-        "Instala apenas o pacote disponível no gerenciador da distro.",
-        "Configurações avançadas permanecem no módulo docker."
-      ]
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
-      "id": "flatpak",
-      "name": "Flatpak",
-      "summary": "Sistema de empacotamento universal para apps desktop.",
-      "category": "desktop",
-      "tags": ["desktop", "apps"],
+      "id": "postgresql-client",
+      "name": "PostgreSQL Client",
+      "summary": "Cliente PostgreSQL.",
+      "status": "available",
+      "tags": [
+        "database"
+      ],
       "packages": {
-        "apt": ["flatpak"],
-        "dnf": ["flatpak"],
-        "zypper": ["flatpak"],
-        "pacman": ["flatpak"]
-      }
+        "apt": [
+          "postgresql-client"
+        ],
+        "dnf": [
+          "postgresql"
+        ],
+        "zypper": [
+          "postgresql"
+        ],
+        "pacman": [
+          "postgresql"
+        ]
+      },
+      "notes": [],
+      "category": "desenvolvimento",
+      "categoryName": "Desenvolvimento"
     },
     {
       "id": "gimp",
       "name": "GIMP",
       "summary": "Editor de imagens.",
-      "category": "design",
-      "tags": ["image", "design", "desktop"],
+      "status": "available",
+      "tags": [
+        "image"
+      ],
       "packages": {
-        "apt": ["gimp"],
-        "dnf": ["gimp"],
-        "zypper": ["gimp"],
-        "pacman": ["gimp"]
-      }
+        "apt": [
+          "gimp"
+        ],
+        "dnf": [
+          "gimp"
+        ],
+        "zypper": [
+          "gimp"
+        ],
+        "pacman": [
+          "gimp"
+        ]
+      },
+      "notes": [],
+      "category": "design",
+      "categoryName": "Design"
     },
     {
       "id": "inkscape",
       "name": "Inkscape",
-      "summary": "Editor de gráficos vetoriais.",
-      "category": "design",
-      "tags": ["vector", "design", "desktop"],
+      "summary": "Editor vetorial.",
+      "status": "available",
+      "tags": [
+        "vector"
+      ],
       "packages": {
-        "apt": ["inkscape"],
-        "dnf": ["inkscape"],
-        "zypper": ["inkscape"],
-        "pacman": ["inkscape"]
-      }
+        "apt": [
+          "inkscape"
+        ],
+        "dnf": [
+          "inkscape"
+        ],
+        "zypper": [
+          "inkscape"
+        ],
+        "pacman": [
+          "inkscape"
+        ]
+      },
+      "notes": [],
+      "category": "design",
+      "categoryName": "Design"
     },
     {
       "id": "krita",
       "name": "Krita",
-      "summary": "Ferramenta de pintura digital.",
-      "category": "design",
-      "tags": ["drawing", "design", "desktop"],
+      "summary": "Pintura digital.",
+      "status": "available",
+      "tags": [
+        "drawing"
+      ],
       "packages": {
-        "apt": ["krita"],
-        "dnf": ["krita"],
-        "zypper": ["krita"],
-        "pacman": ["krita"]
-      }
+        "apt": [
+          "krita"
+        ],
+        "dnf": [
+          "krita"
+        ],
+        "zypper": [
+          "krita"
+        ],
+        "pacman": [
+          "krita"
+        ]
+      },
+      "notes": [],
+      "category": "design",
+      "categoryName": "Design"
+    },
+    {
+      "id": "blender",
+      "name": "Blender",
+      "summary": "Modelagem e animação 3D.",
+      "status": "available",
+      "tags": [
+        "3d"
+      ],
+      "packages": {
+        "apt": [
+          "blender"
+        ],
+        "dnf": [
+          "blender"
+        ],
+        "zypper": [
+          "blender"
+        ],
+        "pacman": [
+          "blender"
+        ]
+      },
+      "notes": [],
+      "category": "design",
+      "categoryName": "Design"
+    },
+    {
+      "id": "darktable",
+      "name": "darktable",
+      "summary": "Fluxo fotográfico RAW.",
+      "status": "available",
+      "tags": [
+        "photo"
+      ],
+      "packages": {
+        "apt": [
+          "darktable"
+        ],
+        "dnf": [
+          "darktable"
+        ],
+        "zypper": [
+          "darktable"
+        ],
+        "pacman": [
+          "darktable"
+        ]
+      },
+      "notes": [],
+      "category": "design",
+      "categoryName": "Design"
+    },
+    {
+      "id": "scribus",
+      "name": "Scribus",
+      "summary": "Editoração eletrônica.",
+      "status": "available",
+      "tags": [
+        "publishing"
+      ],
+      "packages": {
+        "apt": [
+          "scribus"
+        ],
+        "dnf": [
+          "scribus"
+        ],
+        "zypper": [
+          "scribus"
+        ],
+        "pacman": [
+          "scribus"
+        ]
+      },
+      "notes": [],
+      "category": "design",
+      "categoryName": "Design"
+    },
+    {
+      "id": "libreoffice",
+      "name": "LibreOffice",
+      "summary": "Suíte de escritório.",
+      "status": "available",
+      "tags": [
+        "office"
+      ],
+      "packages": {
+        "apt": [
+          "libreoffice"
+        ],
+        "dnf": [
+          "libreoffice"
+        ],
+        "zypper": [
+          "libreoffice"
+        ],
+        "pacman": [
+          "libreoffice-fresh"
+        ]
+      },
+      "notes": [],
+      "category": "escritorio",
+      "categoryName": "Escritório"
+    },
+    {
+      "id": "evince",
+      "name": "Evince",
+      "summary": "Visualizador de PDF/documentos.",
+      "status": "available",
+      "tags": [
+        "pdf"
+      ],
+      "packages": {
+        "apt": [
+          "evince"
+        ],
+        "dnf": [
+          "evince"
+        ],
+        "zypper": [
+          "evince"
+        ],
+        "pacman": [
+          "evince"
+        ]
+      },
+      "notes": [],
+      "category": "escritorio",
+      "categoryName": "Escritório"
+    },
+    {
+      "id": "okular",
+      "name": "Okular",
+      "summary": "Visualizador avançado de documentos.",
+      "status": "available",
+      "tags": [
+        "pdf"
+      ],
+      "packages": {
+        "apt": [
+          "okular"
+        ],
+        "dnf": [
+          "okular"
+        ],
+        "zypper": [
+          "okular"
+        ],
+        "pacman": [
+          "okular"
+        ]
+      },
+      "notes": [],
+      "category": "escritorio",
+      "categoryName": "Escritório"
+    },
+    {
+      "id": "xournalpp",
+      "name": "Xournal++",
+      "summary": "Anotações em PDF.",
+      "status": "available",
+      "tags": [
+        "notes",
+        "pdf"
+      ],
+      "packages": {
+        "apt": [
+          "xournalpp"
+        ],
+        "dnf": [
+          "xournalpp"
+        ],
+        "zypper": [
+          "xournalpp"
+        ],
+        "pacman": [
+          "xournalpp"
+        ]
+      },
+      "notes": [],
+      "category": "escritorio",
+      "categoryName": "Escritório"
+    },
+    {
+      "id": "calibre",
+      "name": "Calibre",
+      "summary": "Gerenciador de ebooks.",
+      "status": "available",
+      "tags": [
+        "ebooks"
+      ],
+      "packages": {
+        "apt": [
+          "calibre"
+        ],
+        "dnf": [
+          "calibre"
+        ],
+        "zypper": [
+          "calibre"
+        ],
+        "pacman": [
+          "calibre"
+        ]
+      },
+      "notes": [],
+      "category": "escritorio",
+      "categoryName": "Escritório"
+    },
+    {
+      "id": "hunspell-pt-br",
+      "name": "Hunspell PT-BR",
+      "summary": "Correção ortográfica em português do Brasil.",
+      "status": "available",
+      "tags": [
+        "language"
+      ],
+      "packages": {
+        "apt": [
+          "hunspell-pt-br"
+        ],
+        "dnf": [
+          "hunspell-pt-BR"
+        ],
+        "zypper": [
+          "myspell-pt_BR"
+        ],
+        "pacman": [
+          "hunspell-pt_br"
+        ]
+      },
+      "notes": [
+        "Nome do pacote varia bastante entre distros."
+      ],
+      "category": "escritorio",
+      "categoryName": "Escritório"
+    },
+    {
+      "id": "steam",
+      "name": "Steam",
+      "summary": "Cliente Steam.",
+      "status": "advanced",
+      "tags": [
+        "games"
+      ],
+      "packages": {
+        "apt": [
+          "steam"
+        ],
+        "dnf": [
+          "steam"
+        ],
+        "zypper": [
+          "steam"
+        ],
+        "pacman": [
+          "steam"
+        ]
+      },
+      "notes": [
+        "Pode exigir repositório non-free/multilib ou configuração adicional."
+      ],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "lutris",
+      "name": "Lutris",
+      "summary": "Gerenciador de jogos.",
+      "status": "available",
+      "tags": [
+        "games"
+      ],
+      "packages": {
+        "apt": [
+          "lutris"
+        ],
+        "dnf": [
+          "lutris"
+        ],
+        "zypper": [
+          "lutris"
+        ],
+        "pacman": [
+          "lutris"
+        ]
+      },
+      "notes": [],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "wine",
+      "name": "Wine",
+      "summary": "Camada de compatibilidade Windows.",
+      "status": "available",
+      "tags": [
+        "compatibility"
+      ],
+      "packages": {
+        "apt": [
+          "wine"
+        ],
+        "dnf": [
+          "wine"
+        ],
+        "zypper": [
+          "wine"
+        ],
+        "pacman": [
+          "wine"
+        ]
+      },
+      "notes": [],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "winetricks",
+      "name": "Winetricks",
+      "summary": "Auxiliar para Wine.",
+      "status": "available",
+      "tags": [
+        "compatibility"
+      ],
+      "packages": {
+        "apt": [
+          "winetricks"
+        ],
+        "dnf": [
+          "winetricks"
+        ],
+        "zypper": [
+          "winetricks"
+        ],
+        "pacman": [
+          "winetricks"
+        ]
+      },
+      "notes": [],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "gamemode",
+      "name": "GameMode",
+      "summary": "Otimizações de desempenho para jogos.",
+      "status": "available",
+      "tags": [
+        "performance"
+      ],
+      "packages": {
+        "apt": [
+          "gamemode"
+        ],
+        "dnf": [
+          "gamemode"
+        ],
+        "zypper": [
+          "gamemode"
+        ],
+        "pacman": [
+          "gamemode"
+        ]
+      },
+      "notes": [],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "mangohud",
+      "name": "MangoHud",
+      "summary": "Overlay de performance.",
+      "status": "available",
+      "tags": [
+        "performance"
+      ],
+      "packages": {
+        "apt": [
+          "mangohud"
+        ],
+        "dnf": [
+          "mangohud"
+        ],
+        "zypper": [
+          "mangohud"
+        ],
+        "pacman": [
+          "mangohud"
+        ]
+      },
+      "notes": [],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "goverlay",
+      "name": "GOverlay",
+      "summary": "Interface para MangoHud.",
+      "status": "available",
+      "tags": [
+        "performance"
+      ],
+      "packages": {
+        "apt": [
+          "goverlay"
+        ],
+        "dnf": [
+          "goverlay"
+        ],
+        "zypper": [
+          "goverlay"
+        ],
+        "pacman": [
+          "goverlay"
+        ]
+      },
+      "notes": [
+        "Disponibilidade pode variar."
+      ],
+      "category": "games",
+      "categoryName": "Games"
+    },
+    {
+      "id": "heroic",
+      "name": "Heroic Games Launcher",
+      "summary": "Launcher para Epic/GOG/Amazon.",
+      "status": "advanced",
+      "tags": [
+        "launcher"
+      ],
+      "packages": {
+        "apt": [
+          "heroic"
+        ],
+        "dnf": [
+          "heroic"
+        ],
+        "zypper": [
+          "heroic"
+        ],
+        "pacman": [
+          "heroic-games-launcher-bin"
+        ]
+      },
+      "notes": [
+        "Normalmente exige Flatpak, AppImage, AUR ou repositório externo."
+      ],
+      "category": "games",
+      "categoryName": "Games"
     },
     {
       "id": "vlc",
       "name": "VLC",
       "summary": "Player multimídia.",
-      "category": "media",
-      "tags": ["video", "audio", "desktop"],
+      "status": "available",
+      "tags": [
+        "video",
+        "audio"
+      ],
       "packages": {
-        "apt": ["vlc"],
-        "dnf": ["vlc"],
-        "zypper": ["vlc"],
-        "pacman": ["vlc"]
-      }
+        "apt": [
+          "vlc"
+        ],
+        "dnf": [
+          "vlc"
+        ],
+        "zypper": [
+          "vlc"
+        ],
+        "pacman": [
+          "vlc"
+        ]
+      },
+      "notes": [],
+      "category": "midia",
+      "categoryName": "Mídia"
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "summary": "Conversão e processamento de mídia.",
+      "status": "available",
+      "tags": [
+        "video",
+        "audio"
+      ],
+      "packages": {
+        "apt": [
+          "ffmpeg"
+        ],
+        "dnf": [
+          "ffmpeg"
+        ],
+        "zypper": [
+          "ffmpeg"
+        ],
+        "pacman": [
+          "ffmpeg"
+        ]
+      },
+      "notes": [],
+      "category": "midia",
+      "categoryName": "Mídia"
     },
     {
       "id": "obs-studio",
       "name": "OBS Studio",
-      "summary": "Gravação e transmissão de vídeo.",
-      "category": "media",
-      "tags": ["video", "streaming", "recording"],
+      "summary": "Gravação e transmissão.",
+      "status": "available",
+      "tags": [
+        "streaming"
+      ],
       "packages": {
-        "apt": ["obs-studio"],
-        "dnf": ["obs-studio"],
-        "zypper": ["obs-studio"],
-        "pacman": ["obs-studio"]
-      }
+        "apt": [
+          "obs-studio"
+        ],
+        "dnf": [
+          "obs-studio"
+        ],
+        "zypper": [
+          "obs-studio"
+        ],
+        "pacman": [
+          "obs-studio"
+        ]
+      },
+      "notes": [],
+      "category": "midia",
+      "categoryName": "Mídia"
+    },
+    {
+      "id": "audacity",
+      "name": "Audacity",
+      "summary": "Editor de áudio.",
+      "status": "available",
+      "tags": [
+        "audio"
+      ],
+      "packages": {
+        "apt": [
+          "audacity"
+        ],
+        "dnf": [
+          "audacity"
+        ],
+        "zypper": [
+          "audacity"
+        ],
+        "pacman": [
+          "audacity"
+        ]
+      },
+      "notes": [],
+      "category": "midia",
+      "categoryName": "Mídia"
+    },
+    {
+      "id": "kdenlive",
+      "name": "Kdenlive",
+      "summary": "Editor de vídeo.",
+      "status": "available",
+      "tags": [
+        "video"
+      ],
+      "packages": {
+        "apt": [
+          "kdenlive"
+        ],
+        "dnf": [
+          "kdenlive"
+        ],
+        "zypper": [
+          "kdenlive"
+        ],
+        "pacman": [
+          "kdenlive"
+        ]
+      },
+      "notes": [],
+      "category": "midia",
+      "categoryName": "Mídia"
+    },
+    {
+      "id": "handbrake",
+      "name": "HandBrake",
+      "summary": "Conversão de vídeo.",
+      "status": "available",
+      "tags": [
+        "video"
+      ],
+      "packages": {
+        "apt": [
+          "handbrake"
+        ],
+        "dnf": [
+          "HandBrake-gui"
+        ],
+        "zypper": [
+          "handbrake"
+        ],
+        "pacman": [
+          "handbrake"
+        ]
+      },
+      "notes": [
+        "Nome e disponibilidade podem variar por distro/repositório."
+      ],
+      "category": "midia",
+      "categoryName": "Mídia"
+    },
+    {
+      "id": "keepassxc",
+      "name": "KeePassXC",
+      "summary": "Gerenciador de senhas local.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "keepassxc"
+        ],
+        "dnf": [
+          "keepassxc"
+        ],
+        "zypper": [
+          "keepassxc"
+        ],
+        "pacman": [
+          "keepassxc"
+        ]
+      },
+      "notes": [],
+      "category": "produtividade",
+      "categoryName": "Produtividade"
+    },
+    {
+      "id": "remmina",
+      "name": "Remmina",
+      "summary": "Cliente de acesso remoto.",
+      "status": "available",
+      "tags": [
+        "remote"
+      ],
+      "packages": {
+        "apt": [
+          "remmina"
+        ],
+        "dnf": [
+          "remmina"
+        ],
+        "zypper": [
+          "remmina"
+        ],
+        "pacman": [
+          "remmina"
+        ]
+      },
+      "notes": [],
+      "category": "produtividade",
+      "categoryName": "Produtividade"
+    },
+    {
+      "id": "syncthing",
+      "name": "Syncthing",
+      "summary": "Sincronização de arquivos entre dispositivos.",
+      "status": "available",
+      "tags": [
+        "sync"
+      ],
+      "packages": {
+        "apt": [
+          "syncthing"
+        ],
+        "dnf": [
+          "syncthing"
+        ],
+        "zypper": [
+          "syncthing"
+        ],
+        "pacman": [
+          "syncthing"
+        ]
+      },
+      "notes": [],
+      "category": "produtividade",
+      "categoryName": "Produtividade"
+    },
+    {
+      "id": "thunderbird",
+      "name": "Thunderbird",
+      "summary": "Cliente de e-mail.",
+      "status": "available",
+      "tags": [
+        "email"
+      ],
+      "packages": {
+        "apt": [
+          "thunderbird"
+        ],
+        "dnf": [
+          "thunderbird"
+        ],
+        "zypper": [
+          "MozillaThunderbird"
+        ],
+        "pacman": [
+          "thunderbird"
+        ]
+      },
+      "notes": [],
+      "category": "produtividade",
+      "categoryName": "Produtividade"
+    },
+    {
+      "id": "flameshot",
+      "name": "Flameshot",
+      "summary": "Capturas de tela com anotação.",
+      "status": "available",
+      "tags": [
+        "screenshot"
+      ],
+      "packages": {
+        "apt": [
+          "flameshot"
+        ],
+        "dnf": [
+          "flameshot"
+        ],
+        "zypper": [
+          "flameshot"
+        ],
+        "pacman": [
+          "flameshot"
+        ]
+      },
+      "notes": [],
+      "category": "produtividade",
+      "categoryName": "Produtividade"
+    },
+    {
+      "id": "copyq",
+      "name": "CopyQ",
+      "summary": "Gerenciador avançado de área de transferência.",
+      "status": "available",
+      "tags": [
+        "clipboard"
+      ],
+      "packages": {
+        "apt": [
+          "copyq"
+        ],
+        "dnf": [
+          "copyq"
+        ],
+        "zypper": [
+          "copyq"
+        ],
+        "pacman": [
+          "copyq"
+        ]
+      },
+      "notes": [],
+      "category": "produtividade",
+      "categoryName": "Produtividade"
+    },
+    {
+      "id": "net-tools",
+      "name": "net-tools",
+      "summary": "Ferramentas clássicas como ifconfig e netstat.",
+      "status": "available",
+      "tags": [
+        "network",
+        "legacy"
+      ],
+      "packages": {
+        "apt": [
+          "net-tools"
+        ],
+        "dnf": [
+          "net-tools"
+        ],
+        "zypper": [
+          "net-tools"
+        ],
+        "pacman": [
+          "net-tools"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "dnsutils",
+      "name": "DNS utilities",
+      "summary": "Ferramentas como dig e nslookup.",
+      "status": "available",
+      "tags": [
+        "dns"
+      ],
+      "packages": {
+        "apt": [
+          "dnsutils"
+        ],
+        "dnf": [
+          "bind-utils"
+        ],
+        "zypper": [
+          "bind-utils"
+        ],
+        "pacman": [
+          "bind"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "nmap",
+      "name": "Nmap",
+      "summary": "Scanner de rede.",
+      "status": "available",
+      "tags": [
+        "scanner"
+      ],
+      "packages": {
+        "apt": [
+          "nmap"
+        ],
+        "dnf": [
+          "nmap"
+        ],
+        "zypper": [
+          "nmap"
+        ],
+        "pacman": [
+          "nmap"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "traceroute",
+      "name": "traceroute",
+      "summary": "Rastreamento de rotas de rede.",
+      "status": "available",
+      "tags": [
+        "network"
+      ],
+      "packages": {
+        "apt": [
+          "traceroute"
+        ],
+        "dnf": [
+          "traceroute"
+        ],
+        "zypper": [
+          "traceroute"
+        ],
+        "pacman": [
+          "traceroute"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "tcpdump",
+      "name": "tcpdump",
+      "summary": "Captura de pacotes no terminal.",
+      "status": "available",
+      "tags": [
+        "packets"
+      ],
+      "packages": {
+        "apt": [
+          "tcpdump"
+        ],
+        "dnf": [
+          "tcpdump"
+        ],
+        "zypper": [
+          "tcpdump"
+        ],
+        "pacman": [
+          "tcpdump"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "whois",
+      "name": "whois",
+      "summary": "Consulta informações WHOIS.",
+      "status": "available",
+      "tags": [
+        "dns",
+        "domains"
+      ],
+      "packages": {
+        "apt": [
+          "whois"
+        ],
+        "dnf": [
+          "whois"
+        ],
+        "zypper": [
+          "whois"
+        ],
+        "pacman": [
+          "whois"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "iperf3",
+      "name": "iperf3",
+      "summary": "Teste de desempenho de rede.",
+      "status": "available",
+      "tags": [
+        "benchmark"
+      ],
+      "packages": {
+        "apt": [
+          "iperf3"
+        ],
+        "dnf": [
+          "iperf3"
+        ],
+        "zypper": [
+          "iperf"
+        ],
+        "pacman": [
+          "iperf3"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "openssh-client",
+      "name": "OpenSSH Client",
+      "summary": "Cliente SSH.",
+      "status": "available",
+      "tags": [
+        "ssh"
+      ],
+      "packages": {
+        "apt": [
+          "openssh-client"
+        ],
+        "dnf": [
+          "openssh-clients"
+        ],
+        "zypper": [
+          "openssh"
+        ],
+        "pacman": [
+          "openssh"
+        ]
+      },
+      "notes": [],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "openssh-server",
+      "name": "OpenSSH Server",
+      "summary": "Servidor SSH.",
+      "status": "available",
+      "tags": [
+        "ssh"
+      ],
+      "packages": {
+        "apt": [
+          "openssh-server"
+        ],
+        "dnf": [
+          "openssh-server"
+        ],
+        "zypper": [
+          "openssh"
+        ],
+        "pacman": [
+          "openssh"
+        ]
+      },
+      "notes": [
+        "Pode exigir configuração manual após instalar."
+      ],
+      "category": "rede",
+      "categoryName": "Rede"
+    },
+    {
+      "id": "curl",
+      "name": "curl",
+      "summary": "Cliente HTTP de linha de comando.",
+      "status": "available",
+      "tags": [
+        "network",
+        "http"
+      ],
+      "packages": {
+        "apt": [
+          "curl"
+        ],
+        "dnf": [
+          "curl"
+        ],
+        "zypper": [
+          "curl"
+        ],
+        "pacman": [
+          "curl"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "wget",
+      "name": "wget",
+      "summary": "Download via HTTP, HTTPS e FTP.",
+      "status": "available",
+      "tags": [
+        "download"
+      ],
+      "packages": {
+        "apt": [
+          "wget"
+        ],
+        "dnf": [
+          "wget"
+        ],
+        "zypper": [
+          "wget"
+        ],
+        "pacman": [
+          "wget"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "htop",
+      "name": "htop",
+      "summary": "Monitor interativo de processos.",
+      "status": "available",
+      "tags": [
+        "monitoring"
+      ],
+      "packages": {
+        "apt": [
+          "htop"
+        ],
+        "dnf": [
+          "htop"
+        ],
+        "zypper": [
+          "htop"
+        ],
+        "pacman": [
+          "htop"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "btop",
+      "name": "btop",
+      "summary": "Monitor moderno de recursos.",
+      "status": "available",
+      "tags": [
+        "monitoring"
+      ],
+      "packages": {
+        "apt": [
+          "btop"
+        ],
+        "dnf": [
+          "btop"
+        ],
+        "zypper": [
+          "btop"
+        ],
+        "pacman": [
+          "btop"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "tree",
+      "name": "tree",
+      "summary": "Exibe diretórios em árvore.",
+      "status": "available",
+      "tags": [
+        "files"
+      ],
+      "packages": {
+        "apt": [
+          "tree"
+        ],
+        "dnf": [
+          "tree"
+        ],
+        "zypper": [
+          "tree"
+        ],
+        "pacman": [
+          "tree"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "unzip",
+      "name": "unzip",
+      "summary": "Descompacta arquivos ZIP.",
+      "status": "available",
+      "tags": [
+        "archive"
+      ],
+      "packages": {
+        "apt": [
+          "unzip"
+        ],
+        "dnf": [
+          "unzip"
+        ],
+        "zypper": [
+          "unzip"
+        ],
+        "pacman": [
+          "unzip"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "file",
+      "name": "file",
+      "summary": "Identifica tipos de arquivo.",
+      "status": "available",
+      "tags": [
+        "files"
+      ],
+      "packages": {
+        "apt": [
+          "file"
+        ],
+        "dnf": [
+          "file"
+        ],
+        "zypper": [
+          "file"
+        ],
+        "pacman": [
+          "file"
+        ]
+      },
+      "notes": [],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "fastfetch",
+      "name": "fastfetch",
+      "summary": "Informações do sistema no terminal.",
+      "status": "available",
+      "tags": [
+        "info"
+      ],
+      "packages": {
+        "apt": [
+          "fastfetch"
+        ],
+        "dnf": [
+          "fastfetch"
+        ],
+        "zypper": [
+          "fastfetch"
+        ],
+        "pacman": [
+          "fastfetch"
+        ]
+      },
+      "notes": [
+        "Disponibilidade depende da versão da distro."
+      ],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "neofetch",
+      "name": "neofetch",
+      "summary": "Informações do sistema no terminal.",
+      "status": "available",
+      "tags": [
+        "info"
+      ],
+      "packages": {
+        "apt": [
+          "neofetch"
+        ],
+        "dnf": [
+          "neofetch"
+        ],
+        "zypper": [
+          "neofetch"
+        ],
+        "pacman": [
+          "neofetch"
+        ]
+      },
+      "notes": [
+        "Pode estar ausente em distros recentes."
+      ],
+      "category": "sistema",
+      "categoryName": "Sistema"
+    },
+    {
+      "id": "acl",
+      "name": "ACL tools",
+      "summary": "Controle avançado de permissões POSIX ACL.",
+      "status": "available",
+      "tags": [
+        "permissions"
+      ],
+      "packages": {
+        "apt": [
+          "acl"
+        ],
+        "dnf": [
+          "acl"
+        ],
+        "zypper": [
+          "acl"
+        ],
+        "pacman": [
+          "acl"
+        ]
+      },
+      "notes": [],
+      "category": "usuario-local",
+      "categoryName": "Usuário Local"
+    },
+    {
+      "id": "pwgen",
+      "name": "pwgen",
+      "summary": "Gerador de senhas.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "pwgen"
+        ],
+        "dnf": [
+          "pwgen"
+        ],
+        "zypper": [
+          "pwgen"
+        ],
+        "pacman": [
+          "pwgen"
+        ]
+      },
+      "notes": [],
+      "category": "usuario-local",
+      "categoryName": "Usuário Local"
+    },
+    {
+      "id": "mkpasswd",
+      "name": "mkpasswd",
+      "summary": "Utilitário para geração de hashes de senha quando disponível pela distro.",
+      "status": "available",
+      "tags": [
+        "passwords",
+        "hash"
+      ],
+      "packages": {
+        "apt": [
+          "whois"
+        ],
+        "dnf": [
+          "whois"
+        ],
+        "zypper": [
+          "whois"
+        ],
+        "pacman": [
+          "whois"
+        ]
+      },
+      "notes": [
+        "Em algumas distros o binário mkpasswd é fornecido pelo pacote whois.",
+        "A disponibilidade do binário pode variar conforme a distro."
+      ],
+      "category": "usuario-local",
+      "categoryName": "Usuário Local"
+    },
+    {
+      "id": "seahorse",
+      "name": "Seahorse",
+      "summary": "Gerenciador gráfico de chaves e senhas.",
+      "status": "available",
+      "tags": [
+        "keys"
+      ],
+      "packages": {
+        "apt": [
+          "seahorse"
+        ],
+        "dnf": [
+          "seahorse"
+        ],
+        "zypper": [
+          "seahorse"
+        ],
+        "pacman": [
+          "seahorse"
+        ]
+      },
+      "notes": [],
+      "category": "usuario-local",
+      "categoryName": "Usuário Local"
+    },
+    {
+      "id": "gnome-keyring",
+      "name": "GNOME Keyring",
+      "summary": "Serviço local de chaveiro/senhas.",
+      "status": "available",
+      "tags": [
+        "keys"
+      ],
+      "packages": {
+        "apt": [
+          "gnome-keyring"
+        ],
+        "dnf": [
+          "gnome-keyring"
+        ],
+        "zypper": [
+          "gnome-keyring"
+        ],
+        "pacman": [
+          "gnome-keyring"
+        ]
+      },
+      "notes": [],
+      "category": "usuario-local",
+      "categoryName": "Usuário Local"
+    },
+    {
+      "id": "pam-pwquality",
+      "name": "PAM pwquality",
+      "summary": "Política de qualidade de senha.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "libpam-pwquality"
+        ],
+        "dnf": [
+          "libpwquality"
+        ],
+        "zypper": [
+          "pam_pwquality"
+        ],
+        "pacman": [
+          "libpwquality"
+        ]
+      },
+      "notes": [
+        "Pode exigir configuração manual em PAM."
+      ],
+      "category": "usuario-local",
+      "categoryName": "Usuário Local"
     }
   ]
 }

@@ -54,12 +54,13 @@
       "notes": []
     },
     {
-      "id": "whois",
-      "name": "whois",
-      "summary": "Inclui utilitários como mkpasswd em algumas distros.",
+      "id": "mkpasswd",
+      "name": "mkpasswd",
+      "summary": "Utilitário para geração de hashes de senha quando disponível pela distro.",
       "status": "available",
       "tags": [
-        "passwords"
+        "passwords",
+        "hash"
       ],
       "packages": {
         "apt": [
@@ -75,7 +76,10 @@
           "whois"
         ]
       },
-      "notes": []
+      "notes": [
+        "Em algumas distros o binário mkpasswd é fornecido pelo pacote whois.",
+        "A disponibilidade do binário pode variar conforme a distro."
+      ]
     },
     {
       "id": "seahorse",

@@ -68,3 +68,7 @@ print(f"Catálogo consolidado gerado: {output_file}")
 print(f"Categorias: {len(categories)}")
 print(f"Apps: {len(apps)}")
 PY
+
+if [[ -x "$PROJECT_ROOT/scripts/validate-apps-catalog.sh" && "${AUTOM8_SKIP_APPS_CATALOG_VALIDATE:-0}" != "1" ]]; then
+  "$PROJECT_ROOT/scripts/validate-apps-catalog.sh"
+fi

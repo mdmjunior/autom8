@@ -193,6 +193,9 @@ autom8_apps_remove() {
     return 1
   fi
 
+  autom8_apps_is_installable "$app_id" || return 1
+
+  
   local packages=()
   local installed_packages=()
   local package_name
@@ -334,6 +337,25 @@ autom8_apps_is_installable() {
   return 0
 }
 
+
+autom8_apps_validate_ids_installable() {
+  local app_id
+  local failures=0
+
+  autom8_section "Validação de status"
+
+  for app_id in "$@"; do
+    if autom8_apps_is_installable "$app_id"; then
+      autom8_status_ok "App disponível para ação automática: $app_id"
+    else
+      autom8_status_fail "App bloqueado para ação automática: $app_id"
+      failures=$((failures + 1))
+    fi
+  done
+
+  [[ "$failures" -eq 0 ]]
+}
+
 autom8_apps_all_ids() {
   local catalog
   catalog="$(autom8_apps_catalog_file)"
@@ -422,7 +444,10 @@ autom8_apps_install_many() {
     return 1
   fi
 
-  autom8_apps_is_installable "$app_id" || return 1
+  if ! autom8_apps_validate_ids_installable "${ids[@]}"; then
+    autom8_summary_fail "Instalação múltipla bloqueada por status do app"
+    return 1
+  fi
 
   autom8_header "Apps · instalação múltipla" "Confirmação única para vários apps."
 
@@ -508,6 +533,11 @@ autom8_apps_remove_many() {
   if ! autom8_is_supported_or_diagnostic_only; then
     autom8_error_ui "Distro não suportada oficialmente. Remoção de apps bloqueada."
     autom8_summary_fail "Remoção bloqueada em distro não suportada"
+    return 1
+  fi
+
+  if ! autom8_apps_validate_ids_installable "${ids[@]}"; then
+    autom8_summary_fail "Remoção múltipla bloqueada por status do app"
     return 1
   fi
 
