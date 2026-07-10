@@ -163,3 +163,25 @@ Regras:
 - apps advanced/planned continuam bloqueados em ações automáticas;
 - instalação/remoção de perfil reutiliza install-many/remove-many;
 - toda ação real exige confirmação explícita.
+
+## Smoke test em VM Ubuntu Desktop
+
+O teste recomendado para a branch feature/apps-v0.2 é:
+
+    ./scripts/smoke-ubuntu-desktop.sh
+
+Esse script valida:
+
+- sintaxe shell;
+- catálogo de apps;
+- catálogo de perfis;
+- instalador canônico e público;
+- comandos básicos da CLI;
+- dry-runs de apps;
+- dry-runs de perfis;
+- bloqueio de apps advanced;
+- geração de pacote local temporário.
+
+Guia completo:
+
+    docs/vm/ubuntu-desktop-smoke.md
