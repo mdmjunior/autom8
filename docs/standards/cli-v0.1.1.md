@@ -155,3 +155,29 @@ Direção futura:
 - instalação clara;
 - revisão antes de executar;
 - logs e resumo final.
+
+## Apps v0.2
+
+A arquitetura do módulo Apps deve seguir este padrão:
+
+- catálogo fonte separado por categoria em suite/catalog/apps/;
+- catálogo consolidado em suite/catalog/apps.json;
+- geração do consolidado por scripts/build-apps-catalog.sh;
+- CLI lendo o consolidado;
+- status available para apps instaláveis pelos repositórios da distro;
+- status advanced para apps que exigem repositório externo, Flatpak, AUR, multilib, non-free ou configuração especial;
+- instalação e remoção sempre com confirmação explícita;
+- suporte a --dry-run antes de qualquer ação real.
+
+Categorias oficiais iniciais:
+
+- desenvolvimento;
+- produtividade;
+- containers;
+- sistema;
+- rede;
+- midia;
+- design;
+- games;
+- escritorio;
+- usuario-local.

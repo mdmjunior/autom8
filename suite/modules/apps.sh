@@ -269,6 +269,71 @@ autom8_apps_remove() {
 }
 
 
+
+autom8_apps_category_filter_arg() {
+  local arg
+  local next_is_category="false"
+
+  for arg in "$@"; do
+    if [[ "$next_is_category" == "true" ]]; then
+      printf '%s\n' "$arg"
+      return 0
+    fi
+
+    case "$arg" in
+      --category=*)
+        printf '%s\n' "${arg#--category=}"
+        return 0
+        ;;
+      --category)
+        next_is_category="true"
+        ;;
+    esac
+  done
+
+  return 1
+}
+
+autom8_apps_categories() {
+  autom8_apps_require_catalog || return 1
+
+  local catalog
+  catalog="$(autom8_apps_catalog_file)"
+
+  autom8_header "Apps · categorias" "Grupos disponíveis no catálogo."
+
+  jq -r '
+    .categories[]
+    | "  " + .slug + " | " + .name + " | " + (.description // "")
+  ' "$catalog"
+
+  autom8_summary_ok "Categorias listadas"
+}
+
+autom8_apps_is_installable() {
+  local app_id="$1"
+  local catalog
+  local status
+
+  catalog="$(autom8_apps_catalog_file)"
+  status="$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .status // "available"' "$catalog" | head -n 1)"
+
+  if [[ -z "$status" ]]; then
+    autom8_error_ui "App não encontrado no catálogo: $app_id"
+    autom8_summary_fail "App não encontrado"
+    return 1
+  fi
+
+  if [[ "$status" != "available" ]]; then
+    autom8_warn_ui "App marcado como $status: $app_id"
+    autom8_note "Este app aparece no catálogo, mas não será instalado automaticamente nesta versão."
+    autom8_summary_warn "App não instalável automaticamente: $app_id"
+    return 1
+  fi
+
+  return 0
+}
+
 autom8_apps_all_ids() {
   local catalog
   catalog="$(autom8_apps_catalog_file)"
@@ -356,6 +421,8 @@ autom8_apps_install_many() {
     autom8_summary_fail "Apps bloqueado em distro não suportada"
     return 1
   fi
+
+  autom8_apps_is_installable "$app_id" || return 1
 
   autom8_header "Apps · instalação múltipla" "Confirmação única para vários apps."
 
@@ -525,6 +592,9 @@ autom8_apps_remove_many() {
 autom8_apps_list() {
   autom8_apps_require_catalog || return 1
 
+  local category_filter=""
+  category_filter="$(autom8_apps_category_filter_arg "$@" || true)"
+
   local catalog
   catalog="$(autom8_apps_catalog_file)"
 
@@ -534,13 +604,25 @@ autom8_apps_list() {
   autom8_key_value "Versão" "$(jq -r '.version // "unknown"' "$catalog")"
   autom8_key_value "Gerenciador" "$AUTOM8_PACKAGE_MANAGER"
 
+  if [[ -n "$category_filter" ]]; then
+    autom8_key_value "Categoria" "$category_filter"
+  fi
+
   echo
   autom8_section "Disponíveis"
 
-  jq -r '
-    .apps[]
-    | "  " + (.id | .[0:20]) + " | " + (.name | .[0:28]) + " | " + (.category // "uncategorized") + " | " + (.summary // "")
-  ' "$catalog"
+  if [[ -n "$category_filter" ]]; then
+    jq -r --arg category "$category_filter" '
+      .apps[]
+      | select(.category == $category or .categoryName == $category)
+      | "  " + (.id | .[0:22]) + " | " + (.status // "available") + " | " + (.name | .[0:28]) + " | " + (.summary // "")
+    ' "$catalog"
+  else
+    jq -r '
+      .apps[]
+      | "  " + (.id | .[0:22]) + " | " + (.category // "sem-categoria") + " | " + (.status // "available") + " | " + (.name | .[0:28])
+    ' "$catalog"
+  fi
 
   autom8_summary_ok "Catálogo listado"
 }
@@ -608,7 +690,8 @@ autom8_apps_show() {
 
   autom8_key_value "ID" "$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .id' "$catalog")"
   autom8_key_value "Nome" "$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .name' "$catalog")"
-  autom8_key_value "Categoria" "$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .category // "uncategorized"' "$catalog")"
+  autom8_key_value "Categoria" "$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .categoryName // .category // "uncategorized"' "$catalog")"
+  autom8_key_value "Status" "$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .status // "available"' "$catalog")"
   autom8_key_value "Resumo" "$(jq -r --arg id "$app_id" '.apps[] | select(.id == $id) | .summary // ""' "$catalog")"
 
   echo
@@ -723,6 +806,8 @@ autom8_apps_install() {
     return 1
   fi
 
+  autom8_apps_is_installable "$app_id" || return 1
+
   local packages=()
   mapfile -t packages < <(autom8_apps_packages_for_current_pm "$app_id")
 
@@ -830,6 +915,8 @@ autom8_apps_menu() {
     local choice
     choice="$(autom8_choose "O que deseja fazer?" \
       "Listar apps" \
+      "Listar categorias" \
+      "Listar por categoria" \
       "Buscar app" \
       "Ver detalhes" \
       "Instalar app" \
@@ -844,6 +931,18 @@ autom8_apps_menu() {
     case "$choice" in
       "Listar apps")
         autom8_apps_list
+        ;;
+      "Listar categorias")
+        autom8_apps_categories
+        ;;
+      "Listar por categoria")
+        local category
+        if autom8_has_gum; then
+          category="$(jq -r '.categories[].slug' "$(autom8_apps_catalog_file)" | gum choose --header "Categoria" --height 12)"
+        else
+          read -r -p "Categoria: " category
+        fi
+        autom8_apps_list --category "$category"
         ;;
       "Buscar app")
         local query
@@ -914,6 +1013,9 @@ autom8_module_apps() {
     list)
       autom8_apps_list "$@"
       ;;
+    categories)
+      autom8_apps_categories "$@"
+      ;;
     search)
       autom8_apps_search "$@"
       ;;
@@ -937,7 +1039,7 @@ autom8_module_apps() {
       ;;
     *)
       autom8_error_ui "Ação desconhecida em apps: $action"
-      autom8_note "Uso: autom8 apps [list|search|show|install|install-many|remove|remove-many|update-catalog]"
+      autom8_note "Uso: autom8 apps [categories|list|list --category <categoria>|search|show|install|install-many|remove|remove-many|update-catalog]"
       autom8_summary_fail "Ação de apps desconhecida"
       return 1
       ;;

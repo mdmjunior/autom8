@@ -258,7 +258,7 @@ autom8_module_doctor() {
   autom8_section "Dependências obrigatórias"
   autom8_doctor_report "== Dependências obrigatórias =="
 
-  for cmd in bash awk sed grep find tar gzip curl sudo jq rsync lsof nmap ip ss gum; do
+  for cmd in bash awk sed grep find tar gzip curl wget git sudo jq rsync lsof nmap ip ss ifconfig netstat dig nslookup unzip xz file tree gum; do
     autom8_doctor_check_command "$cmd" yes
   done
 

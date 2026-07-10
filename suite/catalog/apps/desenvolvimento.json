@@ -1,0 +1,322 @@
+{
+  "category": {
+    "slug": "desenvolvimento",
+    "name": "Desenvolvimento",
+    "description": "Editores, linguagens, compiladores e ferramentas para desenvolvimento."
+  },
+  "apps": [
+    {
+      "id": "git",
+      "name": "Git",
+      "summary": "Controle de versão distribuído.",
+      "status": "available",
+      "tags": [
+        "scm",
+        "github"
+      ],
+      "packages": {
+        "apt": [
+          "git"
+        ],
+        "dnf": [
+          "git"
+        ],
+        "zypper": [
+          "git"
+        ],
+        "pacman": [
+          "git"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "vim",
+      "name": "Vim",
+      "summary": "Editor avançado para terminal.",
+      "status": "available",
+      "tags": [
+        "editor",
+        "terminal"
+      ],
+      "packages": {
+        "apt": [
+          "vim"
+        ],
+        "dnf": [
+          "vim-enhanced"
+        ],
+        "zypper": [
+          "vim"
+        ],
+        "pacman": [
+          "vim"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "nano",
+      "name": "nano",
+      "summary": "Editor simples para terminal.",
+      "status": "available",
+      "tags": [
+        "editor",
+        "terminal"
+      ],
+      "packages": {
+        "apt": [
+          "nano"
+        ],
+        "dnf": [
+          "nano"
+        ],
+        "zypper": [
+          "nano"
+        ],
+        "pacman": [
+          "nano"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "jq",
+      "name": "jq",
+      "summary": "Processador JSON para linha de comando.",
+      "status": "available",
+      "tags": [
+        "json",
+        "automation"
+      ],
+      "packages": {
+        "apt": [
+          "jq"
+        ],
+        "dnf": [
+          "jq"
+        ],
+        "zypper": [
+          "jq"
+        ],
+        "pacman": [
+          "jq"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "ripgrep",
+      "name": "ripgrep",
+      "summary": "Busca rápida em arquivos.",
+      "status": "available",
+      "tags": [
+        "search"
+      ],
+      "packages": {
+        "apt": [
+          "ripgrep"
+        ],
+        "dnf": [
+          "ripgrep"
+        ],
+        "zypper": [
+          "ripgrep"
+        ],
+        "pacman": [
+          "ripgrep"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "fd",
+      "name": "fd",
+      "summary": "Alternativa moderna ao find.",
+      "status": "available",
+      "tags": [
+        "search",
+        "files"
+      ],
+      "packages": {
+        "apt": [
+          "fd-find"
+        ],
+        "dnf": [
+          "fd-find"
+        ],
+        "zypper": [
+          "fd"
+        ],
+        "pacman": [
+          "fd"
+        ]
+      },
+      "notes": [
+        "No Ubuntu/Debian o binário pode ser instalado como fdfind."
+      ]
+    },
+    {
+      "id": "tmux",
+      "name": "tmux",
+      "summary": "Multiplexador de terminal.",
+      "status": "available",
+      "tags": [
+        "terminal",
+        "productivity"
+      ],
+      "packages": {
+        "apt": [
+          "tmux"
+        ],
+        "dnf": [
+          "tmux"
+        ],
+        "zypper": [
+          "tmux"
+        ],
+        "pacman": [
+          "tmux"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "build-essential",
+      "name": "Build tools",
+      "summary": "Ferramentas básicas de compilação.",
+      "status": "available",
+      "tags": [
+        "compiler",
+        "build"
+      ],
+      "packages": {
+        "apt": [
+          "build-essential"
+        ],
+        "dnf": [
+          "gcc",
+          "gcc-c++",
+          "make"
+        ],
+        "zypper": [
+          "gcc",
+          "gcc-c++",
+          "make"
+        ],
+        "pacman": [
+          "base-devel"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "python3",
+      "name": "Python 3",
+      "summary": "Python, pip e ambiente virtual.",
+      "status": "available",
+      "tags": [
+        "python"
+      ],
+      "packages": {
+        "apt": [
+          "python3",
+          "python3-pip",
+          "python3-venv"
+        ],
+        "dnf": [
+          "python3",
+          "python3-pip"
+        ],
+        "zypper": [
+          "python3",
+          "python3-pip"
+        ],
+        "pacman": [
+          "python",
+          "python-pip"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js",
+      "summary": "Node.js e npm pelos repositórios da distro.",
+      "status": "available",
+      "tags": [
+        "javascript",
+        "web"
+      ],
+      "packages": {
+        "apt": [
+          "nodejs",
+          "npm"
+        ],
+        "dnf": [
+          "nodejs",
+          "npm"
+        ],
+        "zypper": [
+          "nodejs",
+          "npm"
+        ],
+        "pacman": [
+          "nodejs",
+          "npm"
+        ]
+      },
+      "notes": [
+        "Gerenciamento por nvm/asdf fica para versão futura."
+      ]
+    },
+    {
+      "id": "sqlite",
+      "name": "SQLite",
+      "summary": "Banco de dados local leve.",
+      "status": "available",
+      "tags": [
+        "database"
+      ],
+      "packages": {
+        "apt": [
+          "sqlite3"
+        ],
+        "dnf": [
+          "sqlite"
+        ],
+        "zypper": [
+          "sqlite3"
+        ],
+        "pacman": [
+          "sqlite"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "postgresql-client",
+      "name": "PostgreSQL Client",
+      "summary": "Cliente PostgreSQL.",
+      "status": "available",
+      "tags": [
+        "database"
+      ],
+      "packages": {
+        "apt": [
+          "postgresql-client"
+        ],
+        "dnf": [
+          "postgresql"
+        ],
+        "zypper": [
+          "postgresql"
+        ],
+        "pacman": [
+          "postgresql"
+        ]
+      },
+      "notes": []
+    }
+  ]
+}

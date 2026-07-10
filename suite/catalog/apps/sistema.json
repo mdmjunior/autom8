@@ -1,0 +1,230 @@
+{
+  "category": {
+    "slug": "sistema",
+    "name": "Sistema",
+    "description": "Utilitários básicos de manutenção, inspeção e suporte."
+  },
+  "apps": [
+    {
+      "id": "curl",
+      "name": "curl",
+      "summary": "Cliente HTTP de linha de comando.",
+      "status": "available",
+      "tags": [
+        "network",
+        "http"
+      ],
+      "packages": {
+        "apt": [
+          "curl"
+        ],
+        "dnf": [
+          "curl"
+        ],
+        "zypper": [
+          "curl"
+        ],
+        "pacman": [
+          "curl"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "wget",
+      "name": "wget",
+      "summary": "Download via HTTP, HTTPS e FTP.",
+      "status": "available",
+      "tags": [
+        "download"
+      ],
+      "packages": {
+        "apt": [
+          "wget"
+        ],
+        "dnf": [
+          "wget"
+        ],
+        "zypper": [
+          "wget"
+        ],
+        "pacman": [
+          "wget"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "htop",
+      "name": "htop",
+      "summary": "Monitor interativo de processos.",
+      "status": "available",
+      "tags": [
+        "monitoring"
+      ],
+      "packages": {
+        "apt": [
+          "htop"
+        ],
+        "dnf": [
+          "htop"
+        ],
+        "zypper": [
+          "htop"
+        ],
+        "pacman": [
+          "htop"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "btop",
+      "name": "btop",
+      "summary": "Monitor moderno de recursos.",
+      "status": "available",
+      "tags": [
+        "monitoring"
+      ],
+      "packages": {
+        "apt": [
+          "btop"
+        ],
+        "dnf": [
+          "btop"
+        ],
+        "zypper": [
+          "btop"
+        ],
+        "pacman": [
+          "btop"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "tree",
+      "name": "tree",
+      "summary": "Exibe diretórios em árvore.",
+      "status": "available",
+      "tags": [
+        "files"
+      ],
+      "packages": {
+        "apt": [
+          "tree"
+        ],
+        "dnf": [
+          "tree"
+        ],
+        "zypper": [
+          "tree"
+        ],
+        "pacman": [
+          "tree"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "unzip",
+      "name": "unzip",
+      "summary": "Descompacta arquivos ZIP.",
+      "status": "available",
+      "tags": [
+        "archive"
+      ],
+      "packages": {
+        "apt": [
+          "unzip"
+        ],
+        "dnf": [
+          "unzip"
+        ],
+        "zypper": [
+          "unzip"
+        ],
+        "pacman": [
+          "unzip"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "file",
+      "name": "file",
+      "summary": "Identifica tipos de arquivo.",
+      "status": "available",
+      "tags": [
+        "files"
+      ],
+      "packages": {
+        "apt": [
+          "file"
+        ],
+        "dnf": [
+          "file"
+        ],
+        "zypper": [
+          "file"
+        ],
+        "pacman": [
+          "file"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "fastfetch",
+      "name": "fastfetch",
+      "summary": "Informações do sistema no terminal.",
+      "status": "available",
+      "tags": [
+        "info"
+      ],
+      "packages": {
+        "apt": [
+          "fastfetch"
+        ],
+        "dnf": [
+          "fastfetch"
+        ],
+        "zypper": [
+          "fastfetch"
+        ],
+        "pacman": [
+          "fastfetch"
+        ]
+      },
+      "notes": [
+        "Disponibilidade depende da versão da distro."
+      ]
+    },
+    {
+      "id": "neofetch",
+      "name": "neofetch",
+      "summary": "Informações do sistema no terminal.",
+      "status": "available",
+      "tags": [
+        "info"
+      ],
+      "packages": {
+        "apt": [
+          "neofetch"
+        ],
+        "dnf": [
+          "neofetch"
+        ],
+        "zypper": [
+          "neofetch"
+        ],
+        "pacman": [
+          "neofetch"
+        ]
+      },
+      "notes": [
+        "Pode estar ausente em distros recentes."
+      ]
+    }
+  ]
+}

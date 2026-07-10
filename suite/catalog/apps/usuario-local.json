@@ -1,0 +1,155 @@
+{
+  "category": {
+    "slug": "usuario-local",
+    "name": "Usuário Local",
+    "description": "Ferramentas auxiliares para uso local, permissões, senhas e sessão."
+  },
+  "apps": [
+    {
+      "id": "acl",
+      "name": "ACL tools",
+      "summary": "Controle avançado de permissões POSIX ACL.",
+      "status": "available",
+      "tags": [
+        "permissions"
+      ],
+      "packages": {
+        "apt": [
+          "acl"
+        ],
+        "dnf": [
+          "acl"
+        ],
+        "zypper": [
+          "acl"
+        ],
+        "pacman": [
+          "acl"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "pwgen",
+      "name": "pwgen",
+      "summary": "Gerador de senhas.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "pwgen"
+        ],
+        "dnf": [
+          "pwgen"
+        ],
+        "zypper": [
+          "pwgen"
+        ],
+        "pacman": [
+          "pwgen"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "whois",
+      "name": "whois",
+      "summary": "Inclui utilitários como mkpasswd em algumas distros.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "whois"
+        ],
+        "dnf": [
+          "whois"
+        ],
+        "zypper": [
+          "whois"
+        ],
+        "pacman": [
+          "whois"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "seahorse",
+      "name": "Seahorse",
+      "summary": "Gerenciador gráfico de chaves e senhas.",
+      "status": "available",
+      "tags": [
+        "keys"
+      ],
+      "packages": {
+        "apt": [
+          "seahorse"
+        ],
+        "dnf": [
+          "seahorse"
+        ],
+        "zypper": [
+          "seahorse"
+        ],
+        "pacman": [
+          "seahorse"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "gnome-keyring",
+      "name": "GNOME Keyring",
+      "summary": "Serviço local de chaveiro/senhas.",
+      "status": "available",
+      "tags": [
+        "keys"
+      ],
+      "packages": {
+        "apt": [
+          "gnome-keyring"
+        ],
+        "dnf": [
+          "gnome-keyring"
+        ],
+        "zypper": [
+          "gnome-keyring"
+        ],
+        "pacman": [
+          "gnome-keyring"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "pam-pwquality",
+      "name": "PAM pwquality",
+      "summary": "Política de qualidade de senha.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "libpam-pwquality"
+        ],
+        "dnf": [
+          "libpwquality"
+        ],
+        "zypper": [
+          "pam_pwquality"
+        ],
+        "pacman": [
+          "libpwquality"
+        ]
+      },
+      "notes": [
+        "Pode exigir configuração manual em PAM."
+      ]
+    }
+  ]
+}
