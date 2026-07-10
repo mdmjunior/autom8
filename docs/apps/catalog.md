@@ -122,3 +122,20 @@ Responsabilidades:
 - module.sh: roteamento do comando autom8 apps.
 
 O empacotamento inclui automaticamente suite/lib/ porque o pacote é gerado a partir de suite/.
+
+## Instalação e remoção por categoria
+
+A partir do Apps v0.2, o AutoM8 permite executar ações por categoria:
+
+    autom8 apps install-category desenvolvimento
+    autom8 apps remove-category desenvolvimento
+    autom8 --dry-run apps install-category sistema
+    autom8 --dry-run apps remove-category sistema
+
+Regras:
+
+- apenas apps com status available entram na ação automática;
+- apps advanced/planned são exibidos como bloqueados e ignorados pela ação;
+- a operação usa confirmação única;
+- --dry-run mostra o plano sem alterar o sistema;
+- pacotes duplicados dentro da categoria são consolidados antes da ação.

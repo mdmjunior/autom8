@@ -17,8 +17,10 @@ autom8_apps_menu() {
       "Ver detalhes" \
       "Instalar app" \
       "Instalar vários apps" \
+      "Instalar categoria" \
       "Remover app" \
       "Remover vários apps" \
+      "Remover categoria" \
       "Atualizar catálogo" \
       "Voltar")" || return 0
 
@@ -79,8 +81,14 @@ autom8_apps_menu() {
       "Instalar vários apps")
         autom8_apps_install_many
         ;;
+      "Instalar categoria")
+        autom8_apps_install_category
+        ;;
       "Remover vários apps")
         autom8_apps_remove_many
+        ;;
+      "Remover categoria")
+        autom8_apps_remove_category
         ;;
       "Atualizar catálogo")
         autom8_apps_update_catalog

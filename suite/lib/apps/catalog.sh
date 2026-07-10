@@ -61,6 +61,87 @@ autom8_apps_category_filter_arg() {
   return 1
 }
 
+
+autom8_apps_prompt_category() {
+  local placeholder="${1:-Categoria}"
+  local catalog
+  catalog="$(autom8_apps_catalog_file)"
+
+  autom8_apps_require_catalog || return 1
+
+  if autom8_has_gum; then
+    jq -r '.categories[].slug' "$catalog" | gum choose --header "$placeholder" --height 12
+  else
+    local category
+    read -r -p "$placeholder: " category
+    printf '%s\n' "$category"
+  fi
+}
+
+autom8_apps_category_exists() {
+  local category="$1"
+  local catalog
+  catalog="$(autom8_apps_catalog_file)"
+
+  jq -e --arg category "$category" '
+    .categories[]
+    | select(.slug == $category or .name == $category)
+  ' "$catalog" >/dev/null
+}
+
+autom8_apps_ids_for_category() {
+  local category="$1"
+  local status_filter="${2:-}"
+  local catalog
+  catalog="$(autom8_apps_catalog_file)"
+
+  if [[ -n "$status_filter" ]]; then
+    jq -r --arg category "$category" --arg status "$status_filter" '
+      .apps[]
+      | select(.category == $category or .categoryName == $category)
+      | select((.status // "available") == $status)
+      | .id
+    ' "$catalog"
+  else
+    jq -r --arg category "$category" '
+      .apps[]
+      | select(.category == $category or .categoryName == $category)
+      | .id
+    ' "$catalog"
+  fi
+}
+
+autom8_apps_blocked_ids_for_category() {
+  local category="$1"
+  local catalog
+  catalog="$(autom8_apps_catalog_file)"
+
+  jq -r --arg category "$category" '
+    .apps[]
+    | select(.category == $category or .categoryName == $category)
+    | select((.status // "available") != "available")
+    | .id + " (" + (.status // "available") + ")"
+  ' "$catalog"
+}
+
+autom8_apps_print_category_plan() {
+  local category="$1"
+  local available_ids=("${@:2}")
+  local blocked_ids=()
+
+  mapfile -t blocked_ids < <(autom8_apps_blocked_ids_for_category "$category")
+
+  autom8_key_value "Categoria" "$category"
+  autom8_key_value "Apps disponíveis" "${available_ids[*]:-nenhum}"
+
+  if [[ "${#blocked_ids[@]}" -gt 0 ]]; then
+    echo
+    autom8_section "Apps bloqueados nesta versão"
+    printf '  - %s\n' "${blocked_ids[@]}"
+    autom8_note "Apps com status advanced/planned aparecem no catálogo, mas não entram em ações automáticas."
+  fi
+}
+
 autom8_apps_categories() {
   autom8_apps_require_catalog || return 1
 
