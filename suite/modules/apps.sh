@@ -268,6 +268,260 @@ autom8_apps_remove() {
   fi
 }
 
+
+autom8_apps_all_ids() {
+  local catalog
+  catalog="$(autom8_apps_catalog_file)"
+
+  jq -r '.apps[].id' "$catalog"
+}
+
+autom8_apps_prompt_many_ids() {
+  local placeholder="${1:-IDs dos apps}"
+  local ids=""
+
+  autom8_apps_require_catalog || return 1
+
+  if autom8_has_gum; then
+    ids="$(autom8_apps_all_ids | gum choose --no-limit --height 16 --header "$placeholder" || true)"
+    [[ -n "$ids" ]] || return 1
+    printf '%s\n' "$ids"
+  else
+    local raw
+    read -r -p "$placeholder separados por espaço ou vírgula: " raw
+    raw="${raw//,/ }"
+
+    for item in $raw; do
+      [[ -n "$item" ]] && printf '%s\n' "$item"
+    done
+  fi
+}
+
+autom8_apps_collect_packages_for_ids() {
+  local app_id
+  local package_name
+
+  declare -A seen_packages=()
+
+  for app_id in "$@"; do
+    while IFS= read -r package_name; do
+      [[ -n "$package_name" ]] || continue
+
+      if [[ -z "${seen_packages[$package_name]:-}" ]]; then
+        seen_packages["$package_name"]=1
+        printf '%s\n' "$package_name"
+      fi
+    done < <(autom8_apps_packages_for_current_pm "$app_id")
+  done
+}
+
+autom8_apps_validate_ids_have_packages() {
+  local app_id
+  local packages=()
+  local failures=0
+
+  autom8_section "Validação dos apps"
+
+  for app_id in "$@"; do
+    mapfile -t packages < <(autom8_apps_packages_for_current_pm "$app_id")
+
+    if [[ "${#packages[@]}" -eq 0 ]]; then
+      autom8_status_fail "Sem pacote para: $app_id"
+      failures=$((failures + 1))
+    else
+      autom8_status_ok "$app_id -> ${packages[*]}"
+    fi
+  done
+
+  [[ "$failures" -eq 0 ]]
+}
+
+autom8_apps_install_many() {
+  autom8_apps_require_catalog || return 1
+
+  local ids=("$@")
+
+  if [[ "${#ids[@]}" -eq 0 ]]; then
+    mapfile -t ids < <(autom8_apps_prompt_many_ids "Selecione os apps para instalar")
+  fi
+
+  if [[ "${#ids[@]}" -eq 0 ]]; then
+    autom8_warn_ui "Nenhum app selecionado."
+    autom8_summary_warn "Instalação múltipla sem seleção"
+    return 0
+  fi
+
+  if ! autom8_is_supported_or_diagnostic_only; then
+    autom8_error_ui "Distro não suportada oficialmente. Instalação de apps bloqueada."
+    autom8_summary_fail "Apps bloqueado em distro não suportada"
+    return 1
+  fi
+
+  autom8_header "Apps · instalação múltipla" "Confirmação única para vários apps."
+
+  autom8_key_value "Gerenciador" "$AUTOM8_PACKAGE_MANAGER"
+  autom8_key_value "Apps" "${ids[*]}"
+
+  echo
+  if ! autom8_apps_validate_ids_have_packages "${ids[@]}"; then
+    autom8_summary_fail "Instalação múltipla bloqueada por app inválido"
+    return 1
+  fi
+
+  local packages=()
+  mapfile -t packages < <(autom8_apps_collect_packages_for_ids "${ids[@]}")
+
+  if [[ "${#packages[@]}" -eq 0 ]]; then
+    autom8_error_ui "Nenhum pacote disponível para os apps selecionados."
+    autom8_summary_fail "Instalação múltipla sem pacotes"
+    return 1
+  fi
+
+  echo
+  autom8_section "Pacotes consolidados"
+  printf '  - %s\n' "${packages[@]}"
+
+  echo
+  autom8_section "Comando previsto"
+  autom8_note "$(autom8_apps_install_command_preview "${packages[@]}")"
+
+  echo
+  if ! autom8_apps_validate_packages_available "${packages[@]}"; then
+    autom8_summary_fail "Instalação múltipla bloqueada por pacote indisponível"
+    return 1
+  fi
+
+  if [[ "${AUTOM8_DRY_RUN:-false}" == "true" ]]; then
+    echo
+    autom8_success "Simulação concluída. Nada foi instalado."
+    autom8_summary_ok "Simulação de instalação múltipla concluída"
+    return 0
+  fi
+
+  echo
+  if ! autom8_confirm "Deseja instalar estes apps agora?"; then
+    autom8_warn_ui "Instalação múltipla cancelada pelo usuário."
+    autom8_summary_warn "Instalação múltipla cancelada"
+    autom8_log_warn "apps" "Multiple app install canceled: ${ids[*]}"
+    return 0
+  fi
+
+  autom8_require_admin "instalar vários apps" || {
+    autom8_summary_fail "Sem permissão para instalar apps"
+    return 1
+  }
+
+  autom8_log_info "apps" "Installing multiple apps: ${ids[*]} packages: ${packages[*]}"
+
+  if autom8_apps_install_packages "${packages[@]}"; then
+    autom8_success "Apps instalados: ${ids[*]}"
+    autom8_summary_ok "Apps instalados: ${ids[*]}"
+  else
+    autom8_error_ui "Falha ao instalar apps: ${ids[*]}"
+    autom8_summary_fail "Falha na instalação múltipla"
+    return 1
+  fi
+}
+
+autom8_apps_remove_many() {
+  autom8_apps_require_catalog || return 1
+
+  local ids=("$@")
+
+  if [[ "${#ids[@]}" -eq 0 ]]; then
+    mapfile -t ids < <(autom8_apps_prompt_many_ids "Selecione os apps para remover")
+  fi
+
+  if [[ "${#ids[@]}" -eq 0 ]]; then
+    autom8_warn_ui "Nenhum app selecionado."
+    autom8_summary_warn "Remoção múltipla sem seleção"
+    return 0
+  fi
+
+  if ! autom8_is_supported_or_diagnostic_only; then
+    autom8_error_ui "Distro não suportada oficialmente. Remoção de apps bloqueada."
+    autom8_summary_fail "Remoção bloqueada em distro não suportada"
+    return 1
+  fi
+
+  autom8_header "Apps · remoção múltipla" "Confirmação única para vários apps."
+
+  autom8_key_value "Gerenciador" "$AUTOM8_PACKAGE_MANAGER"
+  autom8_key_value "Apps" "${ids[*]}"
+
+  echo
+  if ! autom8_apps_validate_ids_have_packages "${ids[@]}"; then
+    autom8_summary_fail "Remoção múltipla bloqueada por app inválido"
+    return 1
+  fi
+
+  local catalog_packages=()
+  local installed_packages=()
+  local package_name
+
+  mapfile -t catalog_packages < <(autom8_apps_collect_packages_for_ids "${ids[@]}")
+
+  echo
+  autom8_section "Validação de pacotes instalados"
+
+  for package_name in "${catalog_packages[@]}"; do
+    if autom8_apps_package_installed "$package_name"; then
+      autom8_status_ok "Pacote instalado: $package_name"
+      installed_packages+=("$package_name")
+    else
+      autom8_status_warn "Pacote não instalado: $package_name"
+    fi
+  done
+
+  if [[ "${#installed_packages[@]}" -eq 0 ]]; then
+    echo
+    autom8_warn_ui "Nenhum pacote dos apps selecionados está instalado."
+    autom8_summary_warn "Nada para remover"
+    return 0
+  fi
+
+  echo
+  autom8_section "Pacotes que serão removidos"
+  printf '  - %s\n' "${installed_packages[@]}"
+
+  echo
+  autom8_section "Comando previsto"
+  autom8_note "$(autom8_apps_remove_command_preview "${installed_packages[@]}")"
+
+  if [[ "${AUTOM8_DRY_RUN:-false}" == "true" ]]; then
+    echo
+    autom8_success "Simulação concluída. Nada foi removido."
+    autom8_summary_ok "Simulação de remoção múltipla concluída"
+    return 0
+  fi
+
+  echo
+  autom8_warn_ui "A remoção pode afetar comandos ou aplicativos usados fora do AutoM8."
+
+  if ! autom8_confirm "Deseja remover estes apps agora?"; then
+    autom8_warn_ui "Remoção múltipla cancelada pelo usuário."
+    autom8_summary_warn "Remoção múltipla cancelada"
+    autom8_log_warn "apps" "Multiple app removal canceled: ${ids[*]}"
+    return 0
+  fi
+
+  autom8_require_admin "remover vários apps" || {
+    autom8_summary_fail "Sem permissão para remover apps"
+    return 1
+  }
+
+  autom8_log_info "apps" "Removing multiple apps: ${ids[*]} packages: ${installed_packages[*]}"
+
+  if autom8_apps_remove_packages "${installed_packages[@]}"; then
+    autom8_success "Apps removidos: ${ids[*]}"
+    autom8_summary_ok "Apps removidos: ${ids[*]}"
+  else
+    autom8_error_ui "Falha ao remover apps: ${ids[*]}"
+    autom8_summary_fail "Falha na remoção múltipla"
+    return 1
+  fi
+}
+
 autom8_apps_list() {
   autom8_apps_require_catalog || return 1
 
@@ -579,7 +833,9 @@ autom8_apps_menu() {
       "Buscar app" \
       "Ver detalhes" \
       "Instalar app" \
+      "Instalar vários apps" \
       "Remover app" \
+      "Remover vários apps" \
       "Atualizar catálogo" \
       "Voltar")" || return 0
 
@@ -625,6 +881,12 @@ autom8_apps_menu() {
         fi
         autom8_apps_remove "$remove_id"
         ;;
+      "Instalar vários apps")
+        autom8_apps_install_many
+        ;;
+      "Remover vários apps")
+        autom8_apps_remove_many
+        ;;
       "Atualizar catálogo")
         autom8_apps_update_catalog
         ;;
@@ -661,15 +923,21 @@ autom8_module_apps() {
     install)
       autom8_apps_install "$@"
       ;;
+    install-many)
+      autom8_apps_install_many "$@"
+      ;;
     remove)
       autom8_apps_remove "$@"
+      ;;
+    remove-many)
+      autom8_apps_remove_many "$@"
       ;;
     update-catalog)
       autom8_apps_update_catalog "$@"
       ;;
     *)
       autom8_error_ui "Ação desconhecida em apps: $action"
-      autom8_note "Uso: autom8 apps [list|search|show|install|remove|update-catalog]"
+      autom8_note "Uso: autom8 apps [list|search|show|install|install-many|remove|remove-many|update-catalog]"
       autom8_summary_fail "Ação de apps desconhecida"
       return 1
       ;;
