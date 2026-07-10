@@ -153,6 +153,8 @@ autom8_diagnose_ports() {
 
 autom8_diagnose_docker() {
   if [[ "$AUTOM8_DIAGNOSE_PRIVATE" == "true" ]]; then
+    # O conteúdo é um script literal executado pelo bash interno.
+    # shellcheck disable=SC2016
     autom8_diagnose_run "Docker sanitizado" bash -c '
       if command -v docker >/dev/null 2>&1; then
         docker --version 2>/dev/null || true
@@ -179,10 +181,14 @@ autom8_diagnose_docker() {
 
 autom8_diagnose_users() {
   if [[ "$AUTOM8_DIAGNOSE_PRIVATE" == "true" ]]; then
+    # A expansão de $7 deve ocorrer dentro do awk no bash interno.
+    # shellcheck disable=SC2016
     autom8_diagnose_run "Usuários com login permitido sanitizados" bash -c '
       awk -F: '\''($7 !~ /(nologin|false)$/) {count++; print "user-" count " | home=/home/user-" count " | shell=" $7}'\'' /etc/passwd
     '
 
+    # $group_name pertence ao script executado pelo bash interno.
+    # shellcheck disable=SC2016
     autom8_diagnose_run "Grupos administrativos sanitizados" bash -c '
       for group_name in sudo wheel admin; do
         if getent group "$group_name" >/dev/null 2>&1; then
@@ -191,6 +197,8 @@ autom8_diagnose_users() {
       done
     '
   else
+    # As variáveis do awk devem ser avaliadas pelo bash interno.
+    # shellcheck disable=SC2016
     autom8_diagnose_run "Usuários com login permitido" bash -c '
       awk -F: '\''($7 !~ /(nologin|false)$/) {print $1 " | home=" $6 " | shell=" $7}'\'' /etc/passwd
     '

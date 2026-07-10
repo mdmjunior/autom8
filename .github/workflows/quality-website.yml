@@ -58,24 +58,50 @@ jobs:
 
           trap cleanup EXIT
 
-          health="$(
+          wait_for_site() {
+            local attempt
+            local health
+
+            for attempt in $(seq 1 20); do
+              if health="$(
+                curl \
+                  --fail \
+                  --silent \
+                  --show-error \
+                  http://127.0.0.1:8080/healthz \
+                  2>/dev/null
+              )" && [[ "$health" == "ok" ]]; then
+                return 0
+              fi
+
+              sleep 1
+            done
+
+            printf 'O container não ficou disponível.\n' >&2
+            docker logs autom8-site-ci >&2 || true
+            return 1
+          }
+
+          wait_for_site
+
+          homepage="$(
             curl \
               --fail \
               --silent \
               --show-error \
-              --retry 10 \
-              --retry-connrefused \
-              --retry-delay 1 \
-              http://127.0.0.1:8080/healthz
+              http://127.0.0.1:8080/
           )"
 
-          [[ "$health" == "ok" ]]
+          grep -qi '<html' <<< "$homepage"
 
-          curl --fail --silent http://127.0.0.1:8080/ |
-            grep -qi '<html'
+          installer_script="$(
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              http://127.0.0.1:8080/install.sh
+          )"
 
-          curl \
-            --fail \
-            --silent \
-            http://127.0.0.1:8080/install.sh |
-            grep -q 'autom8-latest.tar.gz'
+          grep -q \
+            'autom8-latest.tar.gz' \
+            <<< "$installer_script"

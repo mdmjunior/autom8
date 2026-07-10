@@ -15,8 +15,17 @@ cd "$PROJECT_ROOT"
 log "Validando sintaxe e qualidade dos scripts shell..."
 
 while IFS= read -r -d '' script; do
-  bash -n "$script"
-  shellcheck "$script"
+  log "bash -n: ${script}"
+
+  if ! bash -n "$script"; then
+    error "Erro de sintaxe em: ${script}"
+  fi
+
+  log "shellcheck: ${script}"
+
+  if ! shellcheck "$script"; then
+    error "ShellCheck reprovou: ${script}"
+  fi
 done < <(
   find \
     suite \
@@ -31,7 +40,11 @@ done < <(
 log "Validando arquivos JSON..."
 
 while IFS= read -r -d '' json_file; do
-  python3 -m json.tool "$json_file" >/dev/null
+  log "JSON: ${json_file}"
+
+  if ! python3 -m json.tool "$json_file" >/dev/null; then
+    error "JSON inválido: ${json_file}"
+  fi
 done < <(
   find \
     docs \

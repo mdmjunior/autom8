@@ -3,7 +3,6 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE_DIR="$PROJECT_ROOT/suite/catalog/apps"
-OUTPUT_FILE="$PROJECT_ROOT/suite/catalog/apps.json"
 
 if [[ ! -d "$SOURCE_DIR" ]]; then
   echo "ERRO: diretório de categorias não encontrado: $SOURCE_DIR" >&2
