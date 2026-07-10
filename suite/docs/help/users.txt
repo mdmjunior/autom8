@@ -1,7 +1,7 @@
 AutoM8 help: autom8 users
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
 Lista usuários locais e grupos administrativos.
 

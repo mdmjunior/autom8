@@ -1,7 +1,7 @@
 AutoM8 help: autom8 docker
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
 Mostra informações do Docker quando disponível.
 

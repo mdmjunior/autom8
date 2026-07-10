@@ -1,6 +1,6 @@
 # AutoM8 - Linux Management Suite
 
-AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com clareza, logs e controle do usuário.
+AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, clareza, logs e controle do usuário.
 
 **AutoM8 by OSLabs**
 
@@ -59,15 +59,15 @@ autom8 self-update
 
 | Módulo | Comando | Status | Versão |
 | --- | --- | --- | --- |
-| Doctor | `autom8 doctor` | available | 0.1.0 |
-| Diagnóstico | `autom8 diagnose` | available | 0.1.0 |
-| Atualização do Sistema | `autom8 update` | available | 0.1.0 |
-| Limpeza | `autom8 clean` | available | 0.1.0 |
-| Segurança | `autom8 security` | available | 0.1.0 |
-| Docker | `autom8 docker` | available | 0.1.0 |
-| Usuários | `autom8 users` | available | 0.1.0 |
-| Configurações | `autom8 config` | available | 0.1.0 |
-| Relatórios | `autom8 report` | available | 0.1.0 |
+| Doctor | `autom8 doctor` | available | 0.1.1 |
+| Diagnóstico | `autom8 diagnose` | available | 0.1.1 |
+| Atualização do Sistema | `autom8 update` | available | 0.1.1 |
+| Limpeza | `autom8 clean` | available | 0.1.1 |
+| Segurança | `autom8 security` | available | 0.1.1 |
+| Docker | `autom8 docker` | available | 0.1.1 |
+| Usuários | `autom8 users` | available | 0.1.1 |
+| Configurações | `autom8 config` | available | 0.1.1 |
+| Relatórios | `autom8 report` | available | 0.1.1 |
 | Apps | `autom8 apps` | planned | 0.2.0 |
 | Perfis | `autom8 profiles` | planned | 0.2.0 |
 | Backup | `autom8 backup` | planned | 0.3.0 |

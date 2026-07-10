@@ -49,50 +49,119 @@ source "$AUTOM8_ROOT/modules/report.sh"
 # shellcheck source=/dev/null
 source "$AUTOM8_ROOT/modules/self_update.sh"
 
+AUTOM8_COMMAND="menu"
+AUTOM8_COMMAND_ARGS=()
+AUTOM8_DRY_RUN="false"
+AUTOM8_PRIVATE_REPORT="false"
+
 autom8_usage() {
   autom8_help_index
 }
-autom8_dashboard() {
-  autom8_title "AutoM8 Dashboard"
 
-  echo "Produto: $AUTOM8_NAME"
-  echo "Versão: $AUTOM8_VERSION"
-  echo "Usuário: $USER"
-  echo "Root: $AUTOM8_ROOT"
-  echo
-
-  autom8_print_detection
-  echo
-
-  echo "Permissões:"
-  echo "Pode usar sudo: $AUTOM8_CAN_SUDO"
-  echo "Modo somente leitura: $AUTOM8_READ_ONLY"
-  echo
-
-  echo "Uso de disco:"
-  df -h / 2>/dev/null || true
-  echo
-
-  echo "Memória:"
-  free -h 2>/dev/null || true
-  echo
-
-  echo "Docker:"
-  if command -v docker >/dev/null 2>&1; then
-    docker --version 2>/dev/null || true
+autom8_short_distro() {
+  if [[ "${AUTOM8_DISTRO_NAME:-unknown}" != "unknown" ]]; then
+    printf '%s' "$AUTOM8_DISTRO_NAME"
   else
-    echo "Docker não encontrado"
+    printf '%s' "$AUTOM8_DISTRO_ID"
   fi
-  echo
+}
 
-  echo "Firewall:"
+autom8_disk_summary() {
+  df -h / 2>/dev/null | awk 'NR==2 {print $5 " usado em " $1}' || printf 'indisponível'
+}
+
+autom8_memory_summary() {
+  free -h 2>/dev/null | awk '/^Mem:/ {print $3 " / " $2}' || printf 'indisponível'
+}
+
+autom8_firewall_summary() {
   if command -v ufw >/dev/null 2>&1; then
-    ufw status 2>/dev/null | head -n 5 || true
+    ufw status 2>/dev/null | head -n 1 || printf 'ufw indisponível'
   elif command -v firewall-cmd >/dev/null 2>&1; then
-    firewall-cmd --state 2>/dev/null || true
+    firewall-cmd --state 2>/dev/null || printf 'firewalld indisponível'
   else
-    echo "Firewall conhecido não encontrado"
+    printf 'não detectado'
   fi
+}
+
+autom8_dashboard() {
+  local distro
+  distro="$(autom8_short_distro)"
+
+  autom8_header \
+    "AutoM8 · Linux Management Suite" \
+    "v${AUTOM8_VERSION} · Automação Linux local com clareza e controle."
+
+  autom8_section "Sistema"
+  autom8_key_value "Distro" "$distro"
+  autom8_key_value "Gerenciador" "$AUTOM8_PACKAGE_MANAGER"
+  autom8_key_value "Kernel" "$(uname -r 2>/dev/null || printf 'indisponível')"
+  autom8_key_value "Desktop" "$AUTOM8_DESKTOP_SESSION"
+  autom8_key_value "Sessão" "$AUTOM8_SESSION_TYPE"
+
+  echo
+  autom8_section "Permissões"
+  autom8_key_value "Usuário" "$USER"
+  autom8_key_value "Sudo" "$AUTOM8_CAN_SUDO"
+  autom8_key_value "Somente leitura" "$AUTOM8_READ_ONLY"
+  autom8_key_value "Modo" "$AUTOM8_MODE"
+
+  echo
+  autom8_section "Recursos"
+  autom8_key_value "Disco" "$(autom8_disk_summary)"
+  autom8_key_value "Memória" "$(autom8_memory_summary)"
+  autom8_key_value "Firewall" "$(autom8_firewall_summary)"
+
+  echo
+  autom8_section "Saúde rápida"
+
+  if [[ -x "$AUTOM8_ROOT/bin/autom8" ]]; then
+    autom8_status_ok "Executável local encontrado"
+  else
+    autom8_status_fail "Executável local ausente ou sem permissão"
+  fi
+
+  if [[ -f "$AUTOM8_CONFIG_FILE" ]]; then
+    autom8_status_ok "Configuração encontrada"
+  else
+    autom8_status_warn "Configuração ainda não criada"
+  fi
+
+  if command -v autom8 >/dev/null 2>&1; then
+    autom8_status_ok "Comando autom8 disponível no PATH"
+  else
+    autom8_status_warn "Comando autom8 não está no PATH desta sessão"
+  fi
+
+  if [[ "$AUTOM8_SUPPORTED_DISTRO" == "true" ]]; then
+    autom8_status_ok "Distro suportada oficialmente"
+  else
+    autom8_status_warn "Distro não suportada oficialmente"
+  fi
+
+  echo
+}
+
+autom8_run_menu_choice() {
+  local choice="$1"
+
+  autom8_reset_summary
+
+  case "$choice" in
+    "Doctor") autom8_module_doctor ;;
+    "Diagnóstico") autom8_module_diagnose ;;
+    "Atualizar sistema") autom8_module_update ;;
+    "Limpeza segura") autom8_module_clean ;;
+    "Segurança") autom8_module_security ;;
+    "Docker") autom8_module_docker ;;
+    "Usuários") autom8_module_users ;;
+    "Configurações") autom8_module_config ;;
+    "Relatórios") autom8_module_report ;;
+    "Apps") autom8_module_apps ;;
+    "Perfis") autom8_module_profiles ;;
+    "Backup") autom8_module_backup ;;
+    "Sair") return 2 ;;
+  esac
 }
 
 autom8_menu() {
@@ -101,38 +170,28 @@ autom8_menu() {
     autom8_dashboard
 
     local choice
-    choice="$(autom8_choose "Menu principal" \
-      "Atualizar Sistema" \
-      "Limpeza" \
-      "Apps" \
-      "Perfis" \
-      "Backup" \
-      "Diagnóstico" \
+    choice="$(autom8_choose "O que deseja fazer?" \
       "Doctor" \
+      "Diagnóstico" \
+      "Atualizar sistema" \
+      "Limpeza segura" \
       "Segurança" \
       "Docker" \
       "Usuários" \
       "Configurações" \
       "Relatórios" \
+      "Apps" \
+      "Perfis" \
+      "Backup" \
       "Sair")" || exit 0
 
     clear || true
 
-    case "$choice" in
-      "Atualizar Sistema") autom8_module_update ;;
-      "Limpeza") autom8_module_clean ;;
-      "Apps") autom8_module_apps ;;
-      "Perfis") autom8_module_profiles ;;
-      "Backup") autom8_module_backup ;;
-      "Diagnóstico") autom8_module_diagnose ;;
-      "Doctor") autom8_module_doctor ;;
-      "Segurança") autom8_module_security ;;
-      "Docker") autom8_module_docker ;;
-      "Usuários") autom8_module_users ;;
-      "Configurações") autom8_module_config ;;
-      "Relatórios") autom8_module_report ;;
-      "Sair") break ;;
-    esac
+    if [[ "$choice" == "Sair" ]]; then
+      break
+    fi
+
+    autom8_run_menu_choice "$choice"
 
     echo
     autom8_print_summary
@@ -155,21 +214,56 @@ autom8_bootstrap() {
 }
 
 autom8_parse_global_flags() {
+  AUTOM8_COMMAND="menu"
+  AUTOM8_COMMAND_ARGS=()
   AUTOM8_DRY_RUN="false"
+  AUTOM8_PRIVATE_REPORT="false"
+
+  local arg
 
   for arg in "$@"; do
     case "$arg" in
       --dry-run)
         AUTOM8_DRY_RUN="true"
         ;;
+      --private)
+        AUTOM8_PRIVATE_REPORT="true"
+        AUTOM8_COMMAND_ARGS+=("$arg")
+        ;;
+      --version|-v|--help|-h)
+        if [[ "$AUTOM8_COMMAND" == "menu" ]]; then
+          AUTOM8_COMMAND="$arg"
+        else
+          AUTOM8_COMMAND_ARGS+=("$arg")
+        fi
+        ;;
+      *)
+        if [[ "$AUTOM8_COMMAND" == "menu" ]]; then
+          AUTOM8_COMMAND="$arg"
+        else
+          AUTOM8_COMMAND_ARGS+=("$arg")
+        fi
+        ;;
     esac
   done
+}
+
+autom8_export_report_bundle() {
+  mkdir -p "$AUTOM8_REPORT_DIR"
+
+  local output
+  output="$AUTOM8_REPORT_DIR/autom8-export-$(date '+%Y-%m-%d-%H%M').tar.gz"
+
+  tar -czf "$output" -C "$AUTOM8_ROOT" logs reports 2>/dev/null || true
+
+  autom8_success "Exportado: $output"
+  autom8_summary_ok "Relatório/histórico exportado"
 }
 
 main() {
   autom8_parse_global_flags "$@"
 
-  case "${1:-}" in
+  case "$AUTOM8_COMMAND" in
     --version|-v)
       echo "AutoM8 $AUTOM8_VERSION"
       exit 0
@@ -179,8 +273,8 @@ main() {
       exit 0
       ;;
     help)
-      if [[ -n "${2:-}" ]]; then
-        autom8_help_command "$2"
+      if [[ -n "${AUTOM8_COMMAND_ARGS[0]:-}" ]]; then
+        autom8_help_command "${AUTOM8_COMMAND_ARGS[0]}"
       else
         autom8_help_index
       fi
@@ -189,70 +283,70 @@ main() {
   esac
 
   autom8_bootstrap
+  autom8_reset_summary
 
-  case "${1:-menu}" in
+  case "$AUTOM8_COMMAND" in
     menu|"")
       autom8_menu
       ;;
     update)
-      autom8_module_update
+      autom8_module_update "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     upgrade-distro)
-      autom8_module_upgrade_distro
+      autom8_module_upgrade_distro "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     clean)
-      autom8_module_clean
+      autom8_module_clean "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     apps)
-      autom8_module_apps
+      autom8_module_apps "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     profiles)
-      autom8_module_profiles
+      autom8_module_profiles "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     backup)
-      autom8_module_backup
+      autom8_module_backup "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     diagnose)
-      autom8_module_diagnose
+      autom8_module_diagnose "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     doctor)
-      autom8_module_doctor
+      autom8_module_doctor "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     security)
-      autom8_module_security
+      autom8_module_security "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     docker)
-      autom8_module_docker
+      autom8_module_docker "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     users)
-      autom8_module_users
+      autom8_module_users "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     config)
-      autom8_module_config
+      autom8_module_config "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     report)
-      if [[ "${2:-}" == "export" ]]; then
-        mkdir -p "$AUTOM8_REPORT_DIR"
-        output="$AUTOM8_REPORT_DIR/autom8-export-$(date '+%Y-%m-%d-%H%M').tar.gz"
-        tar -czf "$output" -C "$AUTOM8_ROOT" logs reports 2>/dev/null || true
-        autom8_success "Exportado: $output"
-        autom8_summary_ok "Relatório/histórico exportado"
+      if [[ "${AUTOM8_COMMAND_ARGS[0]:-}" == "export" ]]; then
+        autom8_export_report_bundle
       else
-        autom8_module_report
+        autom8_module_report "${AUTOM8_COMMAND_ARGS[@]}"
       fi
       ;;
     self-update)
-      autom8_module_self_update
+      autom8_module_self_update "${AUTOM8_COMMAND_ARGS[@]}"
       ;;
     *)
-      autom8_error_ui "Comando desconhecido: ${1:-}"
+      autom8_error_ui "Comando desconhecido: $AUTOM8_COMMAND"
       autom8_usage
       autom8_summary_fail "Comando desconhecido"
       ;;
   esac
 
-  echo
-  autom8_print_summary
+  if [[ "$AUTOM8_COMMAND" != "menu" && "$AUTOM8_COMMAND" != "" ]]; then
+    echo
+    autom8_print_summary
+  fi
+
   autom8_log_end
 }
 

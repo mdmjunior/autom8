@@ -1,6 +1,6 @@
 AutoM8 - Linux Management Suite
 
-AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com clareza, logs e controle do usuário.
+AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, clareza, logs e controle do usuário.
 
 Uso:
   autom8
@@ -9,12 +9,12 @@ Uso:
   autom8 --version
 
 Comandos disponíveis:
-  autom8                   Abre o menu interativo principal.
+  autom8                   Abre Dashboard + Menu.
   autom8 --version         Mostra a versão instalada.
-  autom8 doctor            Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.
-  autom8 diagnose          Gera diagnóstico local do sistema.
+  autom8 doctor            Valida instalação, dependências, PATH, release e versão online.
+  autom8 diagnose          Gera diagnóstico completo local ou privado sanitizado.
   autom8 update            Atualiza repositórios e pacotes do sistema com confirmação.
-  autom8 clean             Executa limpeza segura de caches, temporários e arquivos antigos.
+  autom8 clean             Executa limpeza segura com confirmação explícita.
   autom8 security          Executa checagem básica de segurança local.
   autom8 docker            Mostra informações do Docker quando disponível.
   autom8 users             Lista usuários locais e grupos administrativos.

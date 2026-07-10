@@ -1,7 +1,7 @@
 AutoM8 help: autom8 security
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
 Executa checagem básica de segurança local.
 

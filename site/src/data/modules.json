@@ -3,23 +3,23 @@
     "name": "Doctor",
     "slug": "doctor",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 doctor",
-    "description": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios."
+    "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
   },
   {
     "name": "Diagnóstico",
     "slug": "diagnose",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 diagnose",
-    "description": "Gera relatório local com informações de sistema, hardware, rede, firewall, Docker e usuários."
+    "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
   },
   {
     "name": "Atualização do Sistema",
     "slug": "update",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 update",
     "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
   },
@@ -27,15 +27,15 @@
     "name": "Limpeza",
     "slug": "clean",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 clean",
-    "description": "Executa limpeza segura e suporta simulação com --dry-run."
+    "description": "Executa limpeza segura com confirmação explícita e suporta simulação com --dry-run."
   },
   {
     "name": "Segurança",
     "slug": "security",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 security",
     "description": "Mostra firewall, portas em escuta e status básico de SSH."
   },
@@ -43,7 +43,7 @@
     "name": "Docker",
     "slug": "docker",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 docker",
     "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
   },
@@ -51,7 +51,7 @@
     "name": "Usuários",
     "slug": "users",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 users",
     "description": "Lista usuários com login permitido e grupos administrativos."
   },
@@ -59,7 +59,7 @@
     "name": "Configurações",
     "slug": "config",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 config",
     "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
   },
@@ -67,7 +67,7 @@
     "name": "Relatórios",
     "slug": "report",
     "status": "available",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "command": "autom8 report",
     "description": "Lista e exporta relatórios gerados pela suíte."
   },

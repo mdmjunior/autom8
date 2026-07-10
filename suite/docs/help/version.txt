@@ -1,7 +1,7 @@
 AutoM8 help: autom8 --version
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
 Mostra a versão instalada.
 
