@@ -4,7 +4,7 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET_VERSION="${AUTOM8_TARGET_VERSION:-0.2.0}"
 CURRENT_BRANCH_EXPECTED="${AUTOM8_STABLE_SOURCE_BRANCH:-feature/apps-v0.2}"
-RESULT_FILE="${AUTOM8_RC_RESULT_FILE:-$PROJECT_ROOT/docs/releases/results/0.2.0-rc1-ubuntu-desktop.md}"
+RESULT_FILE="${AUTOM8_RC_RESULT_FILE:-$PROJECT_ROOT/docs/releases/results/0.2.0-rc2-ubuntu-desktop.md}"
 
 log() {
   printf '\033[1;34m[AutoM8 Stable Prep]\033[0m %s\n' "$1"
@@ -44,6 +44,9 @@ if ! grep -qiE 'Resultado geral:.*aprovado|Aprovado|Promover para v0\.2\.0 está
 fi
 
 log "RC aprovado encontrado em: $RESULT_FILE"
+
+log "Executando gate obrigatório da stable."
+./scripts/verify-stable-gate.sh
 
 printf '%s\n' "$TARGET_VERSION" > suite/VERSION
 
