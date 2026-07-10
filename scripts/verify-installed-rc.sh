@@ -17,8 +17,21 @@ error() {
 }
 
 if [[ ! -x "$AUTOM8_BIN" ]]; then
-  error "AutoM8 não encontrado ou sem permissão de execução: $AUTOM8_BIN"
-  exit 1
+  warn "AutoM8 não encontrado no caminho padrão ou sem permissão: $AUTOM8_BIN"
+  warn "Procurando binário alternativo em /opt/autom8..."
+
+  FOUND_BIN="$(find /opt/autom8 -maxdepth 5 -type f -path '*/bin/autom8' 2>/dev/null | head -n 1 || true)"
+
+  if [[ -n "$FOUND_BIN" ]]; then
+    warn "Binário encontrado em caminho alternativo: $FOUND_BIN"
+    warn "Use AUTOM8_BIN=$FOUND_BIN para validar, ou reinstale com o instalador corrigido."
+    AUTOM8_BIN="$FOUND_BIN"
+  else
+    error "AutoM8 não encontrado."
+    error "Conteúdo atual de /opt/autom8:"
+    find /opt/autom8 -maxdepth 4 -print 2>/dev/null | sed -n '1,120p' || true
+    exit 1
+  fi
 fi
 
 version="$("$AUTOM8_BIN" --version | tr -d '[:space:]')"
