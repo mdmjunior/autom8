@@ -6,6 +6,9 @@ set -o pipefail
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/common/project.sh"
 
+require_command jq
+require_command python3
+
 log "Validando AutoM8 CLI..."
 
 [[ -f "${CLI_DIR}/VERSION" ]] ||
@@ -19,34 +22,6 @@ fi
 
 log "Versão detectada: ${version}"
 
-log "Validando sintaxe dos scripts..."
-
-while IFS= read -r -d '' script; do
-  bash -n "$script"
-done < <(
-  find \
-    "${CLI_DIR}" \
-    "${INSTALLER_DIR}" \
-    "${PROJECT_ROOT}/scripts" \
-    -type f \
-    -name '*.sh' \
-    -print0
-)
-
-log "Executando ShellCheck..."
-
-while IFS= read -r -d '' script; do
-  shellcheck "$script"
-done < <(
-  find \
-    "${CLI_DIR}" \
-    "${INSTALLER_DIR}" \
-    "${PROJECT_ROOT}/scripts" \
-    -type f \
-    -name '*.sh' \
-    -print0
-)
-
 log "Gerando catálogo consolidado..."
 "${PROJECT_ROOT}/scripts/build-apps-catalog.sh"
 
@@ -59,4 +34,4 @@ log "Validando catálogo de perfis..."
 log "Validando instalador..."
 "${PROJECT_ROOT}/scripts/cli/check-installer.sh"
 
-log "CLI aprovada na validação inicial."
+log "CLI aprovada."

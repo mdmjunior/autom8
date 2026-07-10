@@ -1,0 +1,172 @@
+name: Quality Gate
+
+on:
+  push:
+    branches:
+      - develop
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    outputs:
+      cli: ${{ steps.filter.outputs.cli }}
+      website: ${{ steps.filter.outputs.website }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Classify changed files
+        id: filter
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -Eeuo pipefail
+
+          if [[ -z "${BASE_SHA}" ||
+                "${BASE_SHA}" =~ ^0+$ ]]; then
+            git diff-tree \
+              --no-commit-id \
+              --name-only \
+              -r "$HEAD_SHA" \
+              > changed-files.txt
+          else
+            git diff \
+              --name-only \
+              "$BASE_SHA" \
+              "$HEAD_SHA" \
+              > changed-files.txt
+          fi
+
+          printf '%s\n' "Arquivos alterados:"
+          cat changed-files.txt
+
+          cli=false
+          website=false
+
+          while IFS= read -r file; do
+            case "$file" in
+              suite/*|\
+              installer/*|\
+              site/public/install.sh|\
+              docs/source/*|\
+              scripts/cli/*|\
+              scripts/common/*|\
+              scripts/check.sh|\
+              scripts/build-apps-catalog.sh|\
+              scripts/validate-apps-catalog.sh|\
+              scripts/validate-profiles-catalog.sh|\
+              scripts/package.sh|\
+              scripts/install-local.sh|\
+              scripts/release-*.sh|\
+              scripts/prepare-stable-release.sh|\
+              scripts/smoke-*.sh|\
+              .github/workflows/quality.yml|\
+              .github/workflows/quality-common.yml|\
+              .github/workflows/quality-cli.yml)
+                cli=true
+                ;;
+            esac
+
+            case "$file" in
+              site/*|\
+              infra/*|\
+              installer/install.sh|\
+              docs/source/*|\
+              scripts/common/*|\
+              scripts/website/*|\
+              scripts/check.sh|\
+              scripts/build-site.sh|\
+              scripts/sync-docs.sh|\
+              .github/workflows/quality.yml|\
+              .github/workflows/quality-common.yml|\
+              .github/workflows/quality-website.yml)
+                website=true
+                ;;
+            esac
+          done < changed-files.txt
+
+          {
+            echo "cli=${cli}"
+            echo "website=${website}"
+          } >> "$GITHUB_OUTPUT"
+
+  common:
+    name: Common
+    needs:
+      - changes
+    uses: ./.github/workflows/quality-common.yml
+
+  cli:
+    name: CLI
+    needs:
+      - changes
+    if: ${{ needs.changes.outputs.cli == 'true' }}
+    uses: ./.github/workflows/quality-cli.yml
+
+  website:
+    name: Website
+    needs:
+      - changes
+    if: ${{ needs.changes.outputs.website == 'true' }}
+    uses: ./.github/workflows/quality-website.yml
+
+  gate:
+    name: Required quality gate
+    if: ${{ always() }}
+    needs:
+      - changes
+      - common
+      - cli
+      - website
+
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Evaluate quality jobs
+        env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          COMMON_RESULT: ${{ needs.common.result }}
+          CLI_RESULT: ${{ needs.cli.result }}
+          WEBSITE_RESULT: ${{ needs.website.result }}
+        run: |
+          set -Eeuo pipefail
+
+          printf 'Changes: %s\n' "$CHANGES_RESULT"
+          printf 'Common: %s\n' "$COMMON_RESULT"
+          printf 'CLI: %s\n' "$CLI_RESULT"
+          printf 'Website: %s\n' "$WEBSITE_RESULT"
+
+          [[ "$CHANGES_RESULT" == "success" ]]
+          [[ "$COMMON_RESULT" == "success" ]]
+
+          for result in "$CLI_RESULT" "$WEBSITE_RESULT"; do
+            case "$result" in
+              success|skipped)
+                ;;
+              *)
+                exit 1
+                ;;
+            esac
+          done

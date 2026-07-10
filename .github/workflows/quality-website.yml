@@ -1,0 +1,81 @@
+name: Quality - Website
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  website:
+    name: Website quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Regenerate documentation
+        run: ./scripts/sync-docs.sh
+
+      - name: Check generated documentation
+        run: |
+          git diff --exit-code -- \
+            docs \
+            suite/docs \
+            site/src/data
+
+      - name: Validate website
+        run: ./scripts/website/check.sh
+
+      - name: Build container image
+        run: docker build --tag autom8-site:ci site
+
+      - name: Validate container runtime
+        run: |
+          set -Eeuo pipefail
+
+          docker run \
+            --detach \
+            --name autom8-site-ci \
+            --publish 127.0.0.1:8080:80 \
+            autom8-site:ci
+
+          cleanup() {
+            docker rm --force autom8-site-ci \
+              >/dev/null 2>&1 || true
+          }
+
+          trap cleanup EXIT
+
+          health="$(
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --retry 10 \
+              --retry-connrefused \
+              --retry-delay 1 \
+              http://127.0.0.1:8080/healthz
+          )"
+
+          [[ "$health" == "ok" ]]
+
+          curl --fail --silent http://127.0.0.1:8080/ |
+            grep -qi '<html'
+
+          curl \
+            --fail \
+            --silent \
+            http://127.0.0.1:8080/install.sh |
+            grep -q 'autom8-latest.tar.gz'
