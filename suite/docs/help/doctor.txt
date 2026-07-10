@@ -1,13 +1,15 @@
 AutoM8 help: autom8 doctor
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
-Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.
+Valida instalação, dependências, PATH, release e versão online.
 
 Detalhes:
 - Gera relatório em reports/doctor-<data>.txt.
 - Verifica diretórios principais, arquivos obrigatórios, comandos obrigatórios e comandos opcionais.
+- Verifica origem GitHub Releases.
+- Verifica versão online sem bloquear em caso de falha de internet.
 - Indicado após instalar, atualizar ou mover a suíte.
 
 Exemplos:

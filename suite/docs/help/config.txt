@@ -1,7 +1,7 @@
 AutoM8 help: autom8 config
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
 Permite alterar configurações básicas da suíte.
 

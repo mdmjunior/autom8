@@ -5,10 +5,10 @@
     "brand": "AutoM8 by OSLabs",
     "siteUrl": "https://autom8.oslabs.com.br",
     "githubRepo": "mdmjunior/autom8",
-    "currentVersion": "0.1.0",
-    "currentDate": "2026-07-06",
-    "summary": "AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com clareza, logs e controle do usuário.",
-    "positioning": "Automação Linux local, segura e auditável para usuários iniciantes, técnicos e administradores."
+    "currentVersion": "0.1.1",
+    "currentDate": "2026-07-10",
+    "summary": "AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, clareza, logs e controle do usuário.",
+    "positioning": "Automação Linux local, segura, auditável e amigável para usuários iniciantes, técnicos e administradores."
   },
   "releasePolicy": {
     "stableSource": "GitHub Releases",
@@ -105,10 +105,10 @@
       "slug": "menu",
       "command": "autom8",
       "status": "available",
-      "since": "0.1.0",
-      "summary": "Abre o menu interativo principal.",
+      "since": "0.1.1",
+      "summary": "Abre Dashboard + Menu.",
       "details": [
-        "Mostra o dashboard local com distro, permissões, disco, memória, Docker e firewall.",
+        "Mostra cabeçalho AutoM8, sistema, permissões, recursos e saúde rápida.",
         "Permite acessar módulos sem decorar comandos."
       ],
       "examples": [
@@ -119,7 +119,7 @@
       "slug": "version",
       "command": "autom8 --version",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Mostra a versão instalada.",
       "details": [
         "Lê a versão instalada a partir do arquivo VERSION dentro da suíte."
@@ -132,11 +132,13 @@
       "slug": "doctor",
       "command": "autom8 doctor",
       "status": "available",
-      "since": "0.1.0",
-      "summary": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.",
+      "since": "0.1.1",
+      "summary": "Valida instalação, dependências, PATH, release e versão online.",
       "details": [
         "Gera relatório em reports/doctor-<data>.txt.",
         "Verifica diretórios principais, arquivos obrigatórios, comandos obrigatórios e comandos opcionais.",
+        "Verifica origem GitHub Releases.",
+        "Verifica versão online sem bloquear em caso de falha de internet.",
         "Indicado após instalar, atualizar ou mover a suíte."
       ],
       "examples": [
@@ -147,21 +149,23 @@
       "slug": "diagnose",
       "command": "autom8 diagnose",
       "status": "available",
-      "since": "0.1.0",
-      "summary": "Gera diagnóstico local do sistema.",
+      "since": "0.1.1",
+      "summary": "Gera diagnóstico completo local ou privado sanitizado.",
       "details": [
-        "Coleta informações de sistema, kernel, CPU, memória, disco, rede, DNS, serviços, firewall, portas, Docker, usuários e sessão gráfica.",
-        "Gera relatório em reports/diagnostic-<data>.txt."
+        "autom8 diagnose gera relatório completo local.",
+        "autom8 diagnose --private gera relatório sanitizado para compartilhamento.",
+        "O modo privado oculta ou reduz hostname, usuários, homes, IPs, DNS, rotas, containers e processos sensíveis."
       ],
       "examples": [
-        "autom8 diagnose"
+        "autom8 diagnose",
+        "autom8 diagnose --private"
       ]
     },
     {
       "slug": "update",
       "command": "autom8 update",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Atualiza repositórios e pacotes do sistema com confirmação.",
       "details": [
         "Suporta apt, dnf, zypper e pacman.",
@@ -177,9 +181,11 @@
       "slug": "clean",
       "command": "autom8 clean",
       "status": "available",
-      "since": "0.1.0",
-      "summary": "Executa limpeza segura de caches, temporários e arquivos antigos.",
+      "since": "0.1.1",
+      "summary": "Executa limpeza segura com confirmação explícita.",
       "details": [
+        "Mostra as ações previstas antes da execução real.",
+        "Pede confirmação explícita antes de remover qualquer arquivo.",
         "Limpa cache do gerenciador de pacotes conforme a distro.",
         "Remove temporários antigos em /tmp e /var/tmp.",
         "Remove logs rotacionados antigos.",
@@ -195,7 +201,7 @@
       "slug": "security",
       "command": "autom8 security",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Executa checagem básica de segurança local.",
       "details": [
         "Mostra status de firewall conhecido.",
@@ -210,7 +216,7 @@
       "slug": "docker",
       "command": "autom8 docker",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Mostra informações do Docker quando disponível.",
       "details": [
         "Mostra versão do Docker.",
@@ -225,7 +231,7 @@
       "slug": "users",
       "command": "autom8 users",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Lista usuários locais e grupos administrativos.",
       "details": [
         "Mostra usuários com login permitido.",
@@ -240,7 +246,7 @@
       "slug": "config",
       "command": "autom8 config",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Permite alterar configurações básicas da suíte.",
       "details": [
         "Permite selecionar idioma.",
@@ -256,7 +262,7 @@
       "slug": "report",
       "command": "autom8 report",
       "status": "available",
-      "since": "0.1.0",
+      "since": "0.1.1",
       "summary": "Lista e exporta relatórios gerados.",
       "details": [
         "Lista arquivos em reports/.",
@@ -340,23 +346,23 @@
       "name": "Doctor",
       "slug": "doctor",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 doctor",
-      "description": "Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios."
+      "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
     },
     {
       "name": "Diagnóstico",
       "slug": "diagnose",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 diagnose",
-      "description": "Gera relatório local com informações de sistema, hardware, rede, firewall, Docker e usuários."
+      "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
     },
     {
       "name": "Atualização do Sistema",
       "slug": "update",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 update",
       "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
     },
@@ -364,15 +370,15 @@
       "name": "Limpeza",
       "slug": "clean",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 clean",
-      "description": "Executa limpeza segura e suporta simulação com --dry-run."
+      "description": "Executa limpeza segura com confirmação explícita e suporta simulação com --dry-run."
     },
     {
       "name": "Segurança",
       "slug": "security",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 security",
       "description": "Mostra firewall, portas em escuta e status básico de SSH."
     },
@@ -380,7 +386,7 @@
       "name": "Docker",
       "slug": "docker",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 docker",
       "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
     },
@@ -388,7 +394,7 @@
       "name": "Usuários",
       "slug": "users",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 users",
       "description": "Lista usuários com login permitido e grupos administrativos."
     },
@@ -396,7 +402,7 @@
       "name": "Configurações",
       "slug": "config",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 config",
       "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
     },
@@ -404,7 +410,7 @@
       "name": "Relatórios",
       "slug": "report",
       "status": "available",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "command": "autom8 report",
       "description": "Lista e exporta relatórios gerados pela suíte."
     },

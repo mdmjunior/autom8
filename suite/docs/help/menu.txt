@@ -1,12 +1,12 @@
 AutoM8 help: autom8
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
-Abre o menu interativo principal.
+Abre Dashboard + Menu.
 
 Detalhes:
-- Mostra o dashboard local com distro, permissões, disco, memória, Docker e firewall.
+- Mostra cabeçalho AutoM8, sistema, permissões, recursos e saúde rápida.
 - Permite acessar módulos sem decorar comandos.
 
 Exemplos:
