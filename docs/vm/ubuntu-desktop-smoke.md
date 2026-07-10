@@ -127,3 +127,26 @@ Depois:
 O comando público direto abaixo continua reservado para release estável:
 
     curl -fsSL https://autom8.oslabs.com.br/install.sh | bash
+
+## Verificação pós-instalação do RC
+
+Após instalar o RC em `/opt/autom8`, copie ou baixe o script de verificação e rode:
+
+    /opt/autom8/bin/autom8 --version
+
+Se estiver trabalhando pelo clone da branch:
+
+    ./scripts/verify-installed-rc.sh
+
+Ou apontando manualmente para o binário instalado:
+
+    AUTOM8_BIN=/opt/autom8/bin/autom8 AUTOM8_EXPECTED_VERSION=0.2.0-rc1 ./scripts/verify-installed-rc.sh
+
+Esse script valida:
+
+- versão instalada;
+- doctor;
+- apps;
+- profiles;
+- dry-runs;
+- bloqueio de app advanced.

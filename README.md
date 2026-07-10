@@ -100,6 +100,23 @@ AutoM8 by OSLabs.
 Criado por Marcio Moreira Junior para a comunidade Linux.
 
 
+## Validação pós-RC
+
+Depois de publicar `v0.2.0-rc1`, valide em uma VM Ubuntu Desktop descartável.
+
+Checklist:
+
+    docs/testing/ubuntu-desktop-rc-validation.md
+
+Template de resultado:
+
+    docs/releases/results/0.2.0-rc1-ubuntu-desktop-template.md
+
+Verificação pós-instalação:
+
+    AUTOM8_BIN=/opt/autom8/bin/autom8 AUTOM8_EXPECTED_VERSION=0.2.0-rc1 ./scripts/verify-installed-rc.sh
+
+
 ## Release candidate v0.2.0-rc1
 
 A versão `0.2.0-rc1` é uma prerelease para validação em VM Ubuntu Desktop antes da release estável.
