@@ -166,3 +166,34 @@ Esse script ajusta `suite/VERSION` para `0.2.0`, valida catálogos, roda smoke, 
 Depois disso, siga:
 
     docs/releases/0.2.0-stable-checklist.md
+
+## Teste com pacote RC2
+
+O RC2 corrige a falha do RC1 onde o executável não aparecia em:
+
+    /opt/autom8/bin/autom8
+
+Teste recomendado:
+
+    sudo rm -rf /opt/autom8
+    sudo apt update
+    sudo apt install -y curl git jq
+
+    curl -fsSL https://autom8.oslabs.com.br/install.sh -o /tmp/autom8-install.sh
+
+    AUTOM8_PACKAGE_URL=https://github.com/mdmjunior/autom8/releases/download/v0.2.0-rc2/autom8-0.2.0-rc2.tar.gz bash /tmp/autom8-install.sh
+
+Depois:
+
+    export PATH="/opt/autom8/bin:$PATH"
+
+    autom8 --version
+    autom8 doctor
+    autom8 apps categories
+    autom8 profiles list
+    autom8 --dry-run apps install-category sistema
+    autom8 --dry-run profiles install dev-essential
+
+Pelo clone da branch:
+
+    AUTOM8_BIN=/opt/autom8/bin/autom8 AUTOM8_EXPECTED_VERSION=0.2.0-rc2 ./scripts/verify-installed-rc.sh

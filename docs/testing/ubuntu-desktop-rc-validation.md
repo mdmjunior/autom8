@@ -167,3 +167,32 @@ Promover apenas se:
 - apps advanced foram bloqueados;
 - nenhuma ação real quebrou a VM de teste;
 - não há bug crítico aberto.
+
+## Validação complementar em Fedora Workstation
+
+Além do Ubuntu Desktop, a versão 0.2.0 deve ser validada em Fedora Workstation.
+
+Na VM Fedora:
+
+    sudo dnf install -y git curl jq tar gzip
+
+    git clone -b feature/apps-v0.2 https://github.com/mdmjunior/autom8.git
+    cd autom8
+
+    ./scripts/smoke-fedora-workstation.sh
+
+Teste com RC2 publicado:
+
+    sudo rm -rf /opt/autom8
+
+    curl -fsSL https://autom8.oslabs.com.br/install.sh -o /tmp/autom8-install.sh
+
+    AUTOM8_PACKAGE_URL=https://github.com/mdmjunior/autom8/releases/download/v0.2.0-rc2/autom8-0.2.0-rc2.tar.gz bash /tmp/autom8-install.sh
+
+Critérios mínimos:
+
+- instalação cria `/opt/autom8/bin/autom8`;
+- CLI responde;
+- apps básicos em dry-run funcionam;
+- perfis listam;
+- steam continua bloqueado.
