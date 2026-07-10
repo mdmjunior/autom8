@@ -57,6 +57,6 @@ log "Validando catálogo de perfis..."
 "${PROJECT_ROOT}/scripts/validate-profiles-catalog.sh"
 
 log "Validando instalador..."
-bash -n "${INSTALLER_DIR}/install.sh"
+"${PROJECT_ROOT}/scripts/cli/check-installer.sh"
 
 log "CLI aprovada na validação inicial."
