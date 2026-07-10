@@ -24,16 +24,16 @@
   },
   {
     "version": "0.2.0",
-    "title": "Apps e perfis",
+    "title": "Apps por catálogo",
     "items": [
-      "Catálogo YAML.",
-      "Instalação e remoção de apps.",
-      "Perfis YAML.",
-      "Modo mínimo seguro.",
-      "Modo completo.",
-      "Seleção individual de apps.",
-      "Flatpak e Flathub."
-    ]
+      "Catálogo fonte separado por categorias.",
+      "Catálogo consolidado gerado por script.",
+      "Listagem, busca, detalhes e filtros por categoria.",
+      "Instalação e remoção individual com confirmação.",
+      "Instalação e remoção múltipla com confirmação única.",
+      "Apps advanced visíveis, mas sem instalação automática."
+    ],
+    "status": "in-progress"
   },
   {
     "version": "0.3.0",

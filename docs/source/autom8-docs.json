@@ -5,9 +5,9 @@
     "brand": "AutoM8 by OSLabs",
     "siteUrl": "https://autom8.oslabs.com.br",
     "githubRepo": "mdmjunior/autom8",
-    "currentVersion": "0.1.1",
+    "currentVersion": "0.2.0-dev",
     "currentDate": "2026-07-10",
-    "summary": "AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, clareza, logs e controle do usuário.",
+    "summary": "AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, catálogo de apps, logs e controle explícito do usuário.",
     "positioning": "Automação Linux local, segura, auditável e amigável para usuários iniciantes, técnicos e administradores."
   },
   "releasePolicy": {
@@ -15,7 +15,8 @@
     "latestPackageUrl": "https://github.com/mdmjunior/autom8/releases/latest/download/autom8-latest.tar.gz",
     "versionedPackagePattern": "https://github.com/mdmjunior/autom8/releases/download/v{version}/autom8-{version}.tar.gz",
     "sitePackagePolicy": "A VPS e o build do site não devem hospedar pacotes da suíte. O site publica apenas o instalador e a documentação.",
-    "installerPolicy": "O install.sh deve baixar sempre o pacote estável mais recente publicado no GitHub Releases."
+    "installerPolicy": "O install.sh deve baixar sempre o pacote estável mais recente publicado no GitHub Releases.",
+    "packageSource": "GitHub Releases"
   },
   "variables": [
     {
@@ -84,7 +85,154 @@
     "bash, curl, tar, gzip, awk, sed, grep, find e sudo.",
     "Gerenciador de pacotes suportado: apt, dnf, zypper ou pacman.",
     "gum é instalado pelo instalador para melhorar a interface interativa.",
-    "Docker, Flatpak, Snap, jq, rsync, nmap e lsof podem ser usados por módulos específicos quando disponíveis."
+    "Docker, Flatpak, Snap, jq, rsync, nmap e lsof podem ser usados por módulos específicos quando disponíveis.",
+    {
+      "slug": "base-dependencies",
+      "title": "Dependências base instaladas automaticamente",
+      "summary": "Pacotes básicos de diagnóstico, rede, arquivos, JSON, Git e interface interativa são instalados automaticamente pelo install.sh.",
+      "commands": [
+        "bash",
+        "awk",
+        "sed",
+        "grep",
+        "find",
+        "tar",
+        "gzip",
+        "curl",
+        "wget",
+        "git",
+        "sudo",
+        "jq",
+        "rsync",
+        "lsof",
+        "nmap",
+        "ip",
+        "ss",
+        "ifconfig",
+        "netstat",
+        "dig",
+        "nslookup",
+        "unzip",
+        "xz",
+        "file",
+        "tree",
+        "gum"
+      ],
+      "packages": {
+        "apt": [
+          "ca-certificates",
+          "curl",
+          "wget",
+          "git",
+          "tar",
+          "gzip",
+          "coreutils",
+          "findutils",
+          "gawk",
+          "sed",
+          "grep",
+          "util-linux",
+          "procps",
+          "iproute2",
+          "net-tools",
+          "dnsutils",
+          "sudo",
+          "jq",
+          "rsync",
+          "lsof",
+          "nmap",
+          "gnupg",
+          "unzip",
+          "xz-utils",
+          "file",
+          "tree"
+        ],
+        "dnf": [
+          "ca-certificates",
+          "curl",
+          "wget",
+          "git",
+          "tar",
+          "gzip",
+          "coreutils",
+          "findutils",
+          "gawk",
+          "sed",
+          "grep",
+          "util-linux",
+          "procps-ng",
+          "iproute",
+          "net-tools",
+          "bind-utils",
+          "sudo",
+          "jq",
+          "rsync",
+          "lsof",
+          "nmap",
+          "gnupg2",
+          "unzip",
+          "xz",
+          "file",
+          "tree"
+        ],
+        "zypper": [
+          "ca-certificates",
+          "curl",
+          "wget",
+          "git",
+          "tar",
+          "gzip",
+          "coreutils",
+          "findutils",
+          "gawk",
+          "sed",
+          "grep",
+          "util-linux",
+          "procps",
+          "iproute2",
+          "net-tools",
+          "bind-utils",
+          "sudo",
+          "jq",
+          "rsync",
+          "lsof",
+          "nmap",
+          "gpg2",
+          "unzip",
+          "xz",
+          "file",
+          "tree"
+        ],
+        "pacman": [
+          "ca-certificates",
+          "curl",
+          "wget",
+          "git",
+          "tar",
+          "gzip",
+          "coreutils",
+          "findutils",
+          "gawk",
+          "sed",
+          "grep",
+          "util-linux",
+          "procps-ng",
+          "iproute2",
+          "net-tools",
+          "bind",
+          "sudo",
+          "jq",
+          "rsync",
+          "lsof",
+          "nmap",
+          "gnupg",
+          "unzip",
+          "xz",
+          "file",
+          "tree"
+        ]
+      }
+    }
   ],
   "install": {
     "command": "curl -fsSL https://autom8.oslabs.com.br/install.sh | bash",
@@ -98,83 +246,58 @@
       "O instalador baixa o pacote estável mais recente do GitHub Releases.",
       "A instalação padrão usa /opt/autom8.",
       "Ao final, o instalador executa autom8 --version e autom8 doctor."
-    ]
+    ],
+    "summary": "O instalador prepara dependências obrigatórias, instala gum, baixa o pacote estável pelo GitHub Releases e executa validação pós-instalação.",
+    "baseDependencyPolicy": "Pacotes básicos de diagnóstico, rede, arquivos, JSON, Git e interface interativa são instalados automaticamente pelo install.sh."
   },
   "commands": [
     {
-      "slug": "menu",
-      "command": "autom8",
+      "slug": "apps",
+      "command": "autom8 apps",
       "status": "available",
-      "since": "0.1.1",
-      "summary": "Abre Dashboard + Menu.",
+      "since": "0.2.0",
+      "summary": "Instala e remove aplicativos por catálogo local atualizável online.",
       "details": [
-        "Mostra cabeçalho AutoM8, sistema, permissões, recursos e saúde rápida.",
-        "Permite acessar módulos sem decorar comandos."
+        "O módulo Apps usa catálogo local consolidado em suite/catalog/apps.json.",
+        "O catálogo fonte é separado por categoria em suite/catalog/apps/.",
+        "O catálogo consolidado é gerado por scripts/build-apps-catalog.sh.",
+        "A CLI lê o catálogo consolidado para listar, buscar, detalhar, instalar e remover apps.",
+        "Apps com status available podem ser instalados/removidos pelos repositórios da distro.",
+        "Apps com status advanced aparecem no catálogo, mas não são instalados automaticamente nesta versão.",
+        "Toda instalação e remoção real exige confirmação explícita.",
+        "O modo --dry-run mostra o comando previsto sem executar alteração real.",
+        "Categorias iniciais: desenvolvimento, produtividade, containers, sistema, rede, mídia, design, games, escritório e usuário local."
       ],
       "examples": [
-        "autom8"
+        "autom8 apps",
+        "autom8 apps categories",
+        "autom8 apps list",
+        "autom8 apps list --category desenvolvimento",
+        "autom8 apps list --category escritorio",
+        "autom8 apps search docker",
+        "autom8 apps show git",
+        "autom8 --dry-run apps install git",
+        "autom8 apps install htop",
+        "autom8 --dry-run apps install-many git htop jq",
+        "autom8 apps install-many git htop jq",
+        "autom8 --dry-run apps remove htop",
+        "autom8 apps remove htop",
+        "autom8 --dry-run apps remove-many git htop",
+        "autom8 apps remove-many git htop",
+        "autom8 apps update-catalog"
       ]
     },
     {
-      "slug": "version",
-      "command": "autom8 --version",
-      "status": "available",
-      "since": "0.1.1",
-      "summary": "Mostra a versão instalada.",
+      "slug": "backup",
+      "command": "autom8 backup",
+      "status": "planned",
+      "since": "0.3.0",
+      "summary": "Backups simples antes de operações sensíveis.",
       "details": [
-        "Lê a versão instalada a partir do arquivo VERSION dentro da suíte."
+        "Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.3.0."
       ],
       "examples": [
-        "autom8 --version"
-      ]
-    },
-    {
-      "slug": "doctor",
-      "command": "autom8 doctor",
-      "status": "available",
-      "since": "0.1.1",
-      "summary": "Valida instalação, dependências, PATH, release e versão online.",
-      "details": [
-        "Gera relatório em reports/doctor-<data>.txt.",
-        "Verifica diretórios principais, arquivos obrigatórios, comandos obrigatórios e comandos opcionais.",
-        "Verifica origem GitHub Releases.",
-        "Verifica versão online sem bloquear em caso de falha de internet.",
-        "Indicado após instalar, atualizar ou mover a suíte."
-      ],
-      "examples": [
-        "autom8 doctor"
-      ]
-    },
-    {
-      "slug": "diagnose",
-      "command": "autom8 diagnose",
-      "status": "available",
-      "since": "0.1.1",
-      "summary": "Gera diagnóstico completo local ou privado sanitizado.",
-      "details": [
-        "autom8 diagnose gera relatório completo local.",
-        "autom8 diagnose --private gera relatório sanitizado para compartilhamento.",
-        "O modo privado oculta ou reduz hostname, usuários, homes, IPs, DNS, rotas, containers e processos sensíveis."
-      ],
-      "examples": [
-        "autom8 diagnose",
-        "autom8 diagnose --private"
-      ]
-    },
-    {
-      "slug": "update",
-      "command": "autom8 update",
-      "status": "available",
-      "since": "0.1.1",
-      "summary": "Atualiza repositórios e pacotes do sistema com confirmação.",
-      "details": [
-        "Suporta apt, dnf, zypper e pacman.",
-        "Bloqueia execução em distros não suportadas oficialmente.",
-        "Exige sudo e registra a execução em logs."
-      ],
-      "examples": [
-        "autom8 update",
-        "autom8 update --dry-run"
+        "autom8 backup"
       ]
     },
     {
@@ -198,18 +321,35 @@
       ]
     },
     {
-      "slug": "security",
-      "command": "autom8 security",
+      "slug": "config",
+      "command": "autom8 config",
       "status": "available",
       "since": "0.1.1",
-      "summary": "Executa checagem básica de segurança local.",
+      "summary": "Permite alterar configurações básicas da suíte.",
       "details": [
-        "Mostra status de firewall conhecido.",
-        "Lista portas em escuta.",
-        "Verifica status básico de SSH."
+        "Permite selecionar idioma.",
+        "Permite selecionar modo padrão.",
+        "Permite selecionar nível de limpeza padrão.",
+        "Permite visualizar a configuração atual."
       ],
       "examples": [
-        "autom8 security"
+        "autom8 config"
+      ]
+    },
+    {
+      "slug": "diagnose",
+      "command": "autom8 diagnose",
+      "status": "available",
+      "since": "0.1.1",
+      "summary": "Gera diagnóstico completo local ou privado sanitizado.",
+      "details": [
+        "autom8 diagnose gera relatório completo local.",
+        "autom8 diagnose --private gera relatório sanitizado para compartilhamento.",
+        "O modo privado oculta ou reduz hostname, usuários, homes, IPs, DNS, rotas, containers e processos sensíveis."
+      ],
+      "examples": [
+        "autom8 diagnose",
+        "autom8 diagnose --private"
       ]
     },
     {
@@ -228,34 +368,47 @@
       ]
     },
     {
-      "slug": "users",
-      "command": "autom8 users",
+      "slug": "doctor",
+      "command": "autom8 doctor",
       "status": "available",
       "since": "0.1.1",
-      "summary": "Lista usuários locais e grupos administrativos.",
+      "summary": "Valida instalação, dependências, PATH, release e versão online.",
       "details": [
-        "Mostra usuários com login permitido.",
-        "Mostra grupos sudo, wheel e admin quando existem.",
-        "Ações de bloqueio, shell e sudo ficam para versão futura."
+        "Gera relatório em reports/doctor-<data>.txt.",
+        "Verifica diretórios principais, arquivos obrigatórios, comandos obrigatórios e comandos opcionais.",
+        "Verifica origem GitHub Releases.",
+        "Verifica versão online sem bloquear em caso de falha de internet.",
+        "Indicado após instalar, atualizar ou mover a suíte."
       ],
       "examples": [
-        "autom8 users"
+        "autom8 doctor"
       ]
     },
     {
-      "slug": "config",
-      "command": "autom8 config",
+      "slug": "menu",
+      "command": "autom8",
       "status": "available",
       "since": "0.1.1",
-      "summary": "Permite alterar configurações básicas da suíte.",
+      "summary": "Abre Dashboard + Menu.",
       "details": [
-        "Permite selecionar idioma.",
-        "Permite selecionar modo padrão.",
-        "Permite selecionar nível de limpeza padrão.",
-        "Permite visualizar a configuração atual."
+        "Mostra cabeçalho AutoM8, sistema, permissões, recursos e saúde rápida.",
+        "Permite acessar módulos sem decorar comandos."
       ],
       "examples": [
-        "autom8 config"
+        "autom8"
+      ]
+    },
+    {
+      "slug": "profiles",
+      "command": "autom8 profiles",
+      "status": "planned",
+      "since": "0.2.0",
+      "summary": "Aplicação de perfis YAML para preparar ambientes.",
+      "details": [
+        "Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0."
+      ],
+      "examples": [
+        "autom8 profiles"
       ]
     },
     {
@@ -275,42 +428,48 @@
       ]
     },
     {
-      "slug": "apps",
-      "command": "autom8 apps",
-      "status": "planned",
-      "since": "0.2.0",
-      "summary": "Instalação e remoção de aplicativos por catálogo.",
+      "slug": "security",
+      "command": "autom8 security",
+      "status": "available",
+      "since": "0.1.1",
+      "summary": "Executa checagem básica de segurança local.",
       "details": [
-        "Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0."
+        "Mostra status de firewall conhecido.",
+        "Lista portas em escuta.",
+        "Verifica status básico de SSH."
       ],
       "examples": [
-        "autom8 apps"
+        "autom8 security"
       ]
     },
     {
-      "slug": "profiles",
-      "command": "autom8 profiles",
-      "status": "planned",
-      "since": "0.2.0",
-      "summary": "Aplicação de perfis YAML para preparar ambientes.",
+      "slug": "self-update",
+      "command": "autom8 self-update",
+      "status": "partial",
+      "since": "0.1.0",
+      "summary": "Valida o pacote estável mais recente publicado no GitHub Releases.",
       "details": [
-        "Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0."
+        "Na versão atual, baixa e valida o tar.gz estável quando o usuário confirma.",
+        "Atualização automática com rollback será implementada em versão futura."
       ],
       "examples": [
-        "autom8 profiles"
+        "autom8 self-update"
       ]
     },
     {
-      "slug": "backup",
-      "command": "autom8 backup",
-      "status": "planned",
-      "since": "0.3.0",
-      "summary": "Backups simples antes de operações sensíveis.",
+      "slug": "update",
+      "command": "autom8 update",
+      "status": "available",
+      "since": "0.1.1",
+      "summary": "Atualiza repositórios e pacotes do sistema com confirmação.",
       "details": [
-        "Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.3.0."
+        "Suporta apt, dnf, zypper e pacman.",
+        "Bloqueia execução em distros não suportadas oficialmente.",
+        "Exige sudo e registra a execução em logs."
       ],
       "examples": [
-        "autom8 backup"
+        "autom8 update",
+        "autom8 update --dry-run"
       ]
     },
     {
@@ -327,44 +486,50 @@
       ]
     },
     {
-      "slug": "self-update",
-      "command": "autom8 self-update",
-      "status": "partial",
-      "since": "0.1.0",
-      "summary": "Valida o pacote estável mais recente publicado no GitHub Releases.",
+      "slug": "users",
+      "command": "autom8 users",
+      "status": "available",
+      "since": "0.1.1",
+      "summary": "Lista usuários locais e grupos administrativos.",
       "details": [
-        "Na versão atual, baixa e valida o tar.gz estável quando o usuário confirma.",
-        "Atualização automática com rollback será implementada em versão futura."
+        "Mostra usuários com login permitido.",
+        "Mostra grupos sudo, wheel e admin quando existem.",
+        "Ações de bloqueio, shell e sudo ficam para versão futura."
       ],
       "examples": [
-        "autom8 self-update"
+        "autom8 users"
+      ]
+    },
+    {
+      "slug": "version",
+      "command": "autom8 --version",
+      "status": "available",
+      "since": "0.1.1",
+      "summary": "Mostra a versão instalada.",
+      "details": [
+        "Lê a versão instalada a partir do arquivo VERSION dentro da suíte."
+      ],
+      "examples": [
+        "autom8 --version"
       ]
     }
   ],
   "modules": [
     {
-      "name": "Doctor",
-      "slug": "doctor",
+      "name": "Apps",
+      "slug": "apps",
       "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 doctor",
-      "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
+      "version": "0.2.0",
+      "command": "autom8 apps",
+      "description": "Instala e remove aplicativos por catálogo local separado por categorias, com confirmação explícita e suporte a --dry-run."
     },
     {
-      "name": "Diagnóstico",
-      "slug": "diagnose",
-      "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 diagnose",
-      "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
-    },
-    {
-      "name": "Atualização do Sistema",
-      "slug": "update",
-      "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 update",
-      "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
+      "name": "Backup",
+      "slug": "backup",
+      "status": "planned",
+      "version": "0.3.0",
+      "command": "autom8 backup",
+      "description": "Backups simples antes de operações sensíveis. Planejado para versão futura."
     },
     {
       "name": "Limpeza",
@@ -375,12 +540,20 @@
       "description": "Executa limpeza segura com confirmação explícita e suporta simulação com --dry-run."
     },
     {
-      "name": "Segurança",
-      "slug": "security",
+      "name": "Configurações",
+      "slug": "config",
       "status": "available",
       "version": "0.1.1",
-      "command": "autom8 security",
-      "description": "Mostra firewall, portas em escuta e status básico de SSH."
+      "command": "autom8 config",
+      "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+    },
+    {
+      "name": "Diagnóstico",
+      "slug": "diagnose",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 diagnose",
+      "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
     },
     {
       "name": "Docker",
@@ -391,20 +564,20 @@
       "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
     },
     {
-      "name": "Usuários",
-      "slug": "users",
+      "name": "Doctor",
+      "slug": "doctor",
       "status": "available",
       "version": "0.1.1",
-      "command": "autom8 users",
-      "description": "Lista usuários com login permitido e grupos administrativos."
+      "command": "autom8 doctor",
+      "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
     },
     {
-      "name": "Configurações",
-      "slug": "config",
-      "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 config",
-      "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+      "name": "Perfis",
+      "slug": "profiles",
+      "status": "planned",
+      "version": "0.3.0",
+      "command": "autom8 profiles",
+      "description": "Aplicação de perfis para preparar ambientes completos. Planejado para versão futura."
     },
     {
       "name": "Relatórios",
@@ -415,28 +588,28 @@
       "description": "Lista e exporta relatórios gerados pela suíte."
     },
     {
-      "name": "Apps",
-      "slug": "apps",
-      "status": "planned",
-      "version": "0.2.0",
-      "command": "autom8 apps",
-      "description": "Instalação e remoção de aplicativos por catálogo. Planejado para 0.2.0."
+      "name": "Segurança",
+      "slug": "security",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 security",
+      "description": "Mostra firewall, portas em escuta e status básico de SSH."
     },
     {
-      "name": "Perfis",
-      "slug": "profiles",
-      "status": "planned",
-      "version": "0.2.0",
-      "command": "autom8 profiles",
-      "description": "Perfis YAML para preparar ambientes. Planejado para 0.2.0."
+      "name": "Atualização do Sistema",
+      "slug": "update",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 update",
+      "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
     },
     {
-      "name": "Backup",
-      "slug": "backup",
-      "status": "planned",
-      "version": "0.3.0",
-      "command": "autom8 backup",
-      "description": "Backups simples antes de operações sensíveis. Planejado para 0.3.0."
+      "name": "Usuários",
+      "slug": "users",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 users",
+      "description": "Lista usuários com login permitido e grupos administrativos."
     }
   ],
   "roadmap": [
@@ -465,16 +638,16 @@
     },
     {
       "version": "0.2.0",
-      "title": "Apps e perfis",
+      "title": "Apps por catálogo",
       "items": [
-        "Catálogo YAML.",
-        "Instalação e remoção de apps.",
-        "Perfis YAML.",
-        "Modo mínimo seguro.",
-        "Modo completo.",
-        "Seleção individual de apps.",
-        "Flatpak e Flathub."
-      ]
+        "Catálogo fonte separado por categorias.",
+        "Catálogo consolidado gerado por script.",
+        "Listagem, busca, detalhes e filtros por categoria.",
+        "Instalação e remoção individual com confirmação.",
+        "Instalação e remoção múltipla com confirmação única.",
+        "Apps advanced visíveis, mas sem instalação automática."
+      ],
+      "status": "in-progress"
     },
     {
       "version": "0.3.0",
@@ -502,6 +675,20 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-07-10",
+      "title": "Apps por catálogo",
+      "changes": [
+        "Adicionado catálogo de apps separado por categorias.",
+        "Adicionado script para consolidar catálogo.",
+        "Adicionados comandos de listagem, busca, detalhes e filtros.",
+        "Adicionadas instalação e remoção individual.",
+        "Adicionadas instalação e remoção múltipla.",
+        "Adicionado suporte a apps advanced sem instalação automática.",
+        "Instalador passa a instalar pacotes-base essenciais."
+      ]
+    },
     {
       "version": "0.1.0",
       "date": "2026-07-06",

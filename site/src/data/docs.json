@@ -1,94 +1,10 @@
 [
   {
-    "command": "autom8",
-    "description": "Abre Dashboard + Menu.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "menu"
-  },
-  {
-    "command": "autom8 --version",
-    "description": "Mostra a versão instalada.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "version"
-  },
-  {
-    "command": "autom8 doctor",
-    "description": "Valida instalação, dependências, PATH, release e versão online.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "doctor"
-  },
-  {
-    "command": "autom8 diagnose",
-    "description": "Gera diagnóstico completo local ou privado sanitizado.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "diagnose"
-  },
-  {
-    "command": "autom8 update",
-    "description": "Atualiza repositórios e pacotes do sistema com confirmação.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "update"
-  },
-  {
-    "command": "autom8 clean",
-    "description": "Executa limpeza segura com confirmação explícita.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "clean"
-  },
-  {
-    "command": "autom8 security",
-    "description": "Executa checagem básica de segurança local.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "security"
-  },
-  {
-    "command": "autom8 docker",
-    "description": "Mostra informações do Docker quando disponível.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "docker"
-  },
-  {
-    "command": "autom8 users",
-    "description": "Lista usuários locais e grupos administrativos.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "users"
-  },
-  {
-    "command": "autom8 config",
-    "description": "Permite alterar configurações básicas da suíte.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "config"
-  },
-  {
-    "command": "autom8 report",
-    "description": "Lista e exporta relatórios gerados.",
-    "status": "available",
-    "since": "0.1.1",
-    "slug": "report"
-  },
-  {
     "command": "autom8 apps",
-    "description": "Instalação e remoção de aplicativos por catálogo.",
-    "status": "planned",
+    "description": "Instala e remove aplicativos por catálogo local atualizável online.",
+    "status": "available",
     "since": "0.2.0",
     "slug": "apps"
-  },
-  {
-    "command": "autom8 profiles",
-    "description": "Aplicação de perfis YAML para preparar ambientes.",
-    "status": "planned",
-    "since": "0.2.0",
-    "slug": "profiles"
   },
   {
     "command": "autom8 backup",
@@ -98,11 +14,67 @@
     "slug": "backup"
   },
   {
-    "command": "autom8 upgrade-distro",
-    "description": "Preparação futura para upgrade de versão da distro.",
+    "command": "autom8 clean",
+    "description": "Executa limpeza segura com confirmação explícita.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "clean"
+  },
+  {
+    "command": "autom8 config",
+    "description": "Permite alterar configurações básicas da suíte.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "config"
+  },
+  {
+    "command": "autom8 diagnose",
+    "description": "Gera diagnóstico completo local ou privado sanitizado.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "diagnose"
+  },
+  {
+    "command": "autom8 docker",
+    "description": "Mostra informações do Docker quando disponível.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "docker"
+  },
+  {
+    "command": "autom8 doctor",
+    "description": "Valida instalação, dependências, PATH, release e versão online.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "doctor"
+  },
+  {
+    "command": "autom8",
+    "description": "Abre Dashboard + Menu.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "menu"
+  },
+  {
+    "command": "autom8 profiles",
+    "description": "Aplicação de perfis YAML para preparar ambientes.",
     "status": "planned",
-    "since": "future",
-    "slug": "upgrade-distro"
+    "since": "0.2.0",
+    "slug": "profiles"
+  },
+  {
+    "command": "autom8 report",
+    "description": "Lista e exporta relatórios gerados.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "report"
+  },
+  {
+    "command": "autom8 security",
+    "description": "Executa checagem básica de segurança local.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "security"
   },
   {
     "command": "autom8 self-update",
@@ -110,5 +82,33 @@
     "status": "partial",
     "since": "0.1.0",
     "slug": "self-update"
+  },
+  {
+    "command": "autom8 update",
+    "description": "Atualiza repositórios e pacotes do sistema com confirmação.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "update"
+  },
+  {
+    "command": "autom8 upgrade-distro",
+    "description": "Preparação futura para upgrade de versão da distro.",
+    "status": "planned",
+    "since": "future",
+    "slug": "upgrade-distro"
+  },
+  {
+    "command": "autom8 users",
+    "description": "Lista usuários locais e grupos administrativos.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "users"
+  },
+  {
+    "command": "autom8 --version",
+    "description": "Mostra a versão instalada.",
+    "status": "available",
+    "since": "0.1.1",
+    "slug": "version"
   }
 ]

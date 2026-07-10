@@ -6,21 +6,15 @@ Desde: 0.2.0
 Instala e remove aplicativos por catálogo local atualizável online.
 
 Detalhes:
-- O catálogo fonte fica separado por categoria em suite/catalog/apps/.
-- O arquivo suite/catalog/apps.json é consolidado por scripts/build-apps-catalog.sh.
-- A CLI lê o catálogo consolidado.
-- Apps com status available podem ser instalados/removidos.
+- O módulo Apps usa catálogo local consolidado em suite/catalog/apps.json.
+- O catálogo fonte é separado por categoria em suite/catalog/apps/.
+- O catálogo consolidado é gerado por scripts/build-apps-catalog.sh.
+- A CLI lê o catálogo consolidado para listar, buscar, detalhar, instalar e remover apps.
+- Apps com status available podem ser instalados/removidos pelos repositórios da distro.
 - Apps com status advanced aparecem no catálogo, mas não são instalados automaticamente nesta versão.
-- autom8 apps categories lista categorias.
-- autom8 apps list lista todos os apps.
-- autom8 apps list --category <categoria> lista apps de uma categoria.
-- autom8 apps search <termo> busca por ID, nome, resumo, categoria ou tags.
-- autom8 apps show <id> mostra detalhes do app.
-- autom8 apps install <id> instala um app com confirmação explícita.
-- autom8 apps install-many <id...> instala vários apps com confirmação única.
-- autom8 apps remove <id> remove pacotes instalados de um app com confirmação explícita.
-- autom8 apps remove-many <id...> remove vários apps com confirmação única.
-- autom8 apps update-catalog baixa o catálogo consolidado mais recente do repositório.
+- Toda instalação e remoção real exige confirmação explícita.
+- O modo --dry-run mostra o comando previsto sem executar alteração real.
+- Categorias iniciais: desenvolvimento, produtividade, containers, sistema, rede, mídia, design, games, escritório e usuário local.
 
 Exemplos:
   autom8 apps
@@ -31,6 +25,11 @@ Exemplos:
   autom8 apps search docker
   autom8 apps show git
   autom8 --dry-run apps install git
+  autom8 apps install htop
   autom8 --dry-run apps install-many git htop jq
+  autom8 apps install-many git htop jq
   autom8 --dry-run apps remove htop
+  autom8 apps remove htop
+  autom8 --dry-run apps remove-many git htop
+  autom8 apps remove-many git htop
   autom8 apps update-catalog

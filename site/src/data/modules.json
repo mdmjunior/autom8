@@ -1,27 +1,19 @@
 [
   {
-    "name": "Doctor",
-    "slug": "doctor",
+    "name": "Apps",
+    "slug": "apps",
     "status": "available",
-    "version": "0.1.1",
-    "command": "autom8 doctor",
-    "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
+    "version": "0.2.0",
+    "command": "autom8 apps",
+    "description": "Instala e remove aplicativos por catálogo local separado por categorias, com confirmação explícita e suporte a --dry-run."
   },
   {
-    "name": "Diagnóstico",
-    "slug": "diagnose",
-    "status": "available",
-    "version": "0.1.1",
-    "command": "autom8 diagnose",
-    "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
-  },
-  {
-    "name": "Atualização do Sistema",
-    "slug": "update",
-    "status": "available",
-    "version": "0.1.1",
-    "command": "autom8 update",
-    "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
+    "name": "Backup",
+    "slug": "backup",
+    "status": "planned",
+    "version": "0.3.0",
+    "command": "autom8 backup",
+    "description": "Backups simples antes de operações sensíveis. Planejado para versão futura."
   },
   {
     "name": "Limpeza",
@@ -32,12 +24,20 @@
     "description": "Executa limpeza segura com confirmação explícita e suporta simulação com --dry-run."
   },
   {
-    "name": "Segurança",
-    "slug": "security",
+    "name": "Configurações",
+    "slug": "config",
     "status": "available",
     "version": "0.1.1",
-    "command": "autom8 security",
-    "description": "Mostra firewall, portas em escuta e status básico de SSH."
+    "command": "autom8 config",
+    "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+  },
+  {
+    "name": "Diagnóstico",
+    "slug": "diagnose",
+    "status": "available",
+    "version": "0.1.1",
+    "command": "autom8 diagnose",
+    "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
   },
   {
     "name": "Docker",
@@ -48,20 +48,20 @@
     "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
   },
   {
-    "name": "Usuários",
-    "slug": "users",
+    "name": "Doctor",
+    "slug": "doctor",
     "status": "available",
     "version": "0.1.1",
-    "command": "autom8 users",
-    "description": "Lista usuários com login permitido e grupos administrativos."
+    "command": "autom8 doctor",
+    "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
   },
   {
-    "name": "Configurações",
-    "slug": "config",
-    "status": "available",
-    "version": "0.1.1",
-    "command": "autom8 config",
-    "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+    "name": "Perfis",
+    "slug": "profiles",
+    "status": "planned",
+    "version": "0.3.0",
+    "command": "autom8 profiles",
+    "description": "Aplicação de perfis para preparar ambientes completos. Planejado para versão futura."
   },
   {
     "name": "Relatórios",
@@ -72,27 +72,27 @@
     "description": "Lista e exporta relatórios gerados pela suíte."
   },
   {
-    "name": "Apps",
-    "slug": "apps",
-    "status": "planned",
-    "version": "0.2.0",
-    "command": "autom8 apps",
-    "description": "Instalação e remoção de aplicativos por catálogo. Planejado para 0.2.0."
+    "name": "Segurança",
+    "slug": "security",
+    "status": "available",
+    "version": "0.1.1",
+    "command": "autom8 security",
+    "description": "Mostra firewall, portas em escuta e status básico de SSH."
   },
   {
-    "name": "Perfis",
-    "slug": "profiles",
-    "status": "planned",
-    "version": "0.2.0",
-    "command": "autom8 profiles",
-    "description": "Perfis YAML para preparar ambientes. Planejado para 0.2.0."
+    "name": "Atualização do Sistema",
+    "slug": "update",
+    "status": "available",
+    "version": "0.1.1",
+    "command": "autom8 update",
+    "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
   },
   {
-    "name": "Backup",
-    "slug": "backup",
-    "status": "planned",
-    "version": "0.3.0",
-    "command": "autom8 backup",
-    "description": "Backups simples antes de operações sensíveis. Planejado para 0.3.0."
+    "name": "Usuários",
+    "slug": "users",
+    "status": "available",
+    "version": "0.1.1",
+    "command": "autom8 users",
+    "description": "Lista usuários com login permitido e grupos administrativos."
   }
 ]
