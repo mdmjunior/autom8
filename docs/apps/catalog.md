@@ -92,3 +92,33 @@ Use `advanced` para apps que exigem:
 Toda instalação ou remoção real deve exigir confirmação explícita.
 
 O modo `--dry-run` deve mostrar o comando previsto sem alterar o sistema.
+
+## Arquitetura interna do módulo Apps
+
+A entrada pública do módulo continua em:
+
+    suite/modules/apps.sh
+
+Esse arquivo apenas carrega bibliotecas internas em:
+
+    suite/lib/apps/
+
+Divisão atual:
+
+    suite/lib/apps/catalog.sh
+    suite/lib/apps/packages.sh
+    suite/lib/apps/install.sh
+    suite/lib/apps/remove.sh
+    suite/lib/apps/menu.sh
+    suite/lib/apps/module.sh
+
+Responsabilidades:
+
+- catalog.sh: leitura do catálogo, categorias, busca, detalhes e filtros.
+- packages.sh: verificação de pacotes disponíveis/instalados e comandos por gerenciador.
+- install.sh: instalação individual e múltipla.
+- remove.sh: remoção individual e múltipla.
+- menu.sh: menu interativo.
+- module.sh: roteamento do comando autom8 apps.
+
+O empacotamento inclui automaticamente suite/lib/ porque o pacote é gerado a partir de suite/.
