@@ -69,6 +69,8 @@ install_common_deps_apt() {
   sudo apt install -y \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -79,18 +81,26 @@ install_common_deps_apt() {
     util-linux \
     procps \
     iproute2 \
+    net-tools \
+    dnsutils \
     sudo \
     jq \
     rsync \
     lsof \
     nmap \
-    gnupg
+    gnupg \
+    unzip \
+    xz-utils \
+    file \
+    tree
 }
 
 install_common_deps_dnf() {
   sudo dnf install -y \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -101,11 +111,18 @@ install_common_deps_dnf() {
     util-linux \
     procps-ng \
     iproute \
+    net-tools \
+    bind-utils \
     sudo \
     jq \
     rsync \
     lsof \
-    nmap
+    nmap \
+    gnupg2 \
+    unzip \
+    xz \
+    file \
+    tree
 }
 
 install_common_deps_zypper() {
@@ -113,6 +130,8 @@ install_common_deps_zypper() {
   sudo zypper install -y \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -123,17 +142,26 @@ install_common_deps_zypper() {
     util-linux \
     procps \
     iproute2 \
+    net-tools \
+    bind-utils \
     sudo \
     jq \
     rsync \
     lsof \
-    nmap
+    nmap \
+    gpg2 \
+    unzip \
+    xz \
+    file \
+    tree
 }
 
 install_common_deps_pacman() {
   sudo pacman -Sy --needed --noconfirm \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -144,11 +172,18 @@ install_common_deps_pacman() {
     util-linux \
     procps-ng \
     iproute2 \
+    net-tools \
+    bind \
     sudo \
     jq \
     rsync \
     lsof \
-    nmap
+    nmap \
+    gnupg \
+    unzip \
+    xz \
+    file \
+    tree
 }
 
 install_common_deps() {
@@ -271,6 +306,8 @@ verify_required_commands() {
     tar
     gzip
     curl
+    wget
+    git
     sudo
     jq
     rsync
@@ -278,6 +315,14 @@ verify_required_commands() {
     nmap
     ip
     ss
+    ifconfig
+    netstat
+    dig
+    nslookup
+    unzip
+    xz
+    file
+    tree
     gum
   )
 
@@ -334,7 +379,8 @@ install_package() {
     "$AUTOM8_INSTALL_DIR/logs" \
     "$AUTOM8_INSTALL_DIR/backups" \
     "$AUTOM8_INSTALL_DIR/reports" \
-    "$AUTOM8_INSTALL_DIR/tmp"
+    "$AUTOM8_INSTALL_DIR/tmp" \
+    "$AUTOM8_INSTALL_DIR/catalog"
 
   sudo chown -R "$USER:$USER" \
     "$AUTOM8_INSTALL_DIR/logs" \
