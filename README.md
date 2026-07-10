@@ -98,3 +98,22 @@ Após merge na `main`:
 AutoM8 by OSLabs.
 
 Criado por Marcio Moreira Junior para a comunidade Linux.
+
+
+## Release candidate v0.2.0-rc1
+
+A versão `0.2.0-rc1` é uma prerelease para validação em VM Ubuntu Desktop antes da release estável.
+
+Publicação do RC:
+
+    ./scripts/release-rc.sh
+
+Teste do pacote RC com instalador:
+
+    curl -fsSL https://autom8.oslabs.com.br/install.sh -o /tmp/autom8-install.sh
+    AUTOM8_PACKAGE_URL=https://github.com/mdmjunior/autom8/releases/download/v0.2.0-rc1/autom8-0.2.0-rc1.tar.gz bash /tmp/autom8-install.sh
+
+O instalador público direto deve ser usado apenas após a release estável v0.2.0:
+
+    curl -fsSL https://autom8.oslabs.com.br/install.sh | bash
+
