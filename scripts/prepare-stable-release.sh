@@ -3,7 +3,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET_VERSION="${AUTOM8_TARGET_VERSION:-0.2.0}"
-CURRENT_BRANCH_EXPECTED="${AUTOM8_STABLE_SOURCE_BRANCH:-feature/apps-v0.2}"
+CURRENT_BRANCH_EXPECTED="${AUTOM8_STABLE_SOURCE_BRANCH:-develop}"
 RESULT_FILE="${AUTOM8_RC_RESULT_FILE:-$PROJECT_ROOT/docs/releases/results/0.2.0-rc2-ubuntu-desktop.md}"
 
 log() {
@@ -62,9 +62,6 @@ log "Validando instalador."
 
 log "Executando smoke."
 ./scripts/smoke-ubuntu-desktop.sh
-
-log "Gerando build do site."
-./scripts/build-site.sh
 
 log "Gerando pacote local."
 ./scripts/package.sh

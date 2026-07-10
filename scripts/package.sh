@@ -15,10 +15,6 @@ if [[ -x "$PROJECT_ROOT/scripts/build-apps-catalog.sh" && "${AUTOM8_SKIP_APPS_CA
   "$PROJECT_ROOT/scripts/build-apps-catalog.sh"
 fi
 
-if [[ -x "$PROJECT_ROOT/scripts/sync-docs.sh" && "${AUTOM8_SKIP_DOC_SYNC:-0}" != "1" ]]; then
-  "$PROJECT_ROOT/scripts/sync-docs.sh"
-fi
-
 if [[ ! -f "$SUITE_DIR/catalog/apps.json" ]]; then
   echo "ERRO: catálogo consolidado não encontrado: suite/catalog/apps.json" >&2
   exit 1
@@ -28,6 +24,10 @@ python3 -m json.tool "$SUITE_DIR/catalog/apps.json" >/dev/null
 
 if [[ -x "$PROJECT_ROOT/scripts/validate-apps-catalog.sh" && "${AUTOM8_SKIP_APPS_CATALOG_VALIDATE:-0}" != "1" ]]; then
   "$PROJECT_ROOT/scripts/validate-apps-catalog.sh"
+fi
+
+if [[ -x "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh" ]]; then
+  "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh"
 fi
 
 OUTPUT_DIR="${AUTOM8_PACKAGE_OUTPUT_DIR:-$(mktemp -d /tmp/autom8-package-${VERSION}-XXXXXX)}"
@@ -58,7 +58,4 @@ echo "Observação:"
 echo "Os pacotes não são copiados para o site, VPS ou repositório local."
 echo "Use scripts/release-stable.sh para publicar no GitHub Releases."
 
-if [[ -x "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh" ]]; then
-  "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh"
-fi
 

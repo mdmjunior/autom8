@@ -5,7 +5,7 @@
     "brand": "AutoM8 by OSLabs",
     "siteUrl": "https://autom8.oslabs.com.br",
     "githubRepo": "mdmjunior/autom8",
-    "currentVersion": "0.2.0-dev",
+    "currentVersion": "0.2.0",
     "currentDate": "2026-07-10",
     "summary": "AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, catálogo de apps, logs e controle explícito do usuário.",
     "positioning": "Automação Linux local, segura, auditável e amigável para usuários iniciantes, técnicos e administradores."

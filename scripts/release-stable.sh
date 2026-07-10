@@ -52,8 +52,8 @@ log "Atualizando main..."
 git fetch origin main
 git pull --ff-only origin main
 
-log "Validando build do site antes da release..."
-./scripts/build-site.sh
+log "Validando CLI antes da release..."
+./scripts/check.sh cli
 
 PACKAGE_DIR="$(mktemp -d /tmp/autom8-release-${VERSION}-XXXXXX)"
 cleanup() {

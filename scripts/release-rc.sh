@@ -5,7 +5,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPO="${AUTOM8_GITHUB_REPO:-mdmjunior/autom8}"
 VERSION="$(tr -d '[:space:]' < "$PROJECT_ROOT/suite/VERSION")"
 TAG="v${VERSION}"
-EXPECTED_BRANCH="${AUTOM8_RC_BRANCH:-feature/apps-v0.2}"
+EXPECTED_BRANCH="${AUTOM8_RC_BRANCH:-develop}"
 
 log() {
   printf '\033[1;34m[AutoM8 RC]\033[0m %s\n' "$1"
@@ -59,11 +59,11 @@ log "Atualizando branch $EXPECTED_BRANCH..."
 git fetch origin "$EXPECTED_BRANCH"
 git pull --ff-only origin "$EXPECTED_BRANCH"
 
+log "Validando CLI..."
+./scripts/check.sh cli
+
 log "Executando smoke test local..."
 ./scripts/smoke-ubuntu-desktop.sh
-
-log "Validando build do site..."
-./scripts/build-site.sh
 
 PACKAGE_DIR="$(mktemp -d /tmp/autom8-rc-${VERSION}-XXXXXX)"
 

@@ -17,6 +17,7 @@ from pathlib import Path
 root = Path.cwd()
 source_dir = root / "suite/catalog/apps"
 output_file = root / "suite/catalog/apps.json"
+version = (root / "suite/VERSION").read_text().strip()
 
 category_files = sorted(source_dir.glob("*.json"))
 apps = []
@@ -54,7 +55,7 @@ for file in category_files:
 
 output = {
     "schema": 2,
-    "version": "0.2.0",
+    "version": version,
     "updatedAt": "2026-07-10",
     "source": "suite/catalog/apps/*.json",
     "categories": categories,
