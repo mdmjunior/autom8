@@ -1,0 +1,156 @@
+{
+  "category": {
+    "slug": "escritorio",
+    "name": "Escritório",
+    "description": "Documentos, PDF, notas e ferramentas de escritório."
+  },
+  "apps": [
+    {
+      "id": "libreoffice",
+      "name": "LibreOffice",
+      "summary": "Suíte de escritório.",
+      "status": "available",
+      "tags": [
+        "office"
+      ],
+      "packages": {
+        "apt": [
+          "libreoffice"
+        ],
+        "dnf": [
+          "libreoffice"
+        ],
+        "zypper": [
+          "libreoffice"
+        ],
+        "pacman": [
+          "libreoffice-fresh"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "evince",
+      "name": "Evince",
+      "summary": "Visualizador de PDF/documentos.",
+      "status": "available",
+      "tags": [
+        "pdf"
+      ],
+      "packages": {
+        "apt": [
+          "evince"
+        ],
+        "dnf": [
+          "evince"
+        ],
+        "zypper": [
+          "evince"
+        ],
+        "pacman": [
+          "evince"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "okular",
+      "name": "Okular",
+      "summary": "Visualizador avançado de documentos.",
+      "status": "available",
+      "tags": [
+        "pdf"
+      ],
+      "packages": {
+        "apt": [
+          "okular"
+        ],
+        "dnf": [
+          "okular"
+        ],
+        "zypper": [
+          "okular"
+        ],
+        "pacman": [
+          "okular"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "xournalpp",
+      "name": "Xournal++",
+      "summary": "Anotações em PDF.",
+      "status": "available",
+      "tags": [
+        "notes",
+        "pdf"
+      ],
+      "packages": {
+        "apt": [
+          "xournalpp"
+        ],
+        "dnf": [
+          "xournalpp"
+        ],
+        "zypper": [
+          "xournalpp"
+        ],
+        "pacman": [
+          "xournalpp"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "calibre",
+      "name": "Calibre",
+      "summary": "Gerenciador de ebooks.",
+      "status": "available",
+      "tags": [
+        "ebooks"
+      ],
+      "packages": {
+        "apt": [
+          "calibre"
+        ],
+        "dnf": [
+          "calibre"
+        ],
+        "zypper": [
+          "calibre"
+        ],
+        "pacman": [
+          "calibre"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "hunspell-pt-br",
+      "name": "Hunspell PT-BR",
+      "summary": "Correção ortográfica em português do Brasil.",
+      "status": "available",
+      "tags": [
+        "language"
+      ],
+      "packages": {
+        "apt": [
+          "hunspell-pt-br"
+        ],
+        "dnf": [
+          "hunspell-pt-BR"
+        ],
+        "zypper": [
+          "myspell-pt_BR"
+        ],
+        "pacman": [
+          "hunspell-pt_br"
+        ]
+      },
+      "notes": [
+        "Nome do pacote varia bastante entre distros."
+      ]
+    }
+  ]
+}

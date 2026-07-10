@@ -1,0 +1,229 @@
+{
+  "category": {
+    "slug": "rede",
+    "name": "Rede",
+    "description": "Ferramentas de diagnóstico e administração de rede."
+  },
+  "apps": [
+    {
+      "id": "net-tools",
+      "name": "net-tools",
+      "summary": "Ferramentas clássicas como ifconfig e netstat.",
+      "status": "available",
+      "tags": [
+        "network",
+        "legacy"
+      ],
+      "packages": {
+        "apt": [
+          "net-tools"
+        ],
+        "dnf": [
+          "net-tools"
+        ],
+        "zypper": [
+          "net-tools"
+        ],
+        "pacman": [
+          "net-tools"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "dnsutils",
+      "name": "DNS utilities",
+      "summary": "Ferramentas como dig e nslookup.",
+      "status": "available",
+      "tags": [
+        "dns"
+      ],
+      "packages": {
+        "apt": [
+          "dnsutils"
+        ],
+        "dnf": [
+          "bind-utils"
+        ],
+        "zypper": [
+          "bind-utils"
+        ],
+        "pacman": [
+          "bind"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "nmap",
+      "name": "Nmap",
+      "summary": "Scanner de rede.",
+      "status": "available",
+      "tags": [
+        "scanner"
+      ],
+      "packages": {
+        "apt": [
+          "nmap"
+        ],
+        "dnf": [
+          "nmap"
+        ],
+        "zypper": [
+          "nmap"
+        ],
+        "pacman": [
+          "nmap"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "traceroute",
+      "name": "traceroute",
+      "summary": "Rastreamento de rotas de rede.",
+      "status": "available",
+      "tags": [
+        "network"
+      ],
+      "packages": {
+        "apt": [
+          "traceroute"
+        ],
+        "dnf": [
+          "traceroute"
+        ],
+        "zypper": [
+          "traceroute"
+        ],
+        "pacman": [
+          "traceroute"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "tcpdump",
+      "name": "tcpdump",
+      "summary": "Captura de pacotes no terminal.",
+      "status": "available",
+      "tags": [
+        "packets"
+      ],
+      "packages": {
+        "apt": [
+          "tcpdump"
+        ],
+        "dnf": [
+          "tcpdump"
+        ],
+        "zypper": [
+          "tcpdump"
+        ],
+        "pacman": [
+          "tcpdump"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "whois",
+      "name": "whois",
+      "summary": "Consulta informações WHOIS.",
+      "status": "available",
+      "tags": [
+        "dns",
+        "domains"
+      ],
+      "packages": {
+        "apt": [
+          "whois"
+        ],
+        "dnf": [
+          "whois"
+        ],
+        "zypper": [
+          "whois"
+        ],
+        "pacman": [
+          "whois"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "iperf3",
+      "name": "iperf3",
+      "summary": "Teste de desempenho de rede.",
+      "status": "available",
+      "tags": [
+        "benchmark"
+      ],
+      "packages": {
+        "apt": [
+          "iperf3"
+        ],
+        "dnf": [
+          "iperf3"
+        ],
+        "zypper": [
+          "iperf"
+        ],
+        "pacman": [
+          "iperf3"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "openssh-client",
+      "name": "OpenSSH Client",
+      "summary": "Cliente SSH.",
+      "status": "available",
+      "tags": [
+        "ssh"
+      ],
+      "packages": {
+        "apt": [
+          "openssh-client"
+        ],
+        "dnf": [
+          "openssh-clients"
+        ],
+        "zypper": [
+          "openssh"
+        ],
+        "pacman": [
+          "openssh"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "openssh-server",
+      "name": "OpenSSH Server",
+      "summary": "Servidor SSH.",
+      "status": "available",
+      "tags": [
+        "ssh"
+      ],
+      "packages": {
+        "apt": [
+          "openssh-server"
+        ],
+        "dnf": [
+          "openssh-server"
+        ],
+        "zypper": [
+          "openssh"
+        ],
+        "pacman": [
+          "openssh"
+        ]
+      },
+      "notes": [
+        "Pode exigir configuração manual após instalar."
+      ]
+    }
+  ]
+}

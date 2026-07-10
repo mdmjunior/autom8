@@ -1,0 +1,157 @@
+{
+  "category": {
+    "slug": "midia",
+    "name": "Mídia",
+    "description": "Áudio, vídeo, gravação e edição multimídia."
+  },
+  "apps": [
+    {
+      "id": "vlc",
+      "name": "VLC",
+      "summary": "Player multimídia.",
+      "status": "available",
+      "tags": [
+        "video",
+        "audio"
+      ],
+      "packages": {
+        "apt": [
+          "vlc"
+        ],
+        "dnf": [
+          "vlc"
+        ],
+        "zypper": [
+          "vlc"
+        ],
+        "pacman": [
+          "vlc"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "summary": "Conversão e processamento de mídia.",
+      "status": "available",
+      "tags": [
+        "video",
+        "audio"
+      ],
+      "packages": {
+        "apt": [
+          "ffmpeg"
+        ],
+        "dnf": [
+          "ffmpeg"
+        ],
+        "zypper": [
+          "ffmpeg"
+        ],
+        "pacman": [
+          "ffmpeg"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "obs-studio",
+      "name": "OBS Studio",
+      "summary": "Gravação e transmissão.",
+      "status": "available",
+      "tags": [
+        "streaming"
+      ],
+      "packages": {
+        "apt": [
+          "obs-studio"
+        ],
+        "dnf": [
+          "obs-studio"
+        ],
+        "zypper": [
+          "obs-studio"
+        ],
+        "pacman": [
+          "obs-studio"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "audacity",
+      "name": "Audacity",
+      "summary": "Editor de áudio.",
+      "status": "available",
+      "tags": [
+        "audio"
+      ],
+      "packages": {
+        "apt": [
+          "audacity"
+        ],
+        "dnf": [
+          "audacity"
+        ],
+        "zypper": [
+          "audacity"
+        ],
+        "pacman": [
+          "audacity"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "kdenlive",
+      "name": "Kdenlive",
+      "summary": "Editor de vídeo.",
+      "status": "available",
+      "tags": [
+        "video"
+      ],
+      "packages": {
+        "apt": [
+          "kdenlive"
+        ],
+        "dnf": [
+          "kdenlive"
+        ],
+        "zypper": [
+          "kdenlive"
+        ],
+        "pacman": [
+          "kdenlive"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "handbrake",
+      "name": "HandBrake",
+      "summary": "Conversão de vídeo.",
+      "status": "available",
+      "tags": [
+        "video"
+      ],
+      "packages": {
+        "apt": [
+          "handbrake"
+        ],
+        "dnf": [
+          "HandBrake-gui"
+        ],
+        "zypper": [
+          "handbrake"
+        ],
+        "pacman": [
+          "handbrake"
+        ]
+      },
+      "notes": [
+        "Nome e disponibilidade podem variar por distro/repositório."
+      ]
+    }
+  ]
+}

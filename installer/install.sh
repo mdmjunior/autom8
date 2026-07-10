@@ -69,6 +69,8 @@ install_common_deps_apt() {
   sudo apt install -y \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -79,18 +81,26 @@ install_common_deps_apt() {
     util-linux \
     procps \
     iproute2 \
+    net-tools \
+    dnsutils \
     sudo \
     jq \
     rsync \
     lsof \
     nmap \
-    gnupg
+    gnupg \
+    unzip \
+    xz-utils \
+    file \
+    tree
 }
 
 install_common_deps_dnf() {
   sudo dnf install -y \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -101,11 +111,18 @@ install_common_deps_dnf() {
     util-linux \
     procps-ng \
     iproute \
+    net-tools \
+    bind-utils \
     sudo \
     jq \
     rsync \
     lsof \
-    nmap
+    nmap \
+    gnupg2 \
+    unzip \
+    xz \
+    file \
+    tree
 }
 
 install_common_deps_zypper() {
@@ -113,6 +130,8 @@ install_common_deps_zypper() {
   sudo zypper install -y \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -123,17 +142,26 @@ install_common_deps_zypper() {
     util-linux \
     procps \
     iproute2 \
+    net-tools \
+    bind-utils \
     sudo \
     jq \
     rsync \
     lsof \
-    nmap
+    nmap \
+    gpg2 \
+    unzip \
+    xz \
+    file \
+    tree
 }
 
 install_common_deps_pacman() {
   sudo pacman -Sy --needed --noconfirm \
     ca-certificates \
     curl \
+    wget \
+    git \
     tar \
     gzip \
     coreutils \
@@ -144,11 +172,18 @@ install_common_deps_pacman() {
     util-linux \
     procps-ng \
     iproute2 \
+    net-tools \
+    bind \
     sudo \
     jq \
     rsync \
     lsof \
-    nmap
+    nmap \
+    gnupg \
+    unzip \
+    xz \
+    file \
+    tree
 }
 
 install_common_deps() {
@@ -271,6 +306,8 @@ verify_required_commands() {
     tar
     gzip
     curl
+    wget
+    git
     sudo
     jq
     rsync
@@ -278,6 +315,14 @@ verify_required_commands() {
     nmap
     ip
     ss
+    ifconfig
+    netstat
+    dig
+    nslookup
+    unzip
+    xz
+    file
+    tree
     gum
   )
 
@@ -314,15 +359,70 @@ ask_scope() {
 
 install_package() {
   local tmp_dir
+  local archive
+  local extracted_dir
+  local found_bin
+  local found_root
+
   tmp_dir="$(mktemp -d)"
+  archive="$tmp_dir/autom8.tar.gz"
+  extracted_dir="$tmp_dir/extracted"
 
-  info "Baixando última versão estável do AutoM8."
+  info "Baixando pacote do AutoM8."
   info "Origem: $AUTOM8_PACKAGE_URL"
-  curl -fsSL "$AUTOM8_PACKAGE_URL" -o "$tmp_dir/autom8.tar.gz"
 
+  if ! curl -fL "$AUTOM8_PACKAGE_URL" -o "$archive"; then
+    error "Falha ao baixar pacote do AutoM8."
+    error "URL: $AUTOM8_PACKAGE_URL"
+    rm -rf "$tmp_dir"
+    exit 1
+  fi
+
+  if ! tar -tzf "$archive" >/dev/null 2>&1; then
+    error "Arquivo baixado não é um tar.gz válido."
+    error "URL: $AUTOM8_PACKAGE_URL"
+    error "Primeiros bytes do arquivo baixado:"
+    head -c 200 "$archive" || true
+    echo
+    rm -rf "$tmp_dir"
+    exit 1
+  fi
+
+  mkdir -p "$extracted_dir"
+
+  info "Inspecionando pacote baixado."
+  tar -tzf "$archive" | sed -n '1,40p'
+
+  tar -xzf "$archive" -C "$extracted_dir"
+
+  found_bin="$(find "$extracted_dir" -maxdepth 5 -type f -path '*/bin/autom8' | head -n 1 || true)"
+
+  if [[ -z "$found_bin" ]]; then
+    error "O pacote não contém bin/autom8."
+    error "Conteúdo encontrado no pacote:"
+    find "$extracted_dir" -maxdepth 4 -print | sed -n '1,120p'
+    rm -rf "$tmp_dir"
+    exit 1
+  fi
+
+  found_root="$(dirname "$(dirname "$found_bin")")"
+
+  info "Raiz detectada do pacote: $found_root"
   info "Instalando em: $AUTOM8_INSTALL_DIR"
+
+  sudo rm -rf "$AUTOM8_INSTALL_DIR"
   sudo mkdir -p "$AUTOM8_INSTALL_DIR"
-  sudo tar -xzf "$tmp_dir/autom8.tar.gz" -C "$AUTOM8_INSTALL_DIR"
+  sudo rsync -a "$found_root"/ "$AUTOM8_INSTALL_DIR"/
+
+  if [[ ! -f "$AUTOM8_INSTALL_DIR/bin/autom8" ]]; then
+    error "Falha ao normalizar instalação."
+    error "Executável esperado não encontrado: $AUTOM8_INSTALL_DIR/bin/autom8"
+    error "Conteúdo de $AUTOM8_INSTALL_DIR:"
+    sudo find "$AUTOM8_INSTALL_DIR" -maxdepth 4 -print | sed -n '1,120p'
+    rm -rf "$tmp_dir"
+    exit 1
+  fi
+
   sudo chown -R root:root "$AUTOM8_INSTALL_DIR"
   sudo chmod +x "$AUTOM8_INSTALL_DIR/bin/autom8"
 
@@ -334,7 +434,8 @@ install_package() {
     "$AUTOM8_INSTALL_DIR/logs" \
     "$AUTOM8_INSTALL_DIR/backups" \
     "$AUTOM8_INSTALL_DIR/reports" \
-    "$AUTOM8_INSTALL_DIR/tmp"
+    "$AUTOM8_INSTALL_DIR/tmp" \
+    "$AUTOM8_INSTALL_DIR/catalog"
 
   sudo chown -R "$USER:$USER" \
     "$AUTOM8_INSTALL_DIR/logs" \

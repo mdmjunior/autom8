@@ -1,0 +1,153 @@
+{
+  "category": {
+    "slug": "produtividade",
+    "name": "Produtividade",
+    "description": "Ferramentas para organização, acesso remoto e fluxo de trabalho."
+  },
+  "apps": [
+    {
+      "id": "keepassxc",
+      "name": "KeePassXC",
+      "summary": "Gerenciador de senhas local.",
+      "status": "available",
+      "tags": [
+        "passwords"
+      ],
+      "packages": {
+        "apt": [
+          "keepassxc"
+        ],
+        "dnf": [
+          "keepassxc"
+        ],
+        "zypper": [
+          "keepassxc"
+        ],
+        "pacman": [
+          "keepassxc"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "remmina",
+      "name": "Remmina",
+      "summary": "Cliente de acesso remoto.",
+      "status": "available",
+      "tags": [
+        "remote"
+      ],
+      "packages": {
+        "apt": [
+          "remmina"
+        ],
+        "dnf": [
+          "remmina"
+        ],
+        "zypper": [
+          "remmina"
+        ],
+        "pacman": [
+          "remmina"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "syncthing",
+      "name": "Syncthing",
+      "summary": "Sincronização de arquivos entre dispositivos.",
+      "status": "available",
+      "tags": [
+        "sync"
+      ],
+      "packages": {
+        "apt": [
+          "syncthing"
+        ],
+        "dnf": [
+          "syncthing"
+        ],
+        "zypper": [
+          "syncthing"
+        ],
+        "pacman": [
+          "syncthing"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "thunderbird",
+      "name": "Thunderbird",
+      "summary": "Cliente de e-mail.",
+      "status": "available",
+      "tags": [
+        "email"
+      ],
+      "packages": {
+        "apt": [
+          "thunderbird"
+        ],
+        "dnf": [
+          "thunderbird"
+        ],
+        "zypper": [
+          "MozillaThunderbird"
+        ],
+        "pacman": [
+          "thunderbird"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "flameshot",
+      "name": "Flameshot",
+      "summary": "Capturas de tela com anotação.",
+      "status": "available",
+      "tags": [
+        "screenshot"
+      ],
+      "packages": {
+        "apt": [
+          "flameshot"
+        ],
+        "dnf": [
+          "flameshot"
+        ],
+        "zypper": [
+          "flameshot"
+        ],
+        "pacman": [
+          "flameshot"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "copyq",
+      "name": "CopyQ",
+      "summary": "Gerenciador avançado de área de transferência.",
+      "status": "available",
+      "tags": [
+        "clipboard"
+      ],
+      "packages": {
+        "apt": [
+          "copyq"
+        ],
+        "dnf": [
+          "copyq"
+        ],
+        "zypper": [
+          "copyq"
+        ],
+        "pacman": [
+          "copyq"
+        ]
+      },
+      "notes": []
+    }
+  ]
+}

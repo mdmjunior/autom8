@@ -1,0 +1,153 @@
+{
+  "category": {
+    "slug": "design",
+    "name": "Design",
+    "description": "Imagem, vetores, pintura digital e criação visual."
+  },
+  "apps": [
+    {
+      "id": "gimp",
+      "name": "GIMP",
+      "summary": "Editor de imagens.",
+      "status": "available",
+      "tags": [
+        "image"
+      ],
+      "packages": {
+        "apt": [
+          "gimp"
+        ],
+        "dnf": [
+          "gimp"
+        ],
+        "zypper": [
+          "gimp"
+        ],
+        "pacman": [
+          "gimp"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "inkscape",
+      "name": "Inkscape",
+      "summary": "Editor vetorial.",
+      "status": "available",
+      "tags": [
+        "vector"
+      ],
+      "packages": {
+        "apt": [
+          "inkscape"
+        ],
+        "dnf": [
+          "inkscape"
+        ],
+        "zypper": [
+          "inkscape"
+        ],
+        "pacman": [
+          "inkscape"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "krita",
+      "name": "Krita",
+      "summary": "Pintura digital.",
+      "status": "available",
+      "tags": [
+        "drawing"
+      ],
+      "packages": {
+        "apt": [
+          "krita"
+        ],
+        "dnf": [
+          "krita"
+        ],
+        "zypper": [
+          "krita"
+        ],
+        "pacman": [
+          "krita"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "blender",
+      "name": "Blender",
+      "summary": "Modelagem e animação 3D.",
+      "status": "available",
+      "tags": [
+        "3d"
+      ],
+      "packages": {
+        "apt": [
+          "blender"
+        ],
+        "dnf": [
+          "blender"
+        ],
+        "zypper": [
+          "blender"
+        ],
+        "pacman": [
+          "blender"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "darktable",
+      "name": "darktable",
+      "summary": "Fluxo fotográfico RAW.",
+      "status": "available",
+      "tags": [
+        "photo"
+      ],
+      "packages": {
+        "apt": [
+          "darktable"
+        ],
+        "dnf": [
+          "darktable"
+        ],
+        "zypper": [
+          "darktable"
+        ],
+        "pacman": [
+          "darktable"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "scribus",
+      "name": "Scribus",
+      "summary": "Editoração eletrônica.",
+      "status": "available",
+      "tags": [
+        "publishing"
+      ],
+      "packages": {
+        "apt": [
+          "scribus"
+        ],
+        "dnf": [
+          "scribus"
+        ],
+        "zypper": [
+          "scribus"
+        ],
+        "pacman": [
+          "scribus"
+        ]
+      },
+      "notes": []
+    }
+  ]
+}

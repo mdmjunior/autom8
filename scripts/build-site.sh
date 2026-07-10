@@ -17,26 +17,58 @@ error() {
   printf '\033[1;31m[AutoM8 Site Build]\033[0m %s\n' "$1" >&2
 }
 
-cd "$PROJECT_ROOT"
+npm_install_command() {
+  if [[ -f "$SITE_DIR/package-lock.json" ]]; then
+    printf 'npm ci'
+  else
+    printf 'npm install'
+  fi
+}
 
-./scripts/sync-docs.sh
+sync_installer() {
+  log "Sincronizando instalador público a partir do canônico."
 
-cp installer/install.sh site/public/install.sh
-chmod +x site/public/install.sh
+  if [[ ! -f "$PROJECT_ROOT/installer/install.sh" ]]; then
+    error "Instalador canônico não encontrado: installer/install.sh"
+    exit 1
+  fi
 
-if [[ ! -d "$SITE_DIR" ]]; then
-  error "Diretório do site não encontrado: $SITE_DIR"
-  exit 1
-fi
+  mkdir -p "$PROJECT_ROOT/site/public"
+
+  cp "$PROJECT_ROOT/installer/install.sh" "$PROJECT_ROOT/site/public/install.sh"
+  chmod +x "$PROJECT_ROOT/installer/install.sh" "$PROJECT_ROOT/site/public/install.sh"
+
+  bash -n "$PROJECT_ROOT/installer/install.sh"
+  bash -n "$PROJECT_ROOT/site/public/install.sh"
+
+  if ! cmp -s "$PROJECT_ROOT/installer/install.sh" "$PROJECT_ROOT/site/public/install.sh"; then
+    error "site/public/install.sh divergiu de installer/install.sh após sincronização."
+    exit 1
+  fi
+
+  if ! grep -q 'releases/latest/download/autom8-latest.tar.gz' "$PROJECT_ROOT/site/public/install.sh"; then
+    error "Instalador público não aponta para GitHub Releases latest."
+    exit 1
+  fi
+
+  log "Instalador público validado."
+}
 
 run_build_with_local_npm() {
-  log "npm encontrado no host. Gerando build local."
+  local install_cmd
+  install_cmd="$(npm_install_command)"
+
+  log "npm encontrado no host. Gerando build local com: $install_cmd"
+
   cd "$SITE_DIR"
-  npm install
+  $install_cmd
   npm run build
 }
 
 run_build_with_docker_node() {
+  local install_cmd
+  install_cmd="$(npm_install_command)"
+
   if ! command -v docker >/dev/null 2>&1; then
     error "npm não foi encontrado e Docker também não está disponível."
     error "Instale npm no host ou execute em ambiente com Docker."
@@ -44,6 +76,7 @@ run_build_with_docker_node() {
   fi
 
   log "npm não encontrado no host. Usando Docker com $NODE_IMAGE."
+  log "Comando de dependências: $install_cmd"
 
   docker run --rm \
     --user "$(id -u):$(id -g)" \
@@ -51,8 +84,36 @@ run_build_with_docker_node() {
     -v "$SITE_DIR:/app" \
     -w /app \
     "$NODE_IMAGE" \
-    sh -lc 'npm install && npm run build'
+    sh -lc "$install_cmd && npm run build"
 }
+
+cd "$PROJECT_ROOT"
+
+if [[ ! -d "$SITE_DIR" ]]; then
+  error "Diretório do site não encontrado: $SITE_DIR"
+  exit 1
+fi
+
+if [[ -x "$PROJECT_ROOT/scripts/build-apps-catalog.sh" ]]; then
+  log "Gerando catálogo consolidado de apps."
+  "$PROJECT_ROOT/scripts/build-apps-catalog.sh"
+fi
+
+if [[ -x "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh" ]]; then
+  "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh"
+fi
+
+if [[ -x "$PROJECT_ROOT/scripts/validate-apps-catalog.sh" ]]; then
+  log "Validando catálogo de apps."
+  "$PROJECT_ROOT/scripts/validate-apps-catalog.sh"
+fi
+
+if [[ -x "$PROJECT_ROOT/scripts/sync-docs.sh" ]]; then
+  log "Sincronizando documentação gerada."
+  "$PROJECT_ROOT/scripts/sync-docs.sh"
+fi
+
+sync_installer
 
 if command -v npm >/dev/null 2>&1; then
   run_build_with_local_npm
@@ -61,5 +122,5 @@ else
 fi
 
 log "Site build concluído."
-log "Observação: pacotes da suíte não são gerados no build do site."
-log "Pacotes estáveis são publicados somente via GitHub Releases."
+log "Arquivos gerados esperados: site/public/install.sh, dados do site, documentação sincronizada e build do frontend."
+log "Pacotes estáveis continuam sendo publicados somente via GitHub Releases."

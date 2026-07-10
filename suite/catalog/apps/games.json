@@ -1,0 +1,207 @@
+{
+  "category": {
+    "slug": "games",
+    "name": "Games",
+    "description": "Ferramentas para jogos, compatibilidade e desempenho."
+  },
+  "apps": [
+    {
+      "id": "steam",
+      "name": "Steam",
+      "summary": "Cliente Steam.",
+      "status": "advanced",
+      "tags": [
+        "games"
+      ],
+      "packages": {
+        "apt": [
+          "steam"
+        ],
+        "dnf": [
+          "steam"
+        ],
+        "zypper": [
+          "steam"
+        ],
+        "pacman": [
+          "steam"
+        ]
+      },
+      "notes": [
+        "Pode exigir repositório non-free/multilib ou configuração adicional."
+      ]
+    },
+    {
+      "id": "lutris",
+      "name": "Lutris",
+      "summary": "Gerenciador de jogos.",
+      "status": "available",
+      "tags": [
+        "games"
+      ],
+      "packages": {
+        "apt": [
+          "lutris"
+        ],
+        "dnf": [
+          "lutris"
+        ],
+        "zypper": [
+          "lutris"
+        ],
+        "pacman": [
+          "lutris"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "wine",
+      "name": "Wine",
+      "summary": "Camada de compatibilidade Windows.",
+      "status": "available",
+      "tags": [
+        "compatibility"
+      ],
+      "packages": {
+        "apt": [
+          "wine"
+        ],
+        "dnf": [
+          "wine"
+        ],
+        "zypper": [
+          "wine"
+        ],
+        "pacman": [
+          "wine"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "winetricks",
+      "name": "Winetricks",
+      "summary": "Auxiliar para Wine.",
+      "status": "available",
+      "tags": [
+        "compatibility"
+      ],
+      "packages": {
+        "apt": [
+          "winetricks"
+        ],
+        "dnf": [
+          "winetricks"
+        ],
+        "zypper": [
+          "winetricks"
+        ],
+        "pacman": [
+          "winetricks"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "gamemode",
+      "name": "GameMode",
+      "summary": "Otimizações de desempenho para jogos.",
+      "status": "available",
+      "tags": [
+        "performance"
+      ],
+      "packages": {
+        "apt": [
+          "gamemode"
+        ],
+        "dnf": [
+          "gamemode"
+        ],
+        "zypper": [
+          "gamemode"
+        ],
+        "pacman": [
+          "gamemode"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "mangohud",
+      "name": "MangoHud",
+      "summary": "Overlay de performance.",
+      "status": "available",
+      "tags": [
+        "performance"
+      ],
+      "packages": {
+        "apt": [
+          "mangohud"
+        ],
+        "dnf": [
+          "mangohud"
+        ],
+        "zypper": [
+          "mangohud"
+        ],
+        "pacman": [
+          "mangohud"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "goverlay",
+      "name": "GOverlay",
+      "summary": "Interface para MangoHud.",
+      "status": "available",
+      "tags": [
+        "performance"
+      ],
+      "packages": {
+        "apt": [
+          "goverlay"
+        ],
+        "dnf": [
+          "goverlay"
+        ],
+        "zypper": [
+          "goverlay"
+        ],
+        "pacman": [
+          "goverlay"
+        ]
+      },
+      "notes": [
+        "Disponibilidade pode variar."
+      ]
+    },
+    {
+      "id": "heroic",
+      "name": "Heroic Games Launcher",
+      "summary": "Launcher para Epic/GOG/Amazon.",
+      "status": "advanced",
+      "tags": [
+        "launcher"
+      ],
+      "packages": {
+        "apt": [
+          "heroic"
+        ],
+        "dnf": [
+          "heroic"
+        ],
+        "zypper": [
+          "heroic"
+        ],
+        "pacman": [
+          "heroic-games-launcher-bin"
+        ]
+      },
+      "notes": [
+        "Normalmente exige Flatpak, AppImage, AUR ou repositório externo."
+      ]
+    }
+  ]
+}

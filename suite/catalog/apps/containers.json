@@ -1,0 +1,210 @@
+{
+  "category": {
+    "slug": "containers",
+    "name": "Containers",
+    "description": "Docker, Podman e ferramentas auxiliares para containers."
+  },
+  "apps": [
+    {
+      "id": "docker",
+      "name": "Docker",
+      "summary": "Engine de containers pelos pacotes da distro.",
+      "status": "available",
+      "tags": [
+        "containers"
+      ],
+      "packages": {
+        "apt": [
+          "docker.io"
+        ],
+        "dnf": [
+          "docker"
+        ],
+        "zypper": [
+          "docker"
+        ],
+        "pacman": [
+          "docker"
+        ]
+      },
+      "notes": [
+        "Instala apenas o pacote disponível no gerenciador da distro."
+      ]
+    },
+    {
+      "id": "docker-compose",
+      "name": "Docker Compose",
+      "summary": "Orquestração local de containers.",
+      "status": "available",
+      "tags": [
+        "compose"
+      ],
+      "packages": {
+        "apt": [
+          "docker-compose-v2"
+        ],
+        "dnf": [
+          "docker-compose-plugin"
+        ],
+        "zypper": [
+          "docker-compose"
+        ],
+        "pacman": [
+          "docker-compose"
+        ]
+      },
+      "notes": [
+        "Nome do pacote pode variar conforme versão da distro."
+      ]
+    },
+    {
+      "id": "podman",
+      "name": "Podman",
+      "summary": "Containers daemonless.",
+      "status": "available",
+      "tags": [
+        "containers"
+      ],
+      "packages": {
+        "apt": [
+          "podman"
+        ],
+        "dnf": [
+          "podman"
+        ],
+        "zypper": [
+          "podman"
+        ],
+        "pacman": [
+          "podman"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "buildah",
+      "name": "Buildah",
+      "summary": "Build de imagens OCI.",
+      "status": "available",
+      "tags": [
+        "oci"
+      ],
+      "packages": {
+        "apt": [
+          "buildah"
+        ],
+        "dnf": [
+          "buildah"
+        ],
+        "zypper": [
+          "buildah"
+        ],
+        "pacman": [
+          "buildah"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "skopeo",
+      "name": "Skopeo",
+      "summary": "Inspeção e cópia de imagens OCI.",
+      "status": "available",
+      "tags": [
+        "oci"
+      ],
+      "packages": {
+        "apt": [
+          "skopeo"
+        ],
+        "dnf": [
+          "skopeo"
+        ],
+        "zypper": [
+          "skopeo"
+        ],
+        "pacman": [
+          "skopeo"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "distrobox",
+      "name": "Distrobox",
+      "summary": "Containers integrados ao desktop.",
+      "status": "available",
+      "tags": [
+        "desktop",
+        "containers"
+      ],
+      "packages": {
+        "apt": [
+          "distrobox"
+        ],
+        "dnf": [
+          "distrobox"
+        ],
+        "zypper": [
+          "distrobox"
+        ],
+        "pacman": [
+          "distrobox"
+        ]
+      },
+      "notes": []
+    },
+    {
+      "id": "kubectl",
+      "name": "kubectl",
+      "summary": "Cliente Kubernetes.",
+      "status": "advanced",
+      "tags": [
+        "kubernetes"
+      ],
+      "packages": {
+        "apt": [
+          "kubectl"
+        ],
+        "dnf": [
+          "kubernetes-client"
+        ],
+        "zypper": [
+          "kubernetes-client"
+        ],
+        "pacman": [
+          "kubectl"
+        ]
+      },
+      "notes": [
+        "Pode exigir repositório externo ou versão específica."
+      ]
+    },
+    {
+      "id": "helm",
+      "name": "Helm",
+      "summary": "Gerenciador de charts Kubernetes.",
+      "status": "advanced",
+      "tags": [
+        "kubernetes"
+      ],
+      "packages": {
+        "apt": [
+          "helm"
+        ],
+        "dnf": [
+          "helm"
+        ],
+        "zypper": [
+          "helm"
+        ],
+        "pacman": [
+          "helm"
+        ]
+      },
+      "notes": [
+        "Pode exigir repositório externo."
+      ]
+    }
+  ]
+}
