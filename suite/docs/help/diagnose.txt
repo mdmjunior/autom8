@@ -1,13 +1,17 @@
 AutoM8 help: autom8 diagnose
 
 Status: available
-Desde: 0.1.0
+Desde: 0.1.1
 
 Gera diagnóstico local do sistema.
 
 Detalhes:
-- Coleta informações de sistema, kernel, CPU, memória, disco, rede, DNS, serviços, firewall, portas, Docker, usuários e sessão gráfica.
-- Gera relatório em reports/diagnostic-<data>.txt.
+- autom8 diagnose gera relatório completo local.
+- autom8 diagnose --private gera relatório sanitizado para compartilhamento.
+- O modo completo coleta sistema, kernel, CPU, memória, disco, rede, DNS, serviços, firewall, portas, Docker, usuários e sessão gráfica.
+- O modo privado oculta ou reduz hostname, usuários, homes, IPs, DNS, rotas, containers e processos sensíveis.
+- Relatórios são gerados em reports/.
 
 Exemplos:
   autom8 diagnose
+  autom8 diagnose --private

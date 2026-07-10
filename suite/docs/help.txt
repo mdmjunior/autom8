@@ -9,29 +9,32 @@ Uso:
   autom8 --version
 
 Comandos disponíveis:
-  autom8                   Abre o menu interativo principal.
-  autom8 --version         Mostra a versão instalada.
-  autom8 doctor            Valida instalação, estrutura, permissões, dependências, PATH, logs e relatórios.
-  autom8 diagnose          Gera diagnóstico local do sistema.
-  autom8 update            Atualiza repositórios e pacotes do sistema com confirmação.
-  autom8 clean             Executa limpeza segura de caches, temporários e arquivos antigos.
-  autom8 security          Executa checagem básica de segurança local.
-  autom8 docker            Mostra informações do Docker quando disponível.
-  autom8 users             Lista usuários locais e grupos administrativos.
-  autom8 config            Permite alterar configurações básicas da suíte.
-  autom8 report            Lista e exporta relatórios gerados.
+  autom8                         Abre Dashboard + Menu.
+  autom8 --version               Mostra a versão instalada.
+  autom8 doctor                  Valida instalação, dependências, PATH, release e versão online.
+  autom8 diagnose                Gera diagnóstico completo local do sistema.
+  autom8 diagnose --private      Gera diagnóstico sanitizado para compartilhamento.
+  autom8 update                  Atualiza repositórios e pacotes do sistema com confirmação.
+  autom8 clean                   Executa limpeza segura com confirmação explícita.
+  autom8 clean --dry-run         Simula limpeza segura sem remover nada.
+  autom8 security                Executa checagem básica de segurança local.
+  autom8 docker                  Mostra informações do Docker quando disponível.
+  autom8 users                   Lista usuários locais e grupos administrativos.
+  autom8 config                  Permite alterar configurações básicas da suíte.
+  autom8 report                  Lista e exporta relatórios gerados.
 
 Comandos parciais:
-  autom8 self-update       Valida o pacote estável mais recente publicado no GitHub Releases.
+  autom8 self-update             Valida o pacote estável mais recente publicado no GitHub Releases.
 
 Comandos planejados:
-  autom8 apps              Instalação e remoção de aplicativos por catálogo.
-  autom8 profiles          Aplicação de perfis YAML para preparar ambientes.
-  autom8 backup            Backups simples antes de operações sensíveis.
-  autom8 upgrade-distro    Preparação futura para upgrade de versão da distro.
+  autom8 apps                    Instalação e remoção de aplicativos por catálogo.
+  autom8 profiles                Aplicação de perfis YAML para preparar ambientes.
+  autom8 backup                  Backups simples antes de operações sensíveis.
+  autom8 upgrade-distro          Preparação futura para upgrade de versão da distro.
 
 Ajuda por comando:
   autom8 help doctor
+  autom8 help diagnose
   autom8 help clean
   autom8 help update
 
