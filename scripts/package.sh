@@ -57,3 +57,8 @@ echo
 echo "Observação:"
 echo "Os pacotes não são copiados para o site, VPS ou repositório local."
 echo "Use scripts/release-stable.sh para publicar no GitHub Releases."
+
+if [[ -x "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh" ]]; then
+  "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh"
+fi
+

@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "version": "0.2.0",
+  "updatedAt": "2026-07-10",
+  "profiles": [
+    {
+      "id": "dev-essential",
+      "name": "Desenvolvimento Essencial",
+      "summary": "Ferramentas básicas para desenvolvimento local em Linux.",
+      "category": "desenvolvimento",
+      "apps": [
+        "git",
+        "curl",
+        "wget",
+        "jq",
+        "vim",
+        "nano",
+        "ripgrep",
+        "fd",
+        "tree",
+        "tmux",
+        "build-essential",
+        "python3",
+        "nodejs",
+        "sqlite"
+      ],
+      "notes": [
+        "Usa apenas apps available do catálogo.",
+        "Ideal para primeira preparação de uma VM de desenvolvimento."
+      ]
+    },
+    {
+      "id": "server-basic",
+      "name": "Servidor Básico",
+      "summary": "Base para administração de servidor Linux.",
+      "category": "sistema",
+      "apps": [
+        "git",
+        "curl",
+        "wget",
+        "jq",
+        "htop",
+        "btop",
+        "tmux",
+        "net-tools",
+        "dnsutils",
+        "nmap",
+        "traceroute",
+        "tcpdump",
+        "openssh-client",
+        "openssh-server",
+        "tree",
+        "unzip",
+        "file"
+      ],
+      "notes": [
+        "Inclui ferramentas de rede, SSH e diagnóstico.",
+        "Não altera configuração de serviços automaticamente."
+      ]
+    },
+    {
+      "id": "desktop-basic",
+      "name": "Desktop Básico",
+      "summary": "Ferramentas úteis para Ubuntu/Fedora/openSUSE/Arch em uso diário.",
+      "category": "produtividade",
+      "apps": [
+        "git",
+        "curl",
+        "wget",
+        "jq",
+        "htop",
+        "tree",
+        "unzip",
+        "file",
+        "keepassxc",
+        "remmina",
+        "flameshot",
+        "copyq",
+        "vlc",
+        "libreoffice",
+        "evince"
+      ],
+      "notes": [
+        "Perfil pensado para desktop de uso geral.",
+        "Inclui apps gráficos, então pode puxar muitas dependências."
+      ]
+    },
+    {
+      "id": "creator",
+      "name": "Criador de Conteúdo",
+      "summary": "Ferramentas para imagem, vídeo, áudio e criação visual.",
+      "category": "midia",
+      "apps": [
+        "gimp",
+        "inkscape",
+        "krita",
+        "blender",
+        "darktable",
+        "vlc",
+        "ffmpeg",
+        "obs-studio",
+        "audacity",
+        "kdenlive"
+      ],
+      "notes": [
+        "Perfil pesado para desktop.",
+        "Alguns pacotes podem depender de repositórios multimídia da distro."
+      ]
+    },
+    {
+      "id": "container-basic",
+      "name": "Containers Básico",
+      "summary": "Ferramentas de containers com Docker/Podman e utilitários OCI.",
+      "category": "containers",
+      "apps": [
+        "docker",
+        "docker-compose",
+        "podman",
+        "buildah",
+        "skopeo",
+        "distrobox"
+      ],
+      "notes": [
+        "Instala pacotes disponíveis nos repositórios da distro.",
+        "Não adiciona usuário ao grupo docker automaticamente nesta versão."
+      ]
+    },
+    {
+      "id": "gamer-basic",
+      "name": "Gamer Básico",
+      "summary": "Ferramentas básicas para jogos e performance.",
+      "category": "games",
+      "apps": [
+        "lutris",
+        "wine",
+        "winetricks",
+        "gamemode",
+        "mangohud"
+      ],
+      "notes": [
+        "Não inclui Steam porque está marcado como advanced no catálogo.",
+        "Pode exigir repositórios extras conforme a distro."
+      ]
+    }
+  ]
+}

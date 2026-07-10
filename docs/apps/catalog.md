@@ -139,3 +139,27 @@ Regras:
 - a operação usa confirmação única;
 - --dry-run mostra o plano sem alterar o sistema;
 - pacotes duplicados dentro da categoria são consolidados antes da ação.
+
+## Perfis baseados no catálogo
+
+Perfis ficam em:
+
+    suite/catalog/profiles.json
+
+Cada perfil referencia IDs existentes no catálogo de apps.
+
+Exemplo:
+
+    autom8 profiles list
+    autom8 profiles show dev-essential
+    autom8 --dry-run profiles install dev-essential
+    autom8 profiles install server-basic
+    autom8 --dry-run profiles remove desktop-basic
+
+Regras:
+
+- perfis não duplicam definição de pacotes;
+- perfis apenas referenciam apps;
+- apps advanced/planned continuam bloqueados em ações automáticas;
+- instalação/remoção de perfil reutiliza install-many/remove-many;
+- toda ação real exige confirmação explícita.
