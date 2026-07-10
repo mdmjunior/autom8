@@ -96,9 +96,9 @@ autom8_status_line() {
   esac
 
   if autom8_has_gum; then
-    printf '  '
-    gum style --foreground "$color" --bold "$(printf '%-7s' "$status")"
-    printf ' %s\n' "$message"
+    local styled_status
+    styled_status="$(gum style --foreground "$color" --bold "$status")"
+    printf '  %s %s\n' "$styled_status" "$message"
   else
     printf '  %-7s %s\n' "$status" "$message"
   fi
