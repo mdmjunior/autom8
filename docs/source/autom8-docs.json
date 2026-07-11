@@ -2,7 +2,7 @@
   "product": {
     "name": "AutoM8",
     "fullName": "AutoM8 - Linux Management Suite",
-    "brand": "AutoM8 by OSLabs",
+    "brand": "OSLabs",
     "siteUrl": "https://autom8.oslabs.com.br",
     "githubRepo": "mdmjunior/autom8",
     "currentVersion": "0.2.0",
@@ -401,14 +401,20 @@
     {
       "slug": "profiles",
       "command": "autom8 profiles",
-      "status": "planned",
+      "status": "available",
       "since": "0.2.0",
-      "summary": "Aplicação de perfis YAML para preparar ambientes.",
+      "summary": "Lista, detalha, instala e remove perfis baseados no catálogo de apps.",
       "details": [
-        "Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0."
+        "O catálogo atual possui seis perfis funcionais.",
+        "Os perfis utilizam apps disponíveis no catálogo consolidado.",
+        "Instalação e remoção reutilizam os fluxos do módulo Apps e exigem confirmação explícita.",
+        "Os comandos disponíveis são list, show, install e remove."
       ],
       "examples": [
-        "autom8 profiles"
+        "autom8 profiles list",
+        "autom8 profiles show dev-essential",
+        "autom8 profiles install dev-essential",
+        "autom8 profiles remove dev-essential"
       ]
     },
     {
@@ -521,15 +527,23 @@
       "status": "available",
       "version": "0.2.0",
       "command": "autom8 apps",
-      "description": "Instala e remove aplicativos por catálogo local separado por categorias, com confirmação explícita e suporte a --dry-run."
+      "description": "Lista, pesquisa, detalha, instala e remove aplicativos por catálogo local organizado em categorias."
     },
     {
-      "name": "Backup",
-      "slug": "backup",
-      "status": "planned",
-      "version": "0.3.0",
-      "command": "autom8 backup",
-      "description": "Backups simples antes de operações sensíveis. Planejado para versão futura."
+      "name": "Perfis",
+      "slug": "profiles",
+      "status": "available",
+      "version": "0.2.0",
+      "command": "autom8 profiles",
+      "description": "Prepara ambientes completos usando seis perfis baseados no catálogo atual de aplicativos."
+    },
+    {
+      "name": "Atualização do Sistema",
+      "slug": "update",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 update",
+      "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e registro em logs."
     },
     {
       "name": "Limpeza",
@@ -537,7 +551,7 @@
       "status": "available",
       "version": "0.1.1",
       "command": "autom8 clean",
-      "description": "Executa limpeza segura com confirmação explícita e suporta simulação com --dry-run."
+      "description": "Limpa caches, temporários e resíduos seguros somente após confirmação explícita."
     },
     {
       "name": "Configurações",
@@ -545,7 +559,7 @@
       "status": "available",
       "version": "0.1.1",
       "command": "autom8 config",
-      "description": "Permite ajustar idioma, modo padrão, nível de limpeza e visualizar configuração."
+      "description": "Ajusta idioma, modo padrão, nível de limpeza e exibe a configuração atual."
     },
     {
       "name": "Diagnóstico",
@@ -553,7 +567,23 @@
       "status": "available",
       "version": "0.1.1",
       "command": "autom8 diagnose",
-      "description": "Gera relatório completo local ou relatório privado sanitizado com autom8 diagnose --private."
+      "description": "Gera diagnóstico completo local ou relatório privado sanitizado para compartilhamento."
+    },
+    {
+      "name": "Doctor",
+      "slug": "doctor",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 doctor",
+      "description": "Valida instalação, estrutura, permissões, dependências, PATH e origem da versão estável."
+    },
+    {
+      "name": "Segurança",
+      "slug": "security",
+      "status": "available",
+      "version": "0.1.1",
+      "command": "autom8 security",
+      "description": "Mostra firewall, portas em escuta e o estado básico do serviço SSH."
     },
     {
       "name": "Docker",
@@ -564,20 +594,12 @@
       "description": "Mostra versão, containers em execução e uso de disco do Docker quando disponível."
     },
     {
-      "name": "Doctor",
-      "slug": "doctor",
+      "name": "Usuários",
+      "slug": "users",
       "status": "available",
       "version": "0.1.1",
-      "command": "autom8 doctor",
-      "description": "Valida instalação, estrutura, permissões, dependências, PATH, origem GitHub Releases e versão online."
-    },
-    {
-      "name": "Perfis",
-      "slug": "profiles",
-      "status": "planned",
-      "version": "0.3.0",
-      "command": "autom8 profiles",
-      "description": "Aplicação de perfis para preparar ambientes completos. Planejado para versão futura."
+      "command": "autom8 users",
+      "description": "Lista usuários com login permitido e os grupos administrativos encontrados."
     },
     {
       "name": "Relatórios",
@@ -585,127 +607,149 @@
       "status": "available",
       "version": "0.1.1",
       "command": "autom8 report",
-      "description": "Lista e exporta relatórios gerados pela suíte."
+      "description": "Lista relatórios e exporta logs e resultados da suíte em um pacote compactado."
     },
     {
-      "name": "Segurança",
-      "slug": "security",
-      "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 security",
-      "description": "Mostra firewall, portas em escuta e status básico de SSH."
+      "name": "Self-update",
+      "slug": "self-update",
+      "status": "partial",
+      "version": "0.1.0",
+      "command": "autom8 self-update",
+      "description": "Baixa e valida o pacote estável mais recente; aplicação automática e rollback ainda estão planejados."
     },
     {
-      "name": "Atualização do Sistema",
-      "slug": "update",
-      "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 update",
-      "description": "Atualiza pacotes usando apt, dnf, zypper ou pacman, com confirmação e logs."
+      "name": "Backup",
+      "slug": "backup",
+      "status": "planned",
+      "version": "0.3.0",
+      "command": "autom8 backup",
+      "description": "Backups antes de operações sensíveis. O módulo ainda existe como placeholder."
     },
     {
-      "name": "Usuários",
-      "slug": "users",
-      "status": "available",
-      "version": "0.1.1",
-      "command": "autom8 users",
-      "description": "Lista usuários com login permitido e grupos administrativos."
+      "name": "Upgrade da distribuição",
+      "slug": "upgrade-distro",
+      "status": "planned",
+      "version": "futura",
+      "command": "autom8 upgrade-distro",
+      "description": "Fluxo orientado para atualização entre versões da distribuição Linux."
     }
   ],
   "roadmap": [
     {
       "version": "0.1.0",
-      "title": "Base funcional e release estável",
+      "status": "published",
+      "title": "Fundação da suíte",
       "items": [
-        "Estrutura /opt/autom8.",
-        "Instalador install.sh.",
-        "Comando autom8.",
-        "Detecção de distro e gerenciador de pacotes.",
-        "Logs próprios.",
-        "Menu interativo com gum.",
-        "Doctor.",
-        "Diagnóstico.",
-        "Update básico.",
-        "Limpeza segura com dry-run.",
-        "Checagens básicas de segurança.",
-        "Docker status.",
-        "Usuários.",
-        "Configurações.",
-        "Relatórios.",
-        "Site oficial.",
-        "Distribuição estável via GitHub Releases."
+        "CLI local instalada em /opt/autom8.",
+        "Menu interativo e detecção da distribuição.",
+        "Doctor, diagnóstico, atualização e limpeza segura.",
+        "Módulos de segurança, Docker, usuários e relatórios.",
+        "Instalador público e distribuição via GitHub Releases.",
+        "Primeira versão do site oficial."
       ]
     },
     {
       "version": "0.2.0",
-      "title": "Apps por catálogo",
+      "status": "published",
+      "title": "Catálogo de apps e perfis",
       "items": [
-        "Catálogo fonte separado por categorias.",
-        "Catálogo consolidado gerado por script.",
-        "Listagem, busca, detalhes e filtros por categoria.",
-        "Instalação e remoção individual com confirmação.",
-        "Instalação e remoção múltipla com confirmação única.",
-        "Apps advanced visíveis, mas sem instalação automática."
-      ],
-      "status": "in-progress"
+        "Catálogo consolidado com 10 categorias e 76 apps.",
+        "Listagem, busca e detalhes de aplicativos.",
+        "Instalação e remoção individual, múltipla e por categoria.",
+        "Apps avançados visíveis, mas bloqueados para automação.",
+        "Seis perfis funcionais baseados no catálogo de apps.",
+        "Validações em Ubuntu Desktop e Fedora Workstation.",
+        "Pacote estável publicado pelo GitHub Releases."
+      ]
+    },
+    {
+      "version": "Próximo ciclo",
+      "status": "in-progress",
+      "title": "Qualidade, arquitetura e entrega",
+      "items": [
+        "Checks separados para CLI, website e repositório.",
+        "Quality Gate executado em develop e pull requests.",
+        "Build reproduzível do website com npm ci.",
+        "Teste da imagem Docker e do endpoint de saúde.",
+        "Sincronização automática do instalador público.",
+        "Remoção de catálogos e perfis YAML legados.",
+        "Preparação da estrutura apps/cli e apps/website."
+      ]
     },
     {
       "version": "0.3.0",
-      "title": "Operação, backups e segurança expandida",
+      "status": "planned",
+      "title": "Operação e recuperação",
       "items": [
-        "Backup funcional.",
-        "Rollback parcial.",
-        "Security expandido.",
-        "Users com ações administrativas.",
-        "Docker com manutenção orientada.",
-        "Relatórios exportáveis mais completos."
+        "Backup funcional antes de operações sensíveis.",
+        "Rollback parcial e recuperação orientada.",
+        "Self-update completo com rollback.",
+        "Segurança e administração de usuários expandidas.",
+        "Manutenção orientada de Docker.",
+        "Relatórios operacionais mais completos."
       ]
     },
     {
       "version": "1.0.0",
+      "status": "planned",
       "title": "Primeira versão estável completa",
       "items": [
-        "Suporte testado nas distros oficiais.",
-        "Documentação completa.",
-        "Changelog versionado.",
-        "Instalação estável.",
-        "Self-update com rollback documentado.",
-        "Pipeline de release estável documentado."
+        "Suporte validado nas distribuições oficiais.",
+        "Documentação completa e versionada.",
+        "Instalação e atualização estáveis.",
+        "Pipeline de release automatizado.",
+        "Publicação de imagens pelo GHCR.",
+        "Deploy de produção com aprovação e rollback."
       ]
     }
   ],
   "changelog": [
     {
+      "version": "Não publicado",
+      "date": "2026-07-10",
+      "status": "Em desenvolvimento",
+      "title": "Fundação de qualidade e atualização do site",
+      "changes": [
+        "Adicionados checks separados para CLI, website e repositório.",
+        "Adicionado Quality Gate no GitHub Actions.",
+        "Build do website tornado reproduzível com npm ci.",
+        "Adicionados build e teste de runtime da imagem Docker.",
+        "Instalador público sincronizado com a fonte canônica.",
+        "Instalação local reforçada com staging e rollback.",
+        "Removidas fontes YAML legadas de apps e perfis.",
+        "Site atualizado para refletir módulos e perfis atuais."
+      ]
+    },
+    {
       "version": "0.2.0",
       "date": "2026-07-10",
-      "title": "Apps por catálogo",
+      "status": "Publicado",
+      "title": "Catálogo de apps e perfis",
       "changes": [
-        "Adicionado catálogo de apps separado por categorias.",
-        "Adicionado script para consolidar catálogo.",
-        "Adicionados comandos de listagem, busca, detalhes e filtros.",
+        "Adicionado catálogo com 10 categorias e 76 apps.",
+        "Adicionados comandos de listagem, busca e detalhes.",
         "Adicionadas instalação e remoção individual.",
-        "Adicionadas instalação e remoção múltipla.",
-        "Adicionado suporte a apps advanced sem instalação automática.",
-        "Instalador passa a instalar pacotes-base essenciais."
+        "Adicionadas operações múltiplas e por categoria.",
+        "Adicionado bloqueio para apps advanced.",
+        "Adicionados seis perfis baseados no catálogo.",
+        "Adicionadas validações em Ubuntu e Fedora.",
+        "Publicada a versão estável 0.2.0."
       ]
     },
     {
       "version": "0.1.0",
       "date": "2026-07-06",
-      "status": "published",
+      "status": "Publicado",
+      "title": "Primeira versão pública",
       "changes": [
-        "Estrutura inicial da suíte AutoM8.",
-        "Primeiro instalador público.",
-        "Primeiro site oficial.",
-        "Comando autom8 com menu interativo.",
-        "Módulos doctor, diagnose, update e clean.",
-        "Checagens básicas de security, docker e users.",
-        "Configurações e relatórios iniciais.",
-        "Melhorado comportamento do autom8 clean --dry-run.",
-        "Distribuição estável movida para GitHub Releases.",
-        "install.sh passa a baixar o pacote estável mais recente do GitHub Releases.",
-        "Build do site deixa de publicar pacotes da suíte na VPS.",
-        "Documentação passa a usar fonte única para site, README, roadmap, changelog e help."
+        "Criada a estrutura inicial da suíte.",
+        "Publicado o primeiro instalador.",
+        "Publicado o primeiro site oficial.",
+        "Adicionado menu interativo.",
+        "Adicionados doctor, diagnose, update e clean.",
+        "Adicionadas verificações de segurança, Docker e usuários.",
+        "Adicionados configurações e relatórios.",
+        "Distribuição estável movida para o GitHub Releases."
       ]
     }
   ],

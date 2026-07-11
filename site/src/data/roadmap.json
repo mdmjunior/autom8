@@ -1,62 +1,69 @@
 [
   {
     "version": "0.1.0",
-    "title": "Base funcional e release estável",
+    "status": "published",
+    "title": "Fundação da suíte",
     "items": [
-      "Estrutura /opt/autom8.",
-      "Instalador install.sh.",
-      "Comando autom8.",
-      "Detecção de distro e gerenciador de pacotes.",
-      "Logs próprios.",
-      "Menu interativo com gum.",
-      "Doctor.",
-      "Diagnóstico.",
-      "Update básico.",
-      "Limpeza segura com dry-run.",
-      "Checagens básicas de segurança.",
-      "Docker status.",
-      "Usuários.",
-      "Configurações.",
-      "Relatórios.",
-      "Site oficial.",
-      "Distribuição estável via GitHub Releases."
+      "CLI local instalada em /opt/autom8.",
+      "Menu interativo e detecção da distribuição.",
+      "Doctor, diagnóstico, atualização e limpeza segura.",
+      "Módulos de segurança, Docker, usuários e relatórios.",
+      "Instalador público e distribuição via GitHub Releases.",
+      "Primeira versão do site oficial."
     ]
   },
   {
     "version": "0.2.0",
-    "title": "Apps por catálogo",
+    "status": "published",
+    "title": "Catálogo de apps e perfis",
     "items": [
-      "Catálogo fonte separado por categorias.",
-      "Catálogo consolidado gerado por script.",
-      "Listagem, busca, detalhes e filtros por categoria.",
-      "Instalação e remoção individual com confirmação.",
-      "Instalação e remoção múltipla com confirmação única.",
-      "Apps advanced visíveis, mas sem instalação automática."
-    ],
-    "status": "in-progress"
+      "Catálogo consolidado com 10 categorias e 76 apps.",
+      "Listagem, busca e detalhes de aplicativos.",
+      "Instalação e remoção individual, múltipla e por categoria.",
+      "Apps avançados visíveis, mas bloqueados para automação.",
+      "Seis perfis funcionais baseados no catálogo de apps.",
+      "Validações em Ubuntu Desktop e Fedora Workstation.",
+      "Pacote estável publicado pelo GitHub Releases."
+    ]
+  },
+  {
+    "version": "Próximo ciclo",
+    "status": "in-progress",
+    "title": "Qualidade, arquitetura e entrega",
+    "items": [
+      "Checks separados para CLI, website e repositório.",
+      "Quality Gate executado em develop e pull requests.",
+      "Build reproduzível do website com npm ci.",
+      "Teste da imagem Docker e do endpoint de saúde.",
+      "Sincronização automática do instalador público.",
+      "Remoção de catálogos e perfis YAML legados.",
+      "Preparação da estrutura apps/cli e apps/website."
+    ]
   },
   {
     "version": "0.3.0",
-    "title": "Operação, backups e segurança expandida",
+    "status": "planned",
+    "title": "Operação e recuperação",
     "items": [
-      "Backup funcional.",
-      "Rollback parcial.",
-      "Security expandido.",
-      "Users com ações administrativas.",
-      "Docker com manutenção orientada.",
-      "Relatórios exportáveis mais completos."
+      "Backup funcional antes de operações sensíveis.",
+      "Rollback parcial e recuperação orientada.",
+      "Self-update completo com rollback.",
+      "Segurança e administração de usuários expandidas.",
+      "Manutenção orientada de Docker.",
+      "Relatórios operacionais mais completos."
     ]
   },
   {
     "version": "1.0.0",
+    "status": "planned",
     "title": "Primeira versão estável completa",
     "items": [
-      "Suporte testado nas distros oficiais.",
-      "Documentação completa.",
-      "Changelog versionado.",
-      "Instalação estável.",
-      "Self-update com rollback documentado.",
-      "Pipeline de release estável documentado."
+      "Suporte validado nas distribuições oficiais.",
+      "Documentação completa e versionada.",
+      "Instalação e atualização estáveis.",
+      "Pipeline de release automatizado.",
+      "Publicação de imagens pelo GHCR.",
+      "Deploy de produção com aprovação e rollback."
     ]
   }
 ]

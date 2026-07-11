@@ -65,7 +65,7 @@ log "Validando CLI..."
 log "Executando smoke test local..."
 ./scripts/smoke-ubuntu-desktop.sh
 
-PACKAGE_DIR="$(mktemp -d /tmp/autom8-rc-${VERSION}-XXXXXX)"
+PACKAGE_DIR="$(mktemp -d "/tmp/autom8-rc-${VERSION}-XXXXXX")"
 
 cleanup() {
   rm -rf "$PACKAGE_DIR"

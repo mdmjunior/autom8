@@ -5,14 +5,15 @@ import changelog from '../data/changelog.json';
 
 <BaseLayout
   title="Changelog · AutoM8"
-  description="Histórico versionado do AutoM8."
+  description="Histórico publicado e mudanças em desenvolvimento."
 >
   <section class="site-page-hero">
     <div class="site-page-hero__inner">
       <p class="page-eyebrow">Changelog</p>
       <h1 class="page-title">Histórico claro do que mudou.</h1>
       <p class="page-description">
-        O changelog registra publicações, ajustes e evolução do produto para manter transparência com usuários e contribuidores.
+        Publicações estáveis e alterações ainda presentes na branch
+        de desenvolvimento são apresentadas separadamente.
       </p>
     </div>
   </section>
@@ -21,8 +22,8 @@ import changelog from '../data/changelog.json';
     <div class="site-page-section__inner">
       <div class="section-heading">
         <p class="section-eyebrow text-blue-300">Versões</p>
-        <h2>Publicações</h2>
-        <p>Lista de mudanças registradas por versão.</p>
+        <h2>Publicações e desenvolvimento atual</h2>
+        <p>Lista de mudanças registradas no repositório.</p>
       </div>
 
       <div class="autom8-timeline">
@@ -30,10 +31,20 @@ import changelog from '../data/changelog.json';
           <article class="autom8-release-card">
             <div class="autom8-release-card__header">
               <div>
-                <span class="autom8-version-badge">{release.version}</span>
-                <h3>{release.date}</h3>
+                <span class="autom8-version-badge">
+                  {release.version}
+                </span>
+
+                <h3>{release.title}</h3>
+
+                <p class="mt-2 text-sm text-slate-400">
+                  {release.date}
+                </p>
               </div>
-              <span class="autom8-status-badge">{release.status}</span>
+
+              <span class="autom8-status-badge">
+                {release.status}
+              </span>
             </div>
 
             <ul>

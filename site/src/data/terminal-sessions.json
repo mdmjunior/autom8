@@ -1,0 +1,282 @@
+[
+  {
+    "command": "autom8 --version",
+    "output": [
+      {
+        "text": "AutoM8 0.2.0",
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "command": "autom8 apps search docker",
+    "output": [
+      {
+        "text": "========================================",
+        "type": "muted"
+      },
+      {
+        "text": "Apps · busca",
+        "type": "plain"
+      },
+      {
+        "text": "Termo: docker",
+        "type": "note"
+      },
+      {
+        "text": "========================================",
+        "type": "muted"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  docker | Docker | containers | Engine de containers pelos pacotes da distro.",
+        "type": "plain"
+      },
+      {
+        "text": "  docker-compose | Docker Compose | containers | Orquestração local de containers.",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "=== Resumo da execução ===",
+        "type": "muted"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  Concluídas:            1",
+        "type": "plain"
+      },
+      {
+        "text": "  Avisos:                0",
+        "type": "plain"
+      },
+      {
+        "text": "  Falhas:                0",
+        "type": "plain"
+      },
+      {
+        "text": "  Logs:                  /opt/autom8/logs",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  OK      Busca executada",
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "command": "autom8 apps categories",
+    "output": [
+      {
+        "text": "========================================",
+        "type": "muted"
+      },
+      {
+        "text": "Apps · categorias",
+        "type": "plain"
+      },
+      {
+        "text": "Grupos disponíveis no catálogo.",
+        "type": "note"
+      },
+      {
+        "text": "========================================",
+        "type": "muted"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  containers | Containers | Docker, Podman e ferramentas auxiliares para containers.",
+        "type": "plain"
+      },
+      {
+        "text": "  desenvolvimento | Desenvolvimento | Editores, linguagens, compiladores e ferramentas para desenvolvimento.",
+        "type": "plain"
+      },
+      {
+        "text": "  design | Design | Imagem, vetores, pintura digital e criação visual.",
+        "type": "plain"
+      },
+      {
+        "text": "  escritorio | Escritório | Documentos, PDF, notas e ferramentas de escritório.",
+        "type": "plain"
+      },
+      {
+        "text": "  games | Games | Ferramentas para jogos, compatibilidade e desempenho.",
+        "type": "plain"
+      },
+      {
+        "text": "  midia | Mídia | Áudio, vídeo, gravação e edição multimídia.",
+        "type": "plain"
+      },
+      {
+        "text": "  produtividade | Produtividade | Ferramentas para organização, acesso remoto e fluxo de trabalho.",
+        "type": "plain"
+      },
+      {
+        "text": "  rede | Rede | Ferramentas de diagnóstico e administração de rede.",
+        "type": "plain"
+      },
+      {
+        "text": "  sistema | Sistema | Utilitários básicos de manutenção, inspeção e suporte.",
+        "type": "plain"
+      },
+      {
+        "text": "  usuario-local | Usuário Local | Ferramentas auxiliares para uso local, permissões, senhas e sessão.",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "=== Resumo da execução ===",
+        "type": "muted"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  Concluídas:            1",
+        "type": "plain"
+      },
+      {
+        "text": "  Avisos:                0",
+        "type": "plain"
+      },
+      {
+        "text": "  Falhas:                0",
+        "type": "plain"
+      },
+      {
+        "text": "  Logs:                  /opt/autom8/logs",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  OK      Categorias listadas",
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "command": "autom8 profiles list",
+    "output": [
+      {
+        "text": "========================================",
+        "type": "muted"
+      },
+      {
+        "text": "Perfis",
+        "type": "plain"
+      },
+      {
+        "text": "Perfis baseados no catálogo de apps.",
+        "type": "note"
+      },
+      {
+        "text": "========================================",
+        "type": "muted"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  Catálogo:              /opt/autom8/catalog/profiles.json",
+        "type": "plain"
+      },
+      {
+        "text": "  Versão:                0.2.0",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "Disponíveis",
+        "type": "muted"
+      },
+      {
+        "text": "  dev-essential | Desenvolvimento Essencial | Ferramentas básicas para desenvolvimento local em Linux.",
+        "type": "plain"
+      },
+      {
+        "text": "  server-basic | Servidor Básico | Base para administração de servidor Linux.",
+        "type": "plain"
+      },
+      {
+        "text": "  desktop-basic | Desktop Básico | Ferramentas úteis para Ubuntu/Fedora/openSUSE/Arch em uso diário.",
+        "type": "plain"
+      },
+      {
+        "text": "  creator | Criador de Conteúdo | Ferramentas para imagem, vídeo, áudio e criação visual.",
+        "type": "plain"
+      },
+      {
+        "text": "  container-basic | Containers Básico | Ferramentas de containers com Docker/Podman e utilitários OCI.",
+        "type": "plain"
+      },
+      {
+        "text": "  gamer-basic | Gamer Básico | Ferramentas básicas para jogos e performance.",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "=== Resumo da execução ===",
+        "type": "muted"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  Concluídas:            1",
+        "type": "plain"
+      },
+      {
+        "text": "  Avisos:                0",
+        "type": "plain"
+      },
+      {
+        "text": "  Falhas:                0",
+        "type": "plain"
+      },
+      {
+        "text": "  Logs:                  /opt/autom8/logs",
+        "type": "plain"
+      },
+      {
+        "text": "",
+        "type": "plain"
+      },
+      {
+        "text": "  OK      Perfis listados",
+        "type": "success"
+      }
+    ]
+  }
+]

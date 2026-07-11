@@ -55,7 +55,7 @@ git pull --ff-only origin main
 log "Validando CLI antes da release..."
 ./scripts/check.sh cli
 
-PACKAGE_DIR="$(mktemp -d /tmp/autom8-release-${VERSION}-XXXXXX)"
+PACKAGE_DIR="$(mktemp -d "/tmp/autom8-release-${VERSION}-XXXXXX")"
 cleanup() {
   rm -rf "$PACKAGE_DIR"
 }

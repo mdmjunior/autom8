@@ -1,0 +1,58 @@
+{
+  "version": "0.2.0",
+  "updatedAt": "2026-07-10",
+  "appsCount": 76,
+  "profilesCount": 6,
+  "categories": [
+    {
+      "slug": "containers",
+      "name": "Containers",
+      "description": "Docker, Podman e ferramentas auxiliares para containers."
+    },
+    {
+      "slug": "desenvolvimento",
+      "name": "Desenvolvimento",
+      "description": "Editores, linguagens, compiladores e ferramentas para desenvolvimento."
+    },
+    {
+      "slug": "design",
+      "name": "Design",
+      "description": "Imagem, vetores, pintura digital e criação visual."
+    },
+    {
+      "slug": "escritorio",
+      "name": "Escritório",
+      "description": "Documentos, PDF, notas e ferramentas de escritório."
+    },
+    {
+      "slug": "games",
+      "name": "Games",
+      "description": "Ferramentas para jogos, compatibilidade e desempenho."
+    },
+    {
+      "slug": "midia",
+      "name": "Mídia",
+      "description": "Áudio, vídeo, gravação e edição multimídia."
+    },
+    {
+      "slug": "produtividade",
+      "name": "Produtividade",
+      "description": "Ferramentas para organização, acesso remoto e fluxo de trabalho."
+    },
+    {
+      "slug": "rede",
+      "name": "Rede",
+      "description": "Ferramentas de diagnóstico e administração de rede."
+    },
+    {
+      "slug": "sistema",
+      "name": "Sistema",
+      "description": "Utilitários básicos de manutenção, inspeção e suporte."
+    },
+    {
+      "slug": "usuario-local",
+      "name": "Usuário Local",
+      "description": "Ferramentas auxiliares para uso local, permissões, senhas e sessão."
+    }
+  ]
+}

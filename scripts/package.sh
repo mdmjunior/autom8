@@ -30,7 +30,11 @@ if [[ -x "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh" ]]; then
   "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh"
 fi
 
-OUTPUT_DIR="${AUTOM8_PACKAGE_OUTPUT_DIR:-$(mktemp -d /tmp/autom8-package-${VERSION}-XXXXXX)}"
+if [[ -n "${AUTOM8_PACKAGE_OUTPUT_DIR:-}" ]]; then
+  OUTPUT_DIR="$AUTOM8_PACKAGE_OUTPUT_DIR"
+else
+  OUTPUT_DIR="$(mktemp -d "/tmp/autom8-package-${VERSION}-XXXXXX")"
+fi
 
 mkdir -p "$OUTPUT_DIR"
 
