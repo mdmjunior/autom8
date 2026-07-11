@@ -47,7 +47,7 @@ approved_count=0
 vm_or_laptop_count=0
 
 for file in "${result_files[@]}"; do
-  log "Analisando: ${file#$PROJECT_ROOT/}"
+  log "Analisando: ${file#"$PROJECT_ROOT"/}"
 
   if grep -qiE 'Resultado geral:[[:space:]]*aprovado|Aprovar RC2 para stable|Aprovar .* stable' "$file"; then
     approved_count=$((approved_count + 1))

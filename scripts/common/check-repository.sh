@@ -4,6 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# shellcheck source=/dev/null
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/project.sh"
 
 require_command git
@@ -146,6 +147,7 @@ legacy_references="$(
     suite \
     infra \
     site \
+    ':(exclude)scripts/common/check-repository.sh' \
     2>/dev/null || true
 )"
 

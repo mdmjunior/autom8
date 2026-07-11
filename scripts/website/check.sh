@@ -4,6 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# shellcheck source=/dev/null
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/common/project.sh"
 
 log "Validando AutoM8 Website..."
