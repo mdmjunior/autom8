@@ -1,27 +1,30 @@
 # Documentação do AutoM8
 
-A documentação oficial é gerada a partir de uma fonte única:
+Este diretório reúne a documentação técnica e operacional do projeto.
 
-```text
-docs/source/autom8-docs.json
-```
+## Para usuários
 
-Esse arquivo alimenta:
+- [Guia rápido](https://autom8.oslabs.com.br/docs)
+- [README do projeto](../README.md)
+- Ajuda local: `autom8 help` e `autom8 help <comando>`
 
-- README.md
-- site/src/data/docs.json
-- site/src/data/modules.json
-- site/src/data/profiles.json
-- site/src/data/catalog-summary.json
-- site/src/data/terminal-sessions.json
-- site/src/data/roadmap.json
-- site/src/data/changelog.json
-- site/src/data/documentation.json
-- suite/docs/help.txt
-- suite/docs/help/<comando>.txt
+## Para manutenção
 
-Para sincronizar:
+- [Arquitetura](ARCHITECTURE.md)
+- [Releases](RELEASES.md)
+- [Variáveis](VARIABLES.md)
+- [Contribuição](../CONTRIBUTING.md)
+- [Segurança](../SECURITY.md)
+
+## Fonte única
+
+`docs/source/autom8-docs.json` alimenta o README, os dados do site e a ajuda da CLI.
+
+Para sincronizar e validar:
 
 ```bash
 ./scripts/sync-docs.sh
+./scripts/check.sh all
 ```
+
+Não edite arquivos gerados sem atualizar a fonte ou o gerador.
