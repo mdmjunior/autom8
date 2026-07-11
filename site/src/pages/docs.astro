@@ -2,68 +2,88 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import documentation from '../data/documentation.json';
 
-const availableCommands = documentation.commands.filter((item) => item.status === 'available');
-const partialCommands = documentation.commands.filter((item) => item.status === 'partial');
-const plannedCommands = documentation.commands.filter((item) => item.status === 'planned');
+const availableCommands = documentation.commands.filter(
+  (item) => item.status === 'available'
+);
 
-const statusLabel = {
+const evolvingCommands = documentation.commands.filter(
+  (item) => item.status !== 'available'
+);
+
+const publicRequirements = documentation.requirements.filter(
+  (item): item is string => typeof item === 'string'
+);
+
+const statusLabel: Record<string, string> = {
   available: 'Disponível',
   partial: 'Parcial',
   planned: 'Planejado'
 };
 
-const statusClass = {
+const statusClass: Record<string, string> = {
   available: 'autom8-status-badge',
   partial: 'autom8-version-badge',
   planned: 'autom8-card-kicker'
 };
+
+const compatibility = [
+  {
+    name: 'Ubuntu Desktop',
+    status: 'Validada',
+    detail: 'Fluxos principais validados com apt.'
+  },
+  {
+    name: 'Fedora Workstation',
+    status: 'Validada',
+    detail: 'Fluxos principais validados com dnf.'
+  },
+  {
+    name: 'Outras distribuições',
+    status: 'Compatibilidade',
+    detail: 'Há suporte por gerenciador para zypper e pacman, com cobertura de testes diferente.'
+  }
+];
+
+const repositoryDocs = [
+  {
+    title: 'README',
+    description: 'Visão geral, instalação e comandos essenciais.',
+    href: 'https://github.com/mdmjunior/autom8#readme'
+  },
+  {
+    title: 'Arquitetura',
+    description: 'Organização da CLI, website, instalador e automações.',
+    href: 'https://github.com/mdmjunior/autom8/blob/main/docs/ARCHITECTURE.md'
+  },
+  {
+    title: 'Contribuição',
+    description: 'Fluxo de desenvolvimento, sincronização e validação.',
+    href: 'https://github.com/mdmjunior/autom8/blob/main/CONTRIBUTING.md'
+  },
+  {
+    title: 'Segurança',
+    description: 'Canal e informações necessárias para relatar vulnerabilidades.',
+    href: 'https://github.com/mdmjunior/autom8/blob/main/SECURITY.md'
+  }
+];
 ---
 
 <BaseLayout
-  title="Docs · AutoM8"
-  description="Documentação oficial do AutoM8: instalação, comandos, módulos, releases, variáveis e solução de problemas."
+  title="Documentação · AutoM8"
+  description="Guia conciso para instalar, validar e usar o AutoM8."
 >
   <section class="site-page-hero">
     <div class="site-page-hero__inner">
       <p class="page-eyebrow">Documentação</p>
-      <h1 class="page-title">Documentação oficial do AutoM8.</h1>
+      <h1 class="page-title">Instale, valide e use.</h1>
       <p class="page-description">
-        Instale, valide, diagnostique e mantenha ambientes Linux com comandos claros, documentação versionada e distribuição estável via GitHub Releases.
+        Guia rápido da versão {documentation.product.currentVersion}.
+        A documentação técnica permanece no repositório.
       </p>
 
       <div class="page-actions">
         <a href="#instalacao" class="autom8-primary-button">Instalar</a>
-        <a href="#comandos" class="autom8-secondary-button">Ver comandos</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="visao-geral" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Visão geral</p>
-        <h2>{documentation.product.fullName}</h2>
-        <p>{documentation.product.summary}</p>
-      </div>
-
-      <div class="autom8-content-grid autom8-content-grid--three">
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">local</span>
-          <h3>Execução local</h3>
-          <p>O AutoM8 roda na própria máquina Linux e mantém relatórios, logs e configurações dentro da instalação local.</p>
-        </article>
-
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">controle</span>
-          <h3>Ações revisáveis</h3>
-          <p>Comandos administrativos exigem sudo, usam confirmações quando necessário e registram ações em logs.</p>
-        </article>
-
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">release</span>
-          <h3>Pacote estável</h3>
-          <p>O instalador baixa a última versão estável publicada no GitHub Releases, não pacotes locais ou da VPS.</p>
-        </article>
+        <a href="#comandos" class="autom8-secondary-button">Comandos</a>
       </div>
     </div>
   </section>
@@ -71,40 +91,55 @@ const statusClass = {
   <section id="instalacao" class="site-page-section">
     <div class="site-page-section__inner">
       <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Instalação</p>
-        <h2>Instale com um comando.</h2>
-        <p>Execute com usuário comum que tenha permissão de sudo. Não execute diretamente como root.</p>
+        <p class="section-eyebrow text-green-300">Início rápido</p>
+        <h2>Instalação oficial</h2>
+        <p>
+          Execute como usuário comum com permissão de sudo.
+          O instalador bloqueia execução direta como root.
+        </p>
       </div>
 
       <div class="autom8-command-panel">
         <div class="autom8-command-panel__header">
           <span>terminal</span>
-          <strong>install.sh</strong>
+          <strong>instalar</strong>
         </div>
         <pre><code>{documentation.install.command}</code></pre>
       </div>
 
-      <div class="autom8-content-grid autom8-content-grid--three mt-8">
-        {documentation.install.notes.map((note) => (
-          <article class="autom8-standard-card">
-            <span class="autom8-card-kicker">nota</span>
-            <p>{note}</p>
-          </article>
-        ))}
+      <div class="autom8-command-panel mt-6">
+        <div class="autom8-command-panel__header">
+          <span>terminal</span>
+          <strong>primeiro uso</strong>
+        </div>
+        <pre><code>{documentation.install.after.join('\n')}</code></pre>
       </div>
     </div>
   </section>
 
-  <section id="requisitos" class="site-page-section">
+  <section id="compatibilidade" class="site-page-section">
     <div class="site-page-section__inner">
       <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Requisitos</p>
-        <h2>Base necessária</h2>
-        <p>O instalador prepara dependências comuns, mas estes pontos ajudam a entender o ambiente esperado.</p>
+        <p class="section-eyebrow text-blue-300">Compatibilidade</p>
+        <h2>Ambientes suportados</h2>
+        <p>
+          O suporte administrativo depende do gerenciador de pacotes
+          reconhecido e da cobertura de testes da distribuição.
+        </p>
       </div>
 
-      <div class="autom8-timeline">
-        {documentation.requirements.map((item) => (
+      <div class="autom8-content-grid autom8-content-grid--three">
+        {compatibility.map((item) => (
+          <article class="autom8-standard-card">
+            <span class="autom8-status-badge">{item.status}</span>
+            <h3>{item.name}</h3>
+            <p>{item.detail}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="autom8-timeline mt-8">
+        {publicRequirements.map((item) => (
           <article class="autom8-release-card">
             <p>{item}</p>
           </article>
@@ -118,7 +153,10 @@ const statusClass = {
       <div class="section-heading">
         <p class="section-eyebrow text-green-300">CLI</p>
         <h2>Comandos disponíveis</h2>
-        <p>Estes comandos estão disponíveis na versão atual da suíte.</p>
+        <p>
+          Use <code>autom8 help</code> para a lista local e
+          <code> autom8 help &lt;comando&gt;</code> para detalhes.
+        </p>
       </div>
 
       <div class="autom8-table-card">
@@ -126,7 +164,7 @@ const statusClass = {
           <thead>
             <tr>
               <th>Comando</th>
-              <th>Status</th>
+              <th>Desde</th>
               <th>Descrição</th>
             </tr>
           </thead>
@@ -134,7 +172,7 @@ const statusClass = {
             {availableCommands.map((item) => (
               <tr>
                 <td><code>{item.command}</code></td>
-                <td><span class={statusClass[item.status]}>{statusLabel[item.status]}</span></td>
+                <td>{item.since}</td>
                 <td>{item.summary}</td>
               </tr>
             ))}
@@ -143,14 +181,20 @@ const statusClass = {
       </div>
 
       <div class="section-heading mt-12">
-        <h2>Comandos parciais e planejados</h2>
-        <p>Esses comandos já aparecem no menu ou na CLI, mas ainda não representam funcionalidade completa.</p>
+        <p class="section-eyebrow text-blue-300">Em evolução</p>
+        <h2>Parcial e planejado</h2>
+        <p>
+          Estes comandos existem na interface, mas ainda não representam
+          funcionalidade completa.
+        </p>
       </div>
 
       <div class="autom8-content-grid autom8-content-grid--three">
-        {[...partialCommands, ...plannedCommands].map((item) => (
+        {evolvingCommands.map((item) => (
           <article class="autom8-standard-card">
-            <span class={statusClass[item.status]}>{statusLabel[item.status]}</span>
+            <span class={statusClass[item.status]}>
+              {statusLabel[item.status]}
+            </span>
             <h3><code>{item.command}</code></h3>
             <p>{item.summary}</p>
           </article>
@@ -159,95 +203,49 @@ const statusClass = {
     </div>
   </section>
 
-  <section id="modulos" class="site-page-section">
+  <section id="ajuda" class="site-page-section">
     <div class="site-page-section__inner">
       <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Módulos</p>
-        <h2>Módulos da suíte</h2>
-        <p>Cada módulo tem status explícito para evitar prometer funcionalidades ainda planejadas.</p>
+        <p class="section-eyebrow text-green-300">Ajuda</p>
+        <h2>Problemas comuns</h2>
+        <p>Verificações rápidas antes de abrir um relato.</p>
       </div>
 
       <div class="autom8-content-grid autom8-content-grid--three">
-        {documentation.modules.map((item) => (
-          <article class="autom8-standard-card autom8-standard-card--module">
-            <div class="module-card-top">
-              <span class={statusClass[item.status]}>{statusLabel[item.status]}</span>
-              <span class="module-command">{item.command}</span>
-            </div>
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
+        {documentation.troubleshooting.map((item) => (
+          <article class="autom8-standard-card">
+            <span class="autom8-card-kicker">solução</span>
+            <h3>{item.title}</h3>
+            <p>{item.solution}</p>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <section id="variaveis" class="site-page-section">
+  <section id="repositorio" class="site-page-section">
     <div class="site-page-section__inner">
       <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Variáveis</p>
-        <h2>Configuração por ambiente</h2>
-        <p>Essas variáveis controlam instalação, release, empacotamento e deploy.</p>
-      </div>
-
-      <div class="autom8-table-card">
-        <table class="autom8-data-table">
-          <thead>
-            <tr>
-              <th>Variável</th>
-              <th>Padrão</th>
-              <th>Escopo</th>
-              <th>Descrição</th>
-            </tr>
-          </thead>
-          <tbody>
-            {documentation.variables.map((item) => (
-              <tr>
-                <td><code>{item.name}</code></td>
-                <td><code>{item.default}</code></td>
-                <td>{item.scope}</td>
-                <td>{item.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section id="release" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Release estável</p>
-        <h2>Distribuição via GitHub Releases</h2>
-        <p>{documentation.releasePolicy.sitePackagePolicy}</p>
-      </div>
-
-      <div class="autom8-command-panel">
-        <div class="autom8-command-panel__header">
-          <span>latest package</span>
-          <strong>GitHub Releases</strong>
-        </div>
-        <pre><code>{documentation.releasePolicy.latestPackageUrl}</code></pre>
-      </div>
-    </div>
-  </section>
-
-  <section id="troubleshooting" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Troubleshooting</p>
-        <h2>Problemas comuns</h2>
-        <p>Primeiros pontos de verificação quando algo não sair como esperado.</p>
+        <p class="section-eyebrow text-blue-300">Repositório</p>
+        <h2>Documentação técnica</h2>
+        <p>
+          Arquitetura, contribuição, segurança e operação ficam junto ao
+          código para acompanhar cada mudança.
+        </p>
       </div>
 
       <div class="autom8-content-grid autom8-content-grid--three">
-        {documentation.troubleshooting.map((item) => (
-          <article class="autom8-standard-card">
-            <span class="autom8-card-kicker">fix</span>
+        {repositoryDocs.map((item) => (
+          <a
+            class="autom8-standard-card"
+            href={item.href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="autom8-card-kicker">GitHub</span>
             <h3>{item.title}</h3>
-            <p>{item.solution}</p>
-          </article>
+            <p>{item.description}</p>
+          </a>
         ))}
       </div>
     </div>

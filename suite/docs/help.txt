@@ -1,6 +1,6 @@
 AutoM8 - Linux Management Suite
 
-AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, catálogo de apps, logs e controle explícito do usuário.
+AutoM8 é uma CLI local para instalar aplicativos, aplicar perfis e executar manutenção Linux com confirmação, logs e modo de simulação.
 
 Uso:
   autom8

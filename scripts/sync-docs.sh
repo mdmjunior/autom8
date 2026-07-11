@@ -327,16 +327,57 @@ for c in commands:
 
     write_text(f"suite/docs/help/{c['slug']}.txt", "\n".join(lines))
 
+
+# DOCS:README:START
+status_labels = {
+    "available": "Disponível",
+    "partial": "Parcial",
+    "planned": "Planejado"
+}
+
+essential_slugs = [
+    "apps",
+    "profiles",
+    "update",
+    "clean",
+    "doctor",
+    "diagnose",
+    "security",
+    "report"
+]
+
+commands_by_slug = {
+    command["slug"]: command
+    for command in commands
+}
+
+essential_commands = [
+    commands_by_slug[slug]
+    for slug in essential_slugs
+    if slug in commands_by_slug
+]
+
 readme = [
-    f"# {product['fullName']}",
+    f"# {product['name']}",
     "",
     product["summary"],
     "",
-    f"**{product['brand']}**",
+    (
+        f"[Site oficial]({product['siteUrl']}) · "
+        f"[Documentação]({product['siteUrl']}/docs) · "
+        f"[Releases](https://github.com/{product['githubRepo']}/releases)"
+    ),
     "",
-    "## Site",
+    "## Estado atual",
     "",
-    product["siteUrl"],
+    f"- Versão estável: `{product['currentVersion']}`",
+    (
+        f"- Catálogo: **{len(apps_catalog['apps'])} apps**, "
+        f"**{len(apps_catalog['categories'])} categorias** e "
+        f"**{len(profiles)} perfis**"
+    ),
+    "- Validado em Ubuntu Desktop e Fedora Workstation.",
+    "- Compatível com fluxos baseados em `apt`, `dnf`, `zypper` e `pacman`.",
     "",
     "## Instalação",
     "",
@@ -346,105 +387,124 @@ readme = [
     install["command"],
     "```",
     "",
-    "Depois da instalação:",
+    "Primeiro uso:",
     "",
     "```bash",
     *install["after"],
+    "autom8 apps search docker",
+    "autom8 profiles list",
     "```",
     "",
-    "## Distribuição estável",
+    "## Comandos essenciais",
     "",
-    f"O instalador baixa a última versão estável publicada em GitHub Releases:",
-    "",
-    "```text",
-    release_policy["latestPackageUrl"],
-    "```",
-    "",
-    "A VPS não hospeda pacotes da suíte. O site publica o instalador e a documentação.",
-    "",
-    "## Comandos principais",
-    "",
-    "```bash",
+    "| Comando | Descrição |",
+    "| --- | --- |"
 ]
 
-for c in commands:
-    readme.append(c["command"])
+for command in essential_commands:
+    readme.append(
+        f"| `{command['command']}` | {command['summary']} |"
+    )
 
 readme.extend([
-    "```",
     "",
-    "## Status dos módulos",
+    "Use `autom8 help` para a lista completa e "
+    "`autom8 help <comando>` para detalhes.",
     "",
-    "| Módulo | Comando | Status | Versão |",
-    "| --- | --- | --- | --- |"
+    "### Em evolução",
+    ""
 ])
 
-for m in modules:
-    readme.append(f"| {m['name']} | `{m['command']}` | {m['status']} | {m['version']} |")
+for command in partial + planned:
+    readme.append(
+        f"- **{status_labels[command['status']]}:** "
+        f"`{command['command']}` — {command['summary']}"
+    )
 
 readme.extend([
-    "",
-    "## Documentação",
-    "",
-    "- Site: `https://autom8.oslabs.com.br/docs`",
-    "- Fonte única: `docs/source/autom8-docs.json`",
-    "- Help da CLI: `suite/docs/help.txt` e `suite/docs/help/`",
     "",
     "## Desenvolvimento",
     "",
     "```bash",
+    "./scripts/bootstrap-dev.sh",
     "./scripts/sync-docs.sh",
-    "./scripts/build-site.sh",
+    "./scripts/check.sh all",
+    "./scripts/website/build.sh",
     "```",
     "",
-    "## Release estável",
+    "Fluxo do projeto: mudanças entram em `develop`; "
+    "a promoção para `main` ocorre por pull request com Quality Gate.",
     "",
-    "Após merge na `main`:",
+    "## Estrutura",
     "",
-    "```bash",
-    "./scripts/release-stable.sh",
+    "```text",
+    "suite/      CLI instalada em /opt/autom8",
+    "installer/  instalador público",
+    "site/       website Astro",
+    "docs/       fonte e documentos técnicos",
+    "scripts/    validação, build, pacote e release",
     "```",
     "",
-    "## Créditos",
+    "## Documentação do repositório",
     "",
-    f"{product['brand']}.",
+    "- [Índice técnico](docs/README.md)",
+    "- [Arquitetura](docs/ARCHITECTURE.md)",
+    "- [Releases](docs/RELEASES.md)",
+    "- [Variáveis](docs/VARIABLES.md)",
+    "- [Como contribuir](CONTRIBUTING.md)",
+    "- [Segurança](SECURITY.md)",
     "",
-    "Um produto OSLabs para a comunidade Linux."
+    "A fonte canônica é `docs/source/autom8-docs.json`. "
+    "Arquivos gerados não devem ser editados isoladamente.",
+    "",
+    "## Licença",
+    "",
+    "[GNU GPL-3.0](LICENSE).",
+    "",
+    "AutoM8 é um produto OSLabs para a comunidade Linux."
 ])
 
 write_text("README.md", md(readme))
+# DOCS:README:END
 
+
+# DOCS:INDEX:START
 docs_readme = [
     "# Documentação do AutoM8",
     "",
-    "A documentação oficial é gerada a partir de uma fonte única:",
+    "Este diretório reúne a documentação técnica e operacional do projeto.",
     "",
-    "```text",
-    "docs/source/autom8-docs.json",
-    "```",
+    "## Para usuários",
     "",
-    "Esse arquivo alimenta:",
+    f"- [Guia rápido]({product['siteUrl']}/docs)",
+    "- [README do projeto](../README.md)",
+    "- Ajuda local: `autom8 help` e `autom8 help <comando>`",
     "",
-    "- README.md",
-    "- site/src/data/docs.json",
-    "- site/src/data/modules.json",
-    "- site/src/data/profiles.json",
-    "- site/src/data/catalog-summary.json",
-    "- site/src/data/terminal-sessions.json",
-    "- site/src/data/roadmap.json",
-    "- site/src/data/changelog.json",
-    "- site/src/data/documentation.json",
-    "- suite/docs/help.txt",
-    "- suite/docs/help/<comando>.txt",
+    "## Para manutenção",
     "",
-    "Para sincronizar:",
+    "- [Arquitetura](ARCHITECTURE.md)",
+    "- [Releases](RELEASES.md)",
+    "- [Variáveis](VARIABLES.md)",
+    "- [Contribuição](../CONTRIBUTING.md)",
+    "- [Segurança](../SECURITY.md)",
+    "",
+    "## Fonte única",
+    "",
+    "`docs/source/autom8-docs.json` alimenta o README, "
+    "os dados do site e a ajuda da CLI.",
+    "",
+    "Para sincronizar e validar:",
     "",
     "```bash",
     "./scripts/sync-docs.sh",
-    "```"
+    "./scripts/check.sh all",
+    "```",
+    "",
+    "Não edite arquivos gerados sem atualizar a fonte ou o gerador."
 ]
 
 write_text("docs/README.md", md(docs_readme))
+# DOCS:INDEX:END
 
 releases_md = [
     "# Releases do AutoM8",
