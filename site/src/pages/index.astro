@@ -2,19 +2,55 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
 import terminalSessions from '../data/terminal-sessions.json';
+import catalogSummary from '../data/catalog-summary.json';
 
 
 
+
+const moduleStatusLabel: Record<string, string> = {
+  available: 'Disponível',
+  partial: 'Parcial',
+  planned: 'Planejado'
+};
+
+const moduleStatusClass: Record<string, string> = {
+  available: 'autom8-status-badge',
+  partial: 'autom8-version-badge',
+  planned: 'autom8-card-kicker'
+};
+
+const productStats = [
+  {
+    value: `v${catalogSummary.version}`,
+    label: 'Versão estável',
+    description: 'Release distribuída pelo instalador oficial.'
+  },
+  {
+    value: catalogSummary.appsCount,
+    label: 'Aplicativos',
+    description: 'Apps organizados no catálogo consolidado.'
+  },
+  {
+    value: catalogSummary.categories.length,
+    label: 'Categorias',
+    description: 'Grupos para localizar ferramentas rapidamente.'
+  },
+  {
+    value: catalogSummary.profilesCount,
+    label: 'Perfis',
+    description: 'Ambientes completos disponíveis na CLI.'
+  }
+];
 
 const distros = [
-  { name: 'Ubuntu', slug: 'ubuntu', status: 'Planejada' },
-  { name: 'Debian', slug: 'debian', status: 'Planejada' },
-  { name: 'Fedora', slug: 'fedora', status: 'Planejada' },
-  { name: 'Rocky Linux', slug: 'rocky', status: 'Planejada' },
-  { name: 'AlmaLinux', slug: 'alma', status: 'Planejada' },
-  { name: 'openSUSE', slug: 'opensuse', status: 'Planejada' },
-  { name: 'Arch Linux', slug: 'arch', status: 'Planejada' },
-  { name: 'Manjaro', slug: 'manjaro', status: 'Planejada' }
+  { name: 'Ubuntu', slug: 'ubuntu', status: 'Validada', level: 'validated' },
+  { name: 'Fedora', slug: 'fedora', status: 'Validada', level: 'validated' },
+  { name: 'openSUSE', slug: 'opensuse', status: 'Compatível', level: 'compatible' },
+  { name: 'Arch Linux', slug: 'arch', status: 'Compatível', level: 'compatible' },
+  { name: 'Debian', slug: 'debian', status: 'Planejada', level: 'planned' },
+  { name: 'Rocky Linux', slug: 'rocky', status: 'Planejada', level: 'planned' },
+  { name: 'AlmaLinux', slug: 'alma', status: 'Planejada', level: 'planned' },
+  { name: 'Manjaro', slug: 'manjaro', status: 'Planejada', level: 'planned' }
 ];
 
 const carouselItems = [
@@ -100,6 +136,18 @@ const moduleIcons = {
     </div>
   </section>
 
+  <section class="product-stats-section px-6" aria-label="Estado atual do AutoM8">
+    <div class="product-stats mx-auto max-w-7xl">
+      {productStats.map((stat) => (
+        <article class="product-stat-card">
+          <strong>{stat.value}</strong>
+          <span>{stat.label}</span>
+          <p>{stat.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
 
 
   <section class="px-6 py-14">
@@ -122,7 +170,13 @@ const moduleIcons = {
 
       <div class="home-carousel" data-home-carousel>
         {carouselItems.map((item) => (
-          <article class="home-carousel-card">
+          <article
+            class:list={[
+              'home-carousel-card',
+              item.type === 'distroGroup' &&
+                'home-carousel-card--compatibility'
+            ]}
+          >
             <div class="home-carousel-card__top">
               {item.type === 'distroGroup' ? (
                 <span class="home-carousel-card__number">OS</span>
@@ -136,11 +190,17 @@ const moduleIcons = {
             {item.type === 'distroGroup' ? (
               <div class="home-carousel-distro-icons">
                 {item.distros.map((distro) => (
-                  <img
-                    src={`/branding/distros/${distro.slug}.svg`}
-                    alt={`Ícone ${distro.name}`}
-                    title={distro.name}
-                  />
+                  <div
+                    class={`home-carousel-distro-item home-carousel-distro-item--${distro.level}`}
+                    title={`${distro.name}: ${distro.status}`}
+                  >
+                    <img
+                      src={`/branding/distros/${distro.slug}.svg`}
+                      alt={`Ícone ${distro.name}`}
+                    />
+                    <span>{distro.name}</span>
+                    <small>{distro.status}</small>
+                  </div>
                 ))}
               </div>
             ) : (
@@ -175,9 +235,23 @@ const moduleIcons = {
         {modules.slice(0, 9).map((item) => (
           <article class="modern-module-card">
             <div class="module-card-top">
-              <div class="module-icon" set:html={moduleIcons[item.slug] ?? moduleIcons.diagnose}></div>
-              <div class="module-command">
-                autom8 {item.slug}
+              <div
+                class="module-icon"
+                set:html={moduleIcons[item.slug] ?? moduleIcons.diagnose}
+              ></div>
+
+              <div class="module-card-meta">
+                <span class={
+                  moduleStatusClass[item.status] ??
+                  moduleStatusClass.planned
+                }>
+                  {
+                    moduleStatusLabel[item.status] ??
+                    moduleStatusLabel.planned
+                  }
+                </span>
+
+                <div class="module-command">{item.command}</div>
               </div>
             </div>
             <h3 class="text-xl font-black text-white">{item.name}</h3>
