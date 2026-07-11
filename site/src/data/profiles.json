@@ -1,30 +1,50 @@
 [
   {
-    "name": "Doméstico",
-    "description": "Uso cotidiano com navegador, mídia, escritório, manutenção básica e ferramentas essenciais."
+    "id": "dev-essential",
+    "name": "Desenvolvimento Essencial",
+    "summary": "Ferramentas básicas para desenvolvimento local em Linux.",
+    "category": "desenvolvimento",
+    "appsCount": 14,
+    "command": "autom8 profiles show dev-essential"
   },
   {
-    "name": "Desenvolvedor",
-    "description": "Ambiente para programação com terminal, editores, runtimes, versionamento e produtividade técnica."
+    "id": "server-basic",
+    "name": "Servidor Básico",
+    "summary": "Base para administração de servidor Linux.",
+    "category": "sistema",
+    "appsCount": 17,
+    "command": "autom8 profiles show server-basic"
   },
   {
-    "name": "DevOps",
-    "description": "Ferramentas para containers, automação, infraestrutura, cloud e operação de ambientes."
+    "id": "desktop-basic",
+    "name": "Desktop Básico",
+    "summary": "Ferramentas úteis para Ubuntu/Fedora/openSUSE/Arch em uso diário.",
+    "category": "produtividade",
+    "appsCount": 15,
+    "command": "autom8 profiles show desktop-basic"
   },
   {
-    "name": "Administrador de Sistemas",
-    "description": "Recursos para diagnóstico, rede, segurança básica, serviços, logs e manutenção."
+    "id": "creator",
+    "name": "Criador de Conteúdo",
+    "summary": "Ferramentas para imagem, vídeo, áudio e criação visual.",
+    "category": "midia",
+    "appsCount": 10,
+    "command": "autom8 profiles show creator"
   },
   {
-    "name": "Designer",
-    "description": "Aplicativos para criação visual, edição de imagens, ilustração e produção de mídia."
+    "id": "container-basic",
+    "name": "Containers Básico",
+    "summary": "Ferramentas de containers com Docker/Podman e utilitários OCI.",
+    "category": "containers",
+    "appsCount": 6,
+    "command": "autom8 profiles show container-basic"
   },
   {
-    "name": "Gamer",
-    "description": "Base para jogos no Linux com clientes, launchers e ajustes relacionados."
-  },
-  {
-    "name": "Servidor/VPS",
-    "description": "Preparação de base para servidores locais ou VPS, com foco em segurança, pacotes essenciais e operação."
+    "id": "gamer-basic",
+    "name": "Gamer Básico",
+    "summary": "Ferramentas básicas para jogos e performance.",
+    "category": "games",
+    "appsCount": 5,
+    "command": "autom8 profiles show gamer-basic"
   }
 ]

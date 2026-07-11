@@ -1,0 +1,80 @@
+name: Quality - CLI
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  cli:
+    name: CLI quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install CLI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes jq
+
+      - name: Validate CLI
+        run: ./scripts/cli/check.sh
+
+      - name: Check generated catalog
+        run: git diff --exit-code -- suite/catalog/apps.json
+
+      - name: Run CLI smoke checks
+        run: |
+          ./suite/bin/autom8 --version
+          ./suite/bin/autom8 --help >/dev/null
+          ./suite/bin/autom8 apps categories >/dev/null
+          ./suite/bin/autom8 profiles list >/dev/null
+
+      - name: Build and inspect package
+        run: |
+          set -Eeuo pipefail
+
+          version="$(tr -d '[:space:]' < suite/VERSION)"
+          package_dir="${RUNNER_TEMP}/autom8-package"
+
+          mkdir -p "$package_dir"
+
+          AUTOM8_PACKAGE_OUTPUT_DIR="$package_dir" \
+            ./scripts/package.sh
+
+          versioned="$package_dir/autom8-${version}.tar.gz"
+          latest="$package_dir/autom8-latest.tar.gz"
+
+          test -s "$versioned"
+          test -s "$latest"
+          cmp -s "$versioned" "$latest"
+
+          archive_listing="$(tar -tzf "$versioned")"
+
+          required_paths=(
+            bin/autom8
+            VERSION
+            catalog/apps.json
+            catalog/profiles.json
+            modules/apps.sh
+            modules/profiles.sh
+            lib/apps/catalog.sh
+          )
+
+          for required_path in "${required_paths[@]}"; do
+            grep -Eq "(^./)?${required_path}$" \
+              <<< "$archive_listing"
+          done
+
+          packaged_version="$(
+            tar -xOf "$versioned" ./VERSION |
+              tr -d '[:space:]'
+          )"
+
+          [[ "$packaged_version" == "$version" ]]

@@ -137,12 +137,12 @@ run_dry_run_smoke() {
   ./suite/bin/autom8 --dry-run profiles install dev-essential
   ./suite/bin/autom8 --dry-run profiles install server-basic
 
-  ./suite/bin/autom8 --dry-run apps install steam && {
+  if ./suite/bin/autom8 --dry-run apps install steam; then
     error "steam deveria estar bloqueado por status advanced."
     exit 1
-  } || {
+  else
     log "Bloqueio de app advanced validado: steam."
-  }
+  fi
 }
 
 run_package_smoke() {

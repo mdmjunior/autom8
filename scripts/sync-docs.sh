@@ -27,6 +27,13 @@ install = source["install"]
 release_policy = source["releasePolicy"]
 troubleshooting = source["troubleshooting"]
 
+apps_catalog = json.loads(
+    (root / "suite/catalog/apps.json").read_text()
+)
+profiles_catalog = json.loads(
+    (root / "suite/catalog/profiles.json").read_text()
+)
+
 def write_text(path, content):
     path = root / path
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -55,7 +62,191 @@ write_json("site/src/data/docs.json", [
     for c in commands
 ])
 
+profiles = [
+    {
+        "id": profile["id"],
+        "name": profile["name"],
+        "summary": profile.get("summary", ""),
+        "category": profile.get("category", "sem-categoria"),
+        "appsCount": len(profile.get("apps", [])),
+        "command": f"autom8 profiles show {profile['id']}"
+    }
+    for profile in profiles_catalog["profiles"]
+]
+
+catalog_summary = {
+    "version": apps_catalog["version"],
+    "updatedAt": apps_catalog.get("updatedAt", ""),
+    "appsCount": len(apps_catalog["apps"]),
+    "profilesCount": len(profiles),
+    "categories": [
+        {
+            "slug": category["slug"],
+            "name": category["name"],
+            "description": category.get("description", "")
+        }
+        for category in apps_catalog["categories"]
+    ]
+}
+
+def terminal_line(text="", line_type="plain"):
+    return {
+        "text": text,
+        "type": line_type
+    }
+
+def terminal_header(title, subtitle):
+    return [
+        terminal_line(
+            "========================================",
+            "muted"
+        ),
+        terminal_line(title, "plain"),
+        terminal_line(subtitle, "note"),
+        terminal_line(
+            "========================================",
+            "muted"
+        ),
+        terminal_line()
+    ]
+
+def terminal_summary(message):
+    return [
+        terminal_line(),
+        terminal_line(
+            "=== Resumo da execução ===",
+            "muted"
+        ),
+        terminal_line(),
+        terminal_line(
+            f"  {'Concluídas:':<22} 1"
+        ),
+        terminal_line(
+            f"  {'Avisos:':<22} 0"
+        ),
+        terminal_line(
+            f"  {'Falhas:':<22} 0"
+        ),
+        terminal_line(
+            f"  {'Logs:':<22} /opt/autom8/logs"
+        ),
+        terminal_line(),
+        terminal_line(
+            f"  {'OK':<7} {message}",
+            "success"
+        )
+    ]
+
+search_results = []
+
+for app in apps_catalog["apps"]:
+    searchable = " ".join([
+        app.get("id", ""),
+        app.get("name", ""),
+        app.get("summary", ""),
+        app.get("category", ""),
+        " ".join(app.get("tags", []))
+    ]).lower()
+
+    if "docker" in searchable:
+        search_results.append(app)
+
+terminal_sessions = [
+    {
+        "command": "autom8 --version",
+        "output": [
+            terminal_line(
+                f"AutoM8 {apps_catalog['version']}",
+                "success"
+            )
+        ]
+    },
+    {
+        "command": "autom8 apps search docker",
+        "output": (
+            terminal_header(
+                "Apps · busca",
+                "Termo: docker"
+            )
+            + [
+                terminal_line(
+                    "  "
+                    + app["id"]
+                    + " | "
+                    + app["name"]
+                    + " | "
+                    + app.get("category", "uncategorized")
+                    + " | "
+                    + app.get("summary", "")
+                )
+                for app in search_results
+            ]
+            + terminal_summary("Busca executada")
+        )
+    },
+    {
+        "command": "autom8 apps categories",
+        "output": (
+            terminal_header(
+                "Apps · categorias",
+                "Grupos disponíveis no catálogo."
+            )
+            + [
+                terminal_line(
+                    "  "
+                    + category["slug"]
+                    + " | "
+                    + category["name"]
+                    + " | "
+                    + category.get("description", "")
+                )
+                for category in apps_catalog["categories"]
+            ]
+            + terminal_summary("Categorias listadas")
+        )
+    },
+    {
+        "command": "autom8 profiles list",
+        "output": (
+            terminal_header(
+                "Perfis",
+                "Perfis baseados no catálogo de apps."
+            )
+            + [
+                terminal_line(
+                    f"  {'Catálogo:':<22} "
+                    "/opt/autom8/catalog/profiles.json"
+                ),
+                terminal_line(
+                    f"  {'Versão:':<22} "
+                    f"{profiles_catalog['version']}"
+                ),
+                terminal_line(),
+                terminal_line("Disponíveis", "muted")
+            ]
+            + [
+                terminal_line(
+                    "  "
+                    + profile["id"]
+                    + " | "
+                    + profile["name"]
+                    + " | "
+                    + profile.get("summary", "")
+                )
+                for profile in profiles_catalog["profiles"]
+            ]
+            + terminal_summary("Perfis listados")
+        )
+    }
+]
+
 write_json("site/src/data/modules.json", modules)
+write_json("site/src/data/profiles.json", profiles)
+write_json("site/src/data/catalog-summary.json", catalog_summary)
+write_json(
+    "site/src/data/terminal-sessions.json",
+    terminal_sessions
+)
 write_json("site/src/data/roadmap.json", roadmap)
 write_json("site/src/data/changelog.json", changelog)
 
@@ -67,6 +258,8 @@ write_json("site/src/data/documentation.json", {
     "variables": variables,
     "commands": commands,
     "modules": modules,
+    "profiles": profiles,
+    "catalogSummary": catalog_summary,
     "troubleshooting": troubleshooting
 })
 
@@ -216,7 +409,7 @@ readme.extend([
     "",
     f"{product['brand']}.",
     "",
-    "Criado por Marcio Moreira Junior para a comunidade Linux."
+    "Um produto OSLabs para a comunidade Linux."
 ])
 
 write_text("README.md", md(readme))
@@ -235,6 +428,9 @@ docs_readme = [
     "- README.md",
     "- site/src/data/docs.json",
     "- site/src/data/modules.json",
+    "- site/src/data/profiles.json",
+    "- site/src/data/catalog-summary.json",
+    "- site/src/data/terminal-sessions.json",
     "- site/src/data/roadmap.json",
     "- site/src/data/changelog.json",
     "- site/src/data/documentation.json",

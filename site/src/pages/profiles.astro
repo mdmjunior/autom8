@@ -5,14 +5,16 @@ import profiles from '../data/profiles.json';
 
 <BaseLayout
   title="Perfis · AutoM8"
-  description="Perfis do AutoM8 para preparar ambientes Linux de acordo com o tipo de uso."
+  description="Perfis disponíveis no AutoM8 para preparar ambientes Linux."
 >
   <section class="site-page-hero">
     <div class="site-page-hero__inner">
       <p class="page-eyebrow">Perfis</p>
       <h1 class="page-title">Prepare o sistema conforme o uso.</h1>
       <p class="page-description">
-        Perfis ajudam usuários iniciantes e avançados a configurar o Linux com escolhas mais rápidas, revisáveis e organizadas.
+        Seis perfis funcionais agrupam aplicativos do catálogo atual
+        em conjuntos revisáveis para desenvolvimento, desktop,
+        servidores, criação, containers e jogos.
       </p>
     </div>
   </section>
@@ -20,17 +22,28 @@ import profiles from '../data/profiles.json';
   <section class="site-page-section">
     <div class="site-page-section__inner">
       <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Ambientes</p>
-        <h2>Perfis previstos</h2>
-        <p>A proposta é permitir modo mínimo seguro ou completo, sempre deixando claro o que será instalado ou alterado.</p>
+        <p class="section-eyebrow text-blue-300">Versão 0.2.0</p>
+        <h2>Perfis disponíveis</h2>
+        <p>
+          Cada perfil pode ser listado, inspecionado, instalado ou
+          removido pelos comandos do módulo profiles.
+        </p>
       </div>
 
       <div class="autom8-content-grid autom8-content-grid--three">
         {profiles.map((item) => (
           <article class="autom8-standard-card">
-            <span class="autom8-card-kicker">perfil</span>
+            <div class="module-card-top">
+              <span class="autom8-status-badge">Disponível</span>
+              <span class="module-command">{item.command}</span>
+            </div>
+
             <h3>{item.name}</h3>
-            <p>{item.description}</p>
+            <p>{item.summary}</p>
+
+            <p class="mt-4 text-sm text-slate-500">
+              Categoria: {item.category} · {item.appsCount} apps
+            </p>
           </article>
         ))}
       </div>

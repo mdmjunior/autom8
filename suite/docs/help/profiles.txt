@@ -1,12 +1,18 @@
 AutoM8 help: autom8 profiles
 
-Status: planned
+Status: available
 Desde: 0.2.0
 
-Aplicação de perfis YAML para preparar ambientes.
+Lista, detalha, instala e remove perfis baseados no catálogo de apps.
 
 Detalhes:
-- Na versão 0.1.0, o módulo existe como placeholder e será implementado na 0.2.0.
+- O catálogo atual possui seis perfis funcionais.
+- Os perfis utilizam apps disponíveis no catálogo consolidado.
+- Instalação e remoção reutilizam os fluxos do módulo Apps e exigem confirmação explícita.
+- Os comandos disponíveis são list, show, install e remove.
 
 Exemplos:
-  autom8 profiles
+  autom8 profiles list
+  autom8 profiles show dev-essential
+  autom8 profiles install dev-essential
+  autom8 profiles remove dev-essential

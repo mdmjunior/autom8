@@ -1,18 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import roadmap from '../data/roadmap.json';
+
+const statusLabel: Record<string, string> = {
+  published: 'Publicado',
+  'in-progress': 'Em andamento',
+  planned: 'Planejado'
+};
+
+const statusClass: Record<string, string> = {
+  published: 'autom8-status-badge',
+  'in-progress': 'autom8-version-badge',
+  planned: 'autom8-card-kicker'
+};
 ---
 
 <BaseLayout
   title="Roadmap · AutoM8"
-  description="Roadmap inicial do AutoM8 por versão."
+  description="Marcos publicados e próximos ciclos do AutoM8."
 >
   <section class="site-page-hero">
     <div class="site-page-hero__inner">
       <p class="page-eyebrow">Roadmap</p>
-      <h1 class="page-title">Evolução planejada, versão por versão.</h1>
+      <h1 class="page-title">Evolução baseada no estado real do produto.</h1>
       <p class="page-description">
-        O AutoM8 será desenvolvido em ciclos incrementais, priorizando estabilidade, segurança e clareza antes de ampliar automações.
+        O roadmap separa versões publicadas, trabalho em andamento e
+        recursos planejados para os próximos ciclos.
       </p>
     </div>
   </section>
@@ -21,16 +34,33 @@ import roadmap from '../data/roadmap.json';
     <div class="site-page-section__inner">
       <div class="section-heading">
         <p class="section-eyebrow text-green-300">Planejamento</p>
-        <h2>Próximos marcos</h2>
-        <p>Cada versão adiciona recursos sem perder o foco em execução local, revisão e controle do usuário.</p>
+        <h2>Marcos publicados e próximos ciclos</h2>
+        <p>
+          A evolução prioriza estabilidade da CLI, qualidade do
+          repositório e entrega segura antes de ampliar automações.
+        </p>
       </div>
 
       <div class="autom8-timeline">
         {roadmap.map((release) => (
           <article class="autom8-release-card">
             <div class="autom8-release-card__header">
-              <span class="autom8-version-badge">{release.version}</span>
-              <h3>{release.title}</h3>
+              <div>
+                <span class="autom8-version-badge">
+                  {release.version}
+                </span>
+                <h3>{release.title}</h3>
+              </div>
+
+              <span class={
+                statusClass[release.status] ??
+                statusClass.planned
+              }>
+                {
+                  statusLabel[release.status] ??
+                  statusLabel.planned
+                }
+              </span>
             </div>
 
             <ul>

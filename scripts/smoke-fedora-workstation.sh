@@ -157,12 +157,12 @@ run_strict_dry_run_smoke() {
   ./suite/bin/autom8 --dry-run apps install jq
   ./suite/bin/autom8 --dry-run apps install-many git htop jq
 
-  ./suite/bin/autom8 --dry-run apps install steam && {
+  if ./suite/bin/autom8 --dry-run apps install steam; then
     error "steam deveria estar bloqueado por status advanced."
     exit 1
-  } || {
+  else
     log "Bloqueio de app advanced validado: steam."
-  }
+  fi
 }
 
 run_exploratory_dry_run_smoke() {

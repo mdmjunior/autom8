@@ -11,6 +11,9 @@ Esse arquivo alimenta:
 - README.md
 - site/src/data/docs.json
 - site/src/data/modules.json
+- site/src/data/profiles.json
+- site/src/data/catalog-summary.json
+- site/src/data/terminal-sessions.json
 - site/src/data/roadmap.json
 - site/src/data/changelog.json
 - site/src/data/documentation.json

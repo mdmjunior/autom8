@@ -1464,3 +1464,154 @@ a {
 }
 
 /* === /AutoM8 structural standardization v1 === */
+
+
+/* === AutoM8 current product state v1 === */
+
+.product-stats-section {
+  position: relative;
+  z-index: 2;
+  margin-top: -1.25rem;
+}
+
+.product-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1.4rem;
+  background: rgba(15, 23, 42, 0.94);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.34);
+}
+
+.product-stat-card {
+  min-width: 0;
+  padding: 1.3rem 1.4rem;
+  border-right: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.product-stat-card:last-child {
+  border-right: 0;
+}
+
+.product-stat-card strong {
+  display: block;
+  color: #f8fafc;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 1.65rem;
+  font-weight: 950;
+}
+
+.product-stat-card span {
+  display: block;
+  margin-top: 0.3rem;
+  color: #7dd3fc;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.product-stat-card p {
+  margin-top: 0.65rem;
+  color: #94a3b8;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.home-carousel-card--compatibility {
+  min-height: 22rem;
+}
+
+.home-carousel-distro-icons {
+  gap: 0.7rem;
+}
+
+.home-carousel-distro-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 1rem;
+  background: rgba(15, 23, 42, 0.52);
+  padding: 0.65rem 0.35rem;
+  text-align: center;
+}
+
+.home-carousel-distro-item img {
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0.45rem;
+}
+
+.home-carousel-distro-item span {
+  margin-top: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+  color: #e2e8f0;
+  font-size: 0.68rem;
+  font-weight: 850;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-carousel-distro-item small {
+  margin-top: 0.3rem;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.home-carousel-distro-item--validated small {
+  color: #4ade80;
+}
+
+.home-carousel-distro-item--compatible small {
+  color: #7dd3fc;
+}
+
+.home-carousel-distro-item--planned small {
+  color: #94a3b8;
+}
+
+.module-card-meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.55rem;
+}
+
+.module-card-meta .module-command {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 767px) {
+  .product-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-stat-card:nth-child(2) {
+    border-right: 0;
+  }
+
+  .product-stat-card:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  }
+
+  .home-carousel-distro-icons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .module-card-meta {
+    align-items: flex-end;
+  }
+}
+
+/* === /AutoM8 current product state v1 === */

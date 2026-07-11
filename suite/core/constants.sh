@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Constantes compartilhadas, consumidas após este arquivo ser carregado.
+# shellcheck disable=SC2034
+
 AUTOM8_NAME="AutoM8 - Linux Management Suite"
 AUTOM8_DEFAULT_ROOT="/opt/autom8"
 

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Variáveis globais alteradas neste módulo são persistidas por autom8_save_config.
+# shellcheck disable=SC2034
+
 autom8_module_config() {
   autom8_title "Configurações"
 

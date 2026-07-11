@@ -2,7 +2,7 @@
 
 AutoM8 é uma suíte local para preparar, diagnosticar, atualizar e manter ambientes Linux com visual terminal premium, catálogo de apps, logs e controle explícito do usuário.
 
-**AutoM8 by OSLabs**
+**OSLabs**
 
 ## Site
 
@@ -60,17 +60,19 @@ autom8 --version
 | Módulo | Comando | Status | Versão |
 | --- | --- | --- | --- |
 | Apps | `autom8 apps` | available | 0.2.0 |
-| Backup | `autom8 backup` | planned | 0.3.0 |
+| Perfis | `autom8 profiles` | available | 0.2.0 |
+| Atualização do Sistema | `autom8 update` | available | 0.1.1 |
 | Limpeza | `autom8 clean` | available | 0.1.1 |
 | Configurações | `autom8 config` | available | 0.1.1 |
 | Diagnóstico | `autom8 diagnose` | available | 0.1.1 |
-| Docker | `autom8 docker` | available | 0.1.1 |
 | Doctor | `autom8 doctor` | available | 0.1.1 |
-| Perfis | `autom8 profiles` | planned | 0.3.0 |
-| Relatórios | `autom8 report` | available | 0.1.1 |
 | Segurança | `autom8 security` | available | 0.1.1 |
-| Atualização do Sistema | `autom8 update` | available | 0.1.1 |
+| Docker | `autom8 docker` | available | 0.1.1 |
 | Usuários | `autom8 users` | available | 0.1.1 |
+| Relatórios | `autom8 report` | available | 0.1.1 |
+| Self-update | `autom8 self-update` | partial | 0.1.0 |
+| Backup | `autom8 backup` | planned | 0.3.0 |
+| Upgrade da distribuição | `autom8 upgrade-distro` | planned | futura |
 
 ## Documentação
 
@@ -95,6 +97,6 @@ Após merge na `main`:
 
 ## Créditos
 
-AutoM8 by OSLabs.
+OSLabs.
 
-Criado por Marcio Moreira Junior para a comunidade Linux.
+Um produto OSLabs para a comunidade Linux.

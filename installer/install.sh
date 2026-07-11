@@ -39,13 +39,11 @@ require_sudo() {
 }
 
 detect_os() {
-  AUTOM8_OS_ID="unknown"
   AUTOM8_OS_NAME="unknown"
 
   if [[ -f /etc/os-release ]]; then
     # shellcheck source=/dev/null
     source /etc/os-release
-    AUTOM8_OS_ID="${ID:-unknown}"
     AUTOM8_OS_NAME="${PRETTY_NAME:-${NAME:-unknown}}"
   fi
 }
@@ -449,6 +447,11 @@ install_package() {
 
 add_path_user() {
   local shell_file="$HOME/.bashrc"
+  local path_entry="${AUTOM8_INSTALL_DIR}/bin"
+  local literal_path="\$PATH"
+  local path_line
+
+  printf -v path_line     'export PATH="%s:%s"'     "$path_entry"     "$literal_path"
 
   if [[ -n "${ZSH_VERSION:-}" || "${SHELL:-}" == *"zsh"* ]]; then
     shell_file="$HOME/.zshrc"
@@ -456,11 +459,11 @@ add_path_user() {
 
   touch "$shell_file"
 
-  if ! grep -q "/opt/autom8/bin" "$shell_file" 2>/dev/null; then
+  if ! grep -Fq "$path_entry" "$shell_file" 2>/dev/null; then
     {
       echo
       echo "# AutoM8 - Linux Management Suite"
-      echo 'export PATH="/opt/autom8/bin:$PATH"'
+      printf '%s\n' "$path_line"
     } >> "$shell_file"
   fi
 
@@ -469,8 +472,15 @@ add_path_user() {
 
 add_path_global() {
   local profile_file="/etc/profile.d/autom8.sh"
+  local path_entry="${AUTOM8_INSTALL_DIR}/bin"
+  local literal_path="\$PATH"
+  local path_line
 
-  echo 'export PATH="/opt/autom8/bin:$PATH"' | sudo tee "$profile_file" >/dev/null
+  printf -v path_line     'export PATH="%s:%s"'     "$path_entry"     "$literal_path"
+
+  printf '%s\n' "$path_line" |
+    sudo tee "$profile_file" >/dev/null
+
   sudo chmod 644 "$profile_file"
 
   info "PATH global criado em: $profile_file"
@@ -521,8 +531,10 @@ main() {
   echo
   info "Instalação concluída."
   echo
+  local literal_path="\$PATH"
+
   echo "Para usar agora nesta sessão, execute:"
-  echo '  export PATH="/opt/autom8/bin:$PATH"'
+  printf '  export PATH="%s/bin:%s"\n'     "$AUTOM8_INSTALL_DIR"     "$literal_path"
   echo
   echo "Depois rode:"
   echo "  autom8"

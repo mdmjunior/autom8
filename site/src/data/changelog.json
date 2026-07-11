@@ -1,35 +1,50 @@
 [
   {
+    "version": "Não publicado",
+    "date": "2026-07-10",
+    "status": "Em desenvolvimento",
+    "title": "Fundação de qualidade e atualização do site",
+    "changes": [
+      "Adicionados checks separados para CLI, website e repositório.",
+      "Adicionado Quality Gate no GitHub Actions.",
+      "Build do website tornado reproduzível com npm ci.",
+      "Adicionados build e teste de runtime da imagem Docker.",
+      "Instalador público sincronizado com a fonte canônica.",
+      "Instalação local reforçada com staging e rollback.",
+      "Removidas fontes YAML legadas de apps e perfis.",
+      "Site atualizado para refletir módulos e perfis atuais."
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2026-07-10",
-    "title": "Apps por catálogo",
+    "status": "Publicado",
+    "title": "Catálogo de apps e perfis",
     "changes": [
-      "Adicionado catálogo de apps separado por categorias.",
-      "Adicionado script para consolidar catálogo.",
-      "Adicionados comandos de listagem, busca, detalhes e filtros.",
+      "Adicionado catálogo com 10 categorias e 76 apps.",
+      "Adicionados comandos de listagem, busca e detalhes.",
       "Adicionadas instalação e remoção individual.",
-      "Adicionadas instalação e remoção múltipla.",
-      "Adicionado suporte a apps advanced sem instalação automática.",
-      "Instalador passa a instalar pacotes-base essenciais."
+      "Adicionadas operações múltiplas e por categoria.",
+      "Adicionado bloqueio para apps advanced.",
+      "Adicionados seis perfis baseados no catálogo.",
+      "Adicionadas validações em Ubuntu e Fedora.",
+      "Publicada a versão estável 0.2.0."
     ]
   },
   {
     "version": "0.1.0",
     "date": "2026-07-06",
-    "status": "published",
+    "status": "Publicado",
+    "title": "Primeira versão pública",
     "changes": [
-      "Estrutura inicial da suíte AutoM8.",
-      "Primeiro instalador público.",
-      "Primeiro site oficial.",
-      "Comando autom8 com menu interativo.",
-      "Módulos doctor, diagnose, update e clean.",
-      "Checagens básicas de security, docker e users.",
-      "Configurações e relatórios iniciais.",
-      "Melhorado comportamento do autom8 clean --dry-run.",
-      "Distribuição estável movida para GitHub Releases.",
-      "install.sh passa a baixar o pacote estável mais recente do GitHub Releases.",
-      "Build do site deixa de publicar pacotes da suíte na VPS.",
-      "Documentação passa a usar fonte única para site, README, roadmap, changelog e help."
+      "Criada a estrutura inicial da suíte.",
+      "Publicado o primeiro instalador.",
+      "Publicado o primeiro site oficial.",
+      "Adicionado menu interativo.",
+      "Adicionados doctor, diagnose, update e clean.",
+      "Adicionadas verificações de segurança, Docker e usuários.",
+      "Adicionados configurações e relatórios.",
+      "Distribuição estável movida para o GitHub Releases."
     ]
   }
 ]

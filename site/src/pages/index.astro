@@ -1,77 +1,56 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
+import terminalSessions from '../data/terminal-sessions.json';
+import catalogSummary from '../data/catalog-summary.json';
 
 
 
 
-const terminalSessions = [
+const moduleStatusLabel: Record<string, string> = {
+  available: 'Disponível',
+  partial: 'Parcial',
+  planned: 'Planejado'
+};
+
+const moduleStatusClass: Record<string, string> = {
+  available: 'autom8-status-badge',
+  partial: 'autom8-version-badge',
+  planned: 'autom8-card-kicker'
+};
+
+const productStats = [
   {
-    command: 'autom8 --version',
-    output: [
-      { text: 'AutoM8 0.1.0', type: 'success' }
-    ]
+    value: `v${catalogSummary.version}`,
+    label: 'Versão estável',
+    description: 'Release distribuída pelo instalador oficial.'
   },
   {
-    command: 'autom8 doctor',
-    output: [
-      { text: 'AutoM8 Doctor', type: 'muted' },
-      { text: '[OK] Diretório OK: /opt/autom8', type: 'ok' },
-      { text: '[OK] Arquivo OK: /opt/autom8/bin/autom8', type: 'ok' },
-      { text: '[OK] Comando encontrado: bash', type: 'ok' },
-      { text: '[OK] Comando encontrado: curl', type: 'ok' },
-      { text: '[OK] Comando encontrado: sudo', type: 'ok' },
-      { text: '[OK] Comando encontrado: jq', type: 'ok' },
-      { text: 'Doctor finalizado sem falhas críticas.', type: 'success' },
-      { text: 'Relatório: /opt/autom8/reports/doctor-2026-07-06-2120.txt', type: 'note' }
-    ]
+    value: catalogSummary.appsCount,
+    label: 'Aplicativos',
+    description: 'Apps organizados no catálogo consolidado.'
   },
   {
-    command: 'autom8 clean --dry-run',
-    output: [
-      { text: 'Simulação de limpeza segura', type: 'muted' },
-      { text: 'Nada será removido neste modo.', type: 'note' },
-      { text: 'Gerenciador de pacotes detectado: apt', type: 'plain' },
-      { text: 'Ações simuladas:', type: 'plain' },
-      { text: '- apt clean', type: 'ok' },
-      { text: '- apt autoremove -y', type: 'ok' },
-      { text: 'Flatpak não encontrado.', type: 'warn' },
-      { text: 'Snap não encontrado.', type: 'warn' },
-      { text: 'Simulação de limpeza segura concluída', type: 'success' }
-    ]
+    value: catalogSummary.categories.length,
+    label: 'Categorias',
+    description: 'Grupos para localizar ferramentas rapidamente.'
   },
   {
-    command: 'autom8 diagnose',
-    output: [
-      { text: 'Diagnóstico do sistema', type: 'muted' },
-      { text: '== Sistema ==', type: 'plain' },
-      { text: 'Hostname: workstation', type: 'plain' },
-      { text: 'Kernel: 6.x-generic', type: 'plain' },
-      { text: 'Arquitetura: x86_64', type: 'plain' },
-      { text: '== Docker ==', type: 'plain' },
-      { text: 'Docker version 27.x', type: 'ok' },
-      { text: 'Relatório gerado em: /opt/autom8/reports/diagnostic-2026-07-06-2124.txt', type: 'success' }
-    ]
-  },
-  {
-    command: 'autom8 profiles',
-    output: [
-      { text: 'Perfis', type: 'muted' },
-      { text: 'Módulo de perfis YAML será implementado na v0.2.0.', type: 'warn' },
-      { text: 'Perfis ainda não implementado', type: 'warn' }
-    ]
+    value: catalogSummary.profilesCount,
+    label: 'Perfis',
+    description: 'Ambientes completos disponíveis na CLI.'
   }
 ];
 
 const distros = [
-  { name: 'Ubuntu', slug: 'ubuntu', status: 'Planejada' },
-  { name: 'Debian', slug: 'debian', status: 'Planejada' },
-  { name: 'Fedora', slug: 'fedora', status: 'Planejada' },
-  { name: 'Rocky Linux', slug: 'rocky', status: 'Planejada' },
-  { name: 'AlmaLinux', slug: 'alma', status: 'Planejada' },
-  { name: 'openSUSE', slug: 'opensuse', status: 'Planejada' },
-  { name: 'Arch Linux', slug: 'arch', status: 'Planejada' },
-  { name: 'Manjaro', slug: 'manjaro', status: 'Planejada' }
+  { name: 'Ubuntu', slug: 'ubuntu', status: 'Validada', level: 'validated' },
+  { name: 'Fedora', slug: 'fedora', status: 'Validada', level: 'validated' },
+  { name: 'openSUSE', slug: 'opensuse', status: 'Compatível', level: 'compatible' },
+  { name: 'Arch Linux', slug: 'arch', status: 'Compatível', level: 'compatible' },
+  { name: 'Debian', slug: 'debian', status: 'Planejada', level: 'planned' },
+  { name: 'Rocky Linux', slug: 'rocky', status: 'Planejada', level: 'planned' },
+  { name: 'AlmaLinux', slug: 'alma', status: 'Planejada', level: 'planned' },
+  { name: 'Manjaro', slug: 'manjaro', status: 'Planejada', level: 'planned' }
 ];
 
 const carouselItems = [
@@ -112,6 +91,8 @@ const moduleIcons = {
   clean: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3 4 14l6 6 11-11-6-6Zm0 2.83L18.17 9 10 17.17 6.83 14 15 5.83ZM4 20h16v2H4v-2Z"/></svg>`,
   apps: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/></svg>`,
   profiles: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5Z"/></svg>`,
+  config: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94a7.5 7.5 0 0 0 .05-.94 7.5 7.5 0 0 0-.05-.94l2.03-1.58-1.92-3.32-2.39.96a7.3 7.3 0 0 0-1.62-.94L14.88 3h-3.76l-.36 3.18a7.3 7.3 0 0 0-1.62.94l-2.39-.96-1.92 3.32 2.03 1.58a7.5 7.5 0 0 0-.05.94c0 .32.02.63.05.94l-2.03 1.58 1.92 3.32 2.39-.96c.5.39 1.04.7 1.62.94l.36 3.18h3.76l.36-3.18a7.3 7.3 0 0 0 1.62-.94l2.39.96 1.92-3.32-2.03-1.58ZM13 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"/></svg>`,
+  doctor: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6v2h3a2 2 0 0 1 2 2v14H4V7a2 2 0 0 1 2-2h3V3Zm2 2h2V4h-2v1Zm-5 2v12h12V7H6Zm5 3h2v2h2v2h-2v2h-2v-2H9v-2h2v-2Z"/></svg>`,
   backup: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5V4Zm2 2v12h10V8h-3V6H7Zm2 7h6v2H9v-2Zm0-4h4v2H9V9Z"/></svg>`,
   diagnose: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3h4v2h-4V3ZM5 7h14v14H5V7Zm2 2v10h10V9H7Zm2 2h6v2H9v-2Zm0 4h4v2H9v-2Z"/></svg>`,
   security: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 5v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3Zm0 2.2L6 6.45V11c0 3.85 2.42 7.28 6 8.82 3.58-1.54 6-4.97 6-8.82V6.45l-6-2.25Z"/></svg>`,
@@ -133,15 +114,6 @@ const moduleIcons = {
           AutoM8 é uma suíte local para instalar, diagnosticar, limpar e preparar ambientes Linux sem esconder o que será executado.
         </p>
 
-        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
-          <a href="/install" class="autom8-primary-button">
-            Instalar AutoM8
-          </a>
-          <a href="/docs" class="autom8-secondary-button">
-            Ver documentação
-          </a>
-        </div>
-
       </div>
 
       <div class="product-console-shell">
@@ -161,6 +133,18 @@ const moduleIcons = {
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <section class="product-stats-section px-6" aria-label="Estado atual do AutoM8">
+    <div class="product-stats mx-auto max-w-7xl">
+      {productStats.map((stat) => (
+        <article class="product-stat-card">
+          <strong>{stat.value}</strong>
+          <span>{stat.label}</span>
+          <p>{stat.description}</p>
+        </article>
+      ))}
     </div>
   </section>
 
@@ -186,7 +170,13 @@ const moduleIcons = {
 
       <div class="home-carousel" data-home-carousel>
         {carouselItems.map((item) => (
-          <article class="home-carousel-card">
+          <article
+            class:list={[
+              'home-carousel-card',
+              item.type === 'distroGroup' &&
+                'home-carousel-card--compatibility'
+            ]}
+          >
             <div class="home-carousel-card__top">
               {item.type === 'distroGroup' ? (
                 <span class="home-carousel-card__number">OS</span>
@@ -200,11 +190,17 @@ const moduleIcons = {
             {item.type === 'distroGroup' ? (
               <div class="home-carousel-distro-icons">
                 {item.distros.map((distro) => (
-                  <img
-                    src={`/branding/distros/${distro.slug}.svg`}
-                    alt={`Ícone ${distro.name}`}
-                    title={distro.name}
-                  />
+                  <div
+                    class={`home-carousel-distro-item home-carousel-distro-item--${distro.level}`}
+                    title={`${distro.name}: ${distro.status}`}
+                  >
+                    <img
+                      src={`/branding/distros/${distro.slug}.svg`}
+                      alt={`Ícone ${distro.name}`}
+                    />
+                    <span>{distro.name}</span>
+                    <small>{distro.status}</small>
+                  </div>
                 ))}
               </div>
             ) : (
@@ -239,9 +235,23 @@ const moduleIcons = {
         {modules.slice(0, 9).map((item) => (
           <article class="modern-module-card">
             <div class="module-card-top">
-              <div class="module-icon" set:html={moduleIcons[item.slug] ?? moduleIcons.diagnose}></div>
-              <div class="module-command">
-                autom8 {item.slug}
+              <div
+                class="module-icon"
+                set:html={moduleIcons[item.slug] ?? moduleIcons.diagnose}
+              ></div>
+
+              <div class="module-card-meta">
+                <span class={
+                  moduleStatusClass[item.status] ??
+                  moduleStatusClass.planned
+                }>
+                  {
+                    moduleStatusLabel[item.status] ??
+                    moduleStatusLabel.planned
+                  }
+                </span>
+
+                <div class="module-command">{item.command}</div>
               </div>
             </div>
             <h3 class="text-xl font-black text-white">{item.name}</h3>

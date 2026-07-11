@@ -14,7 +14,8 @@ autom8_module_report() {
       find "$AUTOM8_REPORT_DIR" -maxdepth 1 -type f -printf '%f\n' 2>/dev/null | sort || true
       ;;
     "Exportar relatórios em tar.gz")
-      local output="$AUTOM8_REPORT_DIR/autom8-reports-$(date '+%Y-%m-%d-%H%M').tar.gz"
+      local output
+      output="$AUTOM8_REPORT_DIR/autom8-reports-$(date '+%Y-%m-%d-%H%M').tar.gz"
       tar -czf "$output" -C "$AUTOM8_REPORT_DIR" . 2>/dev/null || true
       autom8_success "Exportado: $output"
       ;;
