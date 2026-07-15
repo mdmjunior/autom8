@@ -1,81 +1,306 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import documentation from '../data/documentation.json';
+
+const installationSteps = [
+  {
+    number: '01',
+    title: 'Usuário comum',
+    description:
+      documentation.install.notes[0] ??
+      'Execute usando uma conta comum com permissão de sudo.'
+  },
+  {
+    number: '02',
+    title: 'Instalação local',
+    description:
+      'A suíte é instalada em /opt/autom8, mantendo arquivos, comandos e configurações organizados.'
+  },
+  {
+    number: '03',
+    title: 'Validação automática',
+    description:
+      'Ao final, o instalador verifica estrutura, permissões e comandos necessários para o primeiro uso.'
+  }
+];
 ---
 
 <BaseLayout
   title="Instalar · AutoM8"
-  description="Instale o AutoM8 localmente em sistemas Linux com um comando simples, validação pós-instalação e execução segura."
+  description="Instale o AutoM8 localmente em sistemas Linux com validação pós-instalação e execução segura."
 >
-  <section class="site-page-hero">
+  <section
+    class="site-page-hero modules-page-hero install-page-hero"
+  >
     <div class="site-page-hero__inner">
-      <p class="page-eyebrow">Instalação</p>
-      <h1 class="page-title">Instale localmente. Execute com controle.</h1>
-      <p class="page-description">
-        O AutoM8 roda na própria máquina Linux, com instalação orientada, validação pós-instalação e comandos claros para manutenção do sistema.
-      </p>
+      <h1 class="modules-page-visually-hidden">
+        Instalar o AutoM8
+      </h1>
 
-      <div class="page-actions">
-        <a href="#install-command" class="autom8-primary-button">Ver comando</a>
-        <a href="/docs" class="autom8-secondary-button">Consultar docs</a>
-      </div>
-    </div>
-  </section>
+      <article class="install-page-primary-command">
+        <header class="install-page-primary-command__header">
+          <div class="install-page-primary-command__identity">
+            <span
+              class="install-page-primary-command__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M12 4v11"></path>
+                <path d="m8 11 4 4 4-4"></path>
+                <path d="M5 19h14"></path>
+              </svg>
+            </span>
 
-  <section id="install-command" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Comando oficial</p>
-        <h2>Instalação rápida</h2>
-        <p>Execute como usuário comum com sudo disponível. O instalador bloqueia execução direta como root.</p>
-      </div>
+            <div>
+              <h2>
+                Instalação oficial
+              </h2>
 
-      <div class="autom8-command-panel">
-        <div class="autom8-command-panel__header">
-          <span>terminal</span>
-          <strong>install.sh</strong>
+              <p>
+                {documentation.install.summary}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="install-page-copy-button"
+            data-install-copy
+            data-copy-value={documentation.install.command}
+            aria-label="Copiar comando oficial de instalação"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect
+                x="9"
+                y="9"
+                width="10"
+                height="10"
+                rx="2"
+              ></rect>
+
+              <path d="M15 9V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+            </svg>
+
+            <span data-copy-label>
+              Copiar
+            </span>
+          </button>
+        </header>
+
+        <div class="install-page-primary-command__terminal">
+          <span aria-hidden="true">
+            $
+          </span>
+
+          <code>
+            {documentation.install.command}
+          </code>
         </div>
-        <pre><code>curl -fsSL https://autom8.oslabs.com.br/install.sh | bash</code></pre>
-      </div>
-
-      <div class="autom8-content-grid autom8-content-grid--three mt-8">
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">01</span>
-          <h3>Usuário comum</h3>
-          <p>Não instale diretamente como root. Use uma conta normal com permissão de sudo.</p>
-        </article>
-
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">02</span>
-          <h3>Instalação local</h3>
-          <p>Os arquivos são instalados em <code>/opt/autom8</code>, mantendo a suíte organizada e previsível.</p>
-        </article>
-
-        <article class="autom8-standard-card">
-          <span class="autom8-card-kicker">03</span>
-          <h3>Validação automática</h3>
-          <p>Ao final, o instalador executa checagens para confirmar estrutura, permissões e comandos necessários.</p>
-        </article>
-      </div>
+      </article>
     </div>
   </section>
 
-  <section class="site-page-section site-page-section--compact">
+  <section
+    class="site-page-section modules-page-section install-page-section"
+  >
     <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Após instalar</p>
-        <h2>Primeiros comandos</h2>
-        <p>Use o PATH na sessão atual e abra o menu principal do AutoM8.</p>
+      <div class="modules-page-heading install-page-heading">
+        <h2>
+          Instale em três etapas
+        </h2>
       </div>
 
-      <div class="autom8-command-panel">
-        <div class="autom8-command-panel__header">
-          <span>terminal</span>
-          <strong>primeiro uso</strong>
-        </div>
-        <pre><code>export PATH="/opt/autom8/bin:$PATH"
-autom8
-autom8 doctor</code></pre>
+      <div class="modules-page-grid install-page-steps">
+        {installationSteps.map((step) => (
+          <article class="modules-page-card install-page-step-card">
+            <div class="modules-page-card__top">
+              <div class="modules-page-card__identity">
+                <span
+                  class="modules-page-card__icon install-page-step-card__number"
+                  aria-hidden="true"
+                >
+                  {step.number}
+                </span>
+
+                <h3>
+                  {step.title}
+                </h3>
+              </div>
+            </div>
+
+            <p class="modules-page-card__description">
+              {step.description}
+            </p>
+          </article>
+        ))}
       </div>
+
+      <section class="install-page-first-use">
+        <header class="install-page-first-use__heading">
+          <span
+            class="install-page-first-use__icon"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24">
+              <rect
+                x="3.5"
+                y="5"
+                width="17"
+                height="14"
+                rx="3"
+              ></rect>
+
+              <path d="m7.5 10 2.5 2.5L7.5 15"></path>
+              <path d="M13 15h3.5"></path>
+            </svg>
+          </span>
+
+          <div>
+            <h2>
+              Primeiros comandos
+            </h2>
+
+            <p>
+              Atualize o PATH da sessão, abra o AutoM8
+              e valide o ambiente.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="install-page-copy-button"
+            data-install-copy
+            data-copy-value={documentation.install.after.join('\n')}
+            aria-label="Copiar comandos do primeiro uso"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect
+                x="9"
+                y="9"
+                width="10"
+                height="10"
+                rx="2"
+              ></rect>
+
+              <path d="M15 9V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+            </svg>
+
+            <span data-copy-label>
+              Copiar
+            </span>
+          </button>
+        </header>
+
+        <pre><code>{documentation.install.after.join('\n')}</code></pre>
+      </section>
+
+      <ul class="install-page-notes">
+        {documentation.install.notes.map((note) => (
+          <li>
+            <span aria-hidden="true"></span>
+            {note}
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
+
+  <script is:inline>
+    // AutoM8 installation command copy buttons
+
+    const copyInstallValue = async (
+      value
+    ) => {
+      if (
+        navigator.clipboard &&
+        window.isSecureContext
+      ) {
+        await navigator.clipboard.writeText(
+          value
+        );
+
+        return;
+      }
+
+      const temporaryField =
+        document.createElement('textarea');
+
+      temporaryField.value = value;
+      temporaryField.setAttribute(
+        'readonly',
+        ''
+      );
+
+      temporaryField.style.position =
+        'fixed';
+
+      temporaryField.style.opacity =
+        '0';
+
+      document.body.appendChild(
+        temporaryField
+      );
+
+      temporaryField.select();
+
+      const copied =
+        document.execCommand('copy');
+
+      temporaryField.remove();
+
+      if (!copied) {
+        throw new Error(
+          'Não foi possível copiar.'
+        );
+      }
+    };
+
+    document.querySelectorAll(
+      '[data-install-copy]'
+    ).forEach((button) => {
+      button.addEventListener(
+        'click',
+        async () => {
+          const copyValue =
+            button.dataset.copyValue || '';
+
+          const copyLabel =
+            button.querySelector(
+              '[data-copy-label]'
+            );
+
+          try {
+            await copyInstallValue(
+              copyValue
+            );
+
+            button.classList.add(
+              'install-page-copy-button--copied'
+            );
+
+            if (copyLabel) {
+              copyLabel.textContent =
+                'Copiado';
+            }
+
+            window.setTimeout(() => {
+              button.classList.remove(
+                'install-page-copy-button--copied'
+              );
+
+              if (copyLabel) {
+                copyLabel.textContent =
+                  'Copiar';
+              }
+            }, 1600);
+          } catch {
+            if (copyLabel) {
+              copyLabel.textContent =
+                'Erro';
+            }
+          }
+        }
+      );
+    });
+  </script>
 </BaseLayout>

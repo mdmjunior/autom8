@@ -1,9 +1,13 @@
 ---
 import '../styles/global.css';
+import documentation from '../data/documentation.json';
+import SeoHead from '../components/SeoHead.astro';
+
+const product = documentation.product;
 
 const {
-  title = 'AutoM8 · Automação Linux para todos',
-  description = 'AutoM8 é uma suíte gratuita e open source para automatizar instalações, configurações e tarefas no Linux desktop.'
+  title = `${product.name} · Automação Linux com clareza e controle`,
+  description = product.summary
 } = Astro.props;
 
 const nav = [
@@ -13,8 +17,6 @@ const nav = [
   ['Docs', '/docs'],
   ['Roadmap', '/roadmap'],
   ['Changelog', '/changelog'],
-  ['GitHub', 'https://github.com/mdmjunior/autom8'],
-  ['Instalar', '/install']
 ];
 ---
 
@@ -22,18 +24,21 @@ const nav = [
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0B1220" />
-    <link rel="icon" type="image/png" href="/branding/favicon.png?v=20260707" />
-    <link rel="apple-touch-icon" href="/branding/favicon.png?v=20260707" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <title>{title}</title>
-  </head>
+        <SeoHead
+      title={title}
+      description={description}
+    />
+</head>
 
   <body>
+    <a
+      href="#conteudo-principal"
+      class="skip-to-content"
+    >
+      Pular para o conteúdo
+    </a>
+
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/" class="site-brand-image" aria-label="AutoM8">
@@ -44,35 +49,564 @@ const nav = [
           />
         </a>
 
-        <nav class="site-nav" aria-label="Navegação principal">
-          {nav.map(([label, href]) => (
-            <a
-              href={href}
-              class={label === 'Instalar' ? 'autom8-nav-install' : 'autom8-nav-link'}
-              target={href.startsWith('http') ? '_blank' : undefined}
-              rel={href.startsWith('http') ? 'noreferrer' : undefined}
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
+        <div class="site-header__actions">
+          <nav class="site-nav" aria-label="Navegação principal">
+            {nav.map(([label, href]) => (
+              <a
+                href={href}
+                class="autom8-nav-link"
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel={href.startsWith('http') ? 'noreferrer' : undefined}
+              >
+                {label}
+              </a>
+            ))}
 
-        <a href="/install" class="autom8-mobile-install">
-          Instalar
-        </a>
+            <a
+              href="/install"
+              class="autom8-nav-install"
+              aria-label="Instalar AutoM8"
+              title="Instalar AutoM8"
+            >
+              <svg
+                  class="autom8-install-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M4.5 7.5 12 3l7.5 4.5v9L12 21l-7.5-4.5v-9Z"></path>
+                  <path d="M12 3v9.5"></path>
+                  <path d="m8.75 9.25 3.25 3.25 3.25-3.25"></path>
+                  <path d="m4.5 7.5 7.5 4.5 7.5-4.5"></path>
+                </svg>
+            </a>
+          </nav>
+
+          <button
+            type="button"
+            class="site-mobile-menu-button"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="site-mobile-menu"
+            data-autom8-mobile-menu-button
+          >
+            <span class="site-mobile-menu-button__line" aria-hidden="true"></span>
+            <span class="site-mobile-menu-button__line" aria-hidden="true"></span>
+            <span class="site-mobile-menu-button__line" aria-hidden="true"></span>
+          </button>
+
+          <a
+            href="/install"
+            class="autom8-mobile-install"
+            aria-label="Instalar AutoM8"
+            title="Instalar AutoM8"
+          >
+            <svg
+                  class="autom8-install-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M4.5 7.5 12 3l7.5 4.5v9L12 21l-7.5-4.5v-9Z"></path>
+                  <path d="M12 3v9.5"></path>
+                  <path d="m8.75 9.25 3.25 3.25 3.25-3.25"></path>
+                  <path d="m4.5 7.5 7.5 4.5 7.5-4.5"></path>
+                </svg>
+          </a>
+        </div>
+      </div>
+
+      <div
+        id="site-mobile-menu"
+        class="site-mobile-menu"
+        data-autom8-mobile-menu
+        hidden
+      >
+        <div class="site-mobile-menu__inner">
+          <nav
+            class="site-mobile-menu__nav"
+            aria-label="Navegação mobile"
+          >
+            {nav
+              .filter(([label]) => label !== 'Instalar')
+              .map(([label, href]) => (
+                <a
+                  href={href}
+                  class="site-mobile-menu__link"
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noreferrer' : undefined}
+                >
+                  <span>{label}</span>
+
+                  <span
+                    class="site-mobile-menu__arrow"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </a>
+              ))}
+          </nav>
+        </div>
       </div>
     </header>
 
-    <main class="site-main">
+    <main class="site-main" id="conteudo-principal" tabindex="-1">
       <slot />
     </main>
 
+    <button
+      type="button"
+      class="back-to-top"
+      data-back-to-top
+      aria-label="Voltar ao topo"
+      title="Voltar ao topo"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5"></path>
+        <path d="m6.5 10.5 5.5-5.5 5.5 5.5"></path>
+      </svg>
+    </button>
+
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <p class="site-footer__brand">AutoM8 · OSLabs</p>
-        <p class="site-footer__text">Um produto OSLabs para a comunidade Linux.</p>
-        <p class="site-footer__tagline">Automação Linux para todos. Configure menos. Produza mais.</p>
+        <div class="site-footer__main">
+          <div class="site-footer__identity">
+            <img
+              src="/branding/favicon.png?v=20260707"
+              alt=""
+              class="site-footer__logo"
+              aria-hidden="true"
+            />
+
+            <div class="site-footer__identity-copy">
+              <p class="site-footer__brand">
+                AutoM8
+              </p>
+
+              <p class="site-footer__product-name">
+                Linux Management Suite
+              </p>
+
+              <p class="site-footer__maker">
+                Um produto{' '}
+                <a
+                  href="https://oslabs.com.br"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  OSLabs
+                </a>{' '}
+                para o usuário Linux.
+              </p>
+            </div>
+          </div>
+
+          <nav
+            class="site-footer__links"
+            aria-label="Navegação do rodapé"
+          >
+            <div class="site-footer__link-group">
+              <p class="site-footer__group-title">
+                Produto
+              </p>
+
+              <a href="/modules">
+                Módulos
+              </a>
+
+              <a href="/profiles">
+                Perfis
+              </a>
+
+              <a href="/roadmap">
+                Roadmap
+              </a>
+            </div>
+
+            <div class="site-footer__link-group">
+              <p class="site-footer__group-title">
+                Recursos
+              </p>
+
+              <a href="/docs">
+                Documentação
+              </a>
+
+              <a href="/changelog">
+                Changelog
+              </a>
+
+              <a
+                href="https://github.com/mdmjunior/autom8"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub
+              </a>
+            </div>
+          </nav>
+
+          <div class="site-footer__connect">
+            <p class="site-footer__group-title">
+              Conecte-se
+            </p>
+
+            <div class="site-footer__connect-actions">
+              <a
+                href="#"
+                class="site-footer__contact"
+                aria-label="Contato"
+                title="Contato"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 5h16v14H4V5Z"></path>
+                  <path d="m5 7 7 5 7-5"></path>
+                </svg>
+              </a>
+
+              <div
+                class="site-footer__social"
+                aria-label="Mídias sociais"
+              >
+                <a
+                  href="#"
+                  class="site-footer__social-link"
+                  aria-label="Instagram"
+                  title="Instagram"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect
+                      x="3"
+                      y="3"
+                      width="18"
+                      height="18"
+                      rx="5"
+                    ></rect>
+
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    ></circle>
+
+                    <circle
+                      class="social-icon-fill"
+                      cx="17.5"
+                      cy="6.5"
+                      r="1"
+                    ></circle>
+                  </svg>
+                </a>
+
+                <a
+                  href="https://github.com/mdmjunior/autom8"
+                  class="site-footer__social-link"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="GitHub"
+                  title="GitHub"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      class="social-icon-fill"
+                      d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.61-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0 1 12 7c.85 0 1.71.12 2.51.35 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.86v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
+                    ></path>
+                  </svg>
+                </a>
+
+                <a
+                  href="#"
+                  class="site-footer__social-link"
+                  aria-label="Facebook"
+                  title="Facebook"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      class="social-icon-fill"
+                      d="M14.5 8H17V4.5A21 21 0 0 0 13.9 4C10.8 4 8.7 5.9 8.7 9.4V12H5.5v4h3.2v8h4.1v-8h3.4l.6-4h-4V9.8c0-1.2.3-1.8 1.7-1.8Z"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
+
+    <script is:inline>
+      const mobileHeader = document.querySelector('.site-header');
+      const mobileMenuButton = document.querySelector(
+        '[data-autom8-mobile-menu-button]'
+      );
+      const mobileMenu = document.querySelector(
+        '[data-autom8-mobile-menu]'
+      );
+
+      if (mobileHeader && mobileMenuButton && mobileMenu) {
+        const mobileMenuLinks = Array.from(
+          mobileMenu.querySelectorAll('a')
+        );
+
+        const setMobileMenuState = (
+          open,
+          restoreButtonFocus = false
+        ) => {
+          mobileMenu.hidden = !open;
+          mobileMenuButton.setAttribute(
+            'aria-expanded',
+            String(open)
+          );
+          mobileMenuButton.setAttribute(
+            'aria-label',
+            open ? 'Fechar menu' : 'Abrir menu'
+          );
+
+          document.body.classList.toggle(
+            'autom8-mobile-menu-open',
+            open
+          );
+
+          if (open) {
+            window.requestAnimationFrame(() => {
+              mobileMenuLinks[0]?.focus();
+            });
+          } else if (restoreButtonFocus) {
+            mobileMenuButton.focus();
+          }
+        };
+
+        mobileMenuButton.addEventListener('click', () => {
+          const open =
+            mobileMenuButton.getAttribute('aria-expanded') !==
+            'true';
+
+          setMobileMenuState(open);
+        });
+
+        mobileMenuLinks.forEach((link) => {
+          link.addEventListener('click', () => {
+            setMobileMenuState(false);
+          });
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (
+            event.key === 'Escape' &&
+            mobileMenuButton.getAttribute('aria-expanded') ===
+              'true'
+          ) {
+            setMobileMenuState(false, true);
+          }
+        });
+
+        document.addEventListener('click', (event) => {
+          if (
+            mobileMenuButton.getAttribute('aria-expanded') ===
+              'true' &&
+            event.target instanceof Node &&
+            !mobileHeader.contains(event.target)
+          ) {
+            setMobileMenuState(false);
+          }
+        });
+
+        const desktopBreakpoint = window.matchMedia(
+          '(min-width: 1024px)'
+        );
+
+        desktopBreakpoint.addEventListener('change', (event) => {
+          if (event.matches) {
+            setMobileMenuState(false);
+          }
+        });
+      }
+    </script>
+    <script is:inline>
+      // AutoM8 global scroll controls
+
+      const globalSiteHeader = document.querySelector(
+        '.site-header'
+      );
+
+      const backToTopButton = document.querySelector(
+        '[data-back-to-top]'
+      );
+
+      let globalScrollFramePending = false;
+
+      const updateGlobalScrollState = () => {
+        const scrollPosition =
+          window.scrollY ||
+          document.documentElement.scrollTop ||
+          0;
+
+        globalSiteHeader?.classList.toggle(
+          'site-header--scrolled',
+          scrollPosition > 32
+        );
+
+        if (backToTopButton) {
+          const showBackToTop = scrollPosition > 480;
+
+          backToTopButton.classList.toggle(
+            'back-to-top--visible',
+            showBackToTop
+          );
+
+          backToTopButton.setAttribute(
+            'aria-hidden',
+            String(!showBackToTop)
+          );
+
+          backToTopButton.tabIndex = showBackToTop
+            ? 0
+            : -1;
+        }
+
+        globalScrollFramePending = false;
+      };
+
+      const requestGlobalScrollUpdate = () => {
+        if (globalScrollFramePending) {
+          return;
+        }
+
+        globalScrollFramePending = true;
+
+        window.requestAnimationFrame(
+          updateGlobalScrollState
+        );
+      };
+
+      window.addEventListener(
+        'scroll',
+        requestGlobalScrollUpdate,
+        { passive: true }
+      );
+
+      window.addEventListener(
+        'resize',
+        requestGlobalScrollUpdate
+      );
+
+      backToTopButton?.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      updateGlobalScrollState();
+    </script>
+
+    <script is:inline>
+      // AutoM8 active navigation
+
+      const normalizeNavigationPath = (pathname) => {
+        if (!pathname) {
+          return '/';
+        }
+
+        const normalized = pathname.replace(/\/+$/, '');
+
+        return normalized || '/';
+      };
+
+      const currentNavigationPath = normalizeNavigationPath(
+        window.location.pathname
+      );
+
+      const navigationLinks = document.querySelectorAll(
+        [
+          '.site-nav a[href]',
+          '.site-mobile-menu a[href]'
+        ].join(',')
+      );
+
+      navigationLinks.forEach((link) => {
+        const rawHref = link.getAttribute('href');
+
+        if (
+          !rawHref ||
+          rawHref.startsWith('#') ||
+          rawHref.startsWith('mailto:') ||
+          rawHref.startsWith('tel:') ||
+          link.classList.contains('autom8-nav-install') ||
+          link.classList.contains('autom8-mobile-install')
+        ) {
+          return;
+        }
+
+        let linkUrl;
+
+        try {
+          linkUrl = new URL(
+            rawHref,
+            window.location.origin
+          );
+        } catch {
+          return;
+        }
+
+        if (linkUrl.origin !== window.location.origin) {
+          return;
+        }
+
+        const linkPath = normalizeNavigationPath(
+          linkUrl.pathname
+        );
+
+        const isCurrentPage =
+          linkPath === '/'
+            ? currentNavigationPath === '/'
+            : (
+                currentNavigationPath === linkPath ||
+                currentNavigationPath.startsWith(
+                  `${linkPath}/`
+                )
+              );
+
+        link.classList.toggle(
+          'autom8-navigation-active',
+          isCurrentPage
+        );
+
+        if (isCurrentPage) {
+          link.setAttribute(
+            'aria-current',
+            'page'
+          );
+        } else {
+          link.removeAttribute(
+            'aria-current'
+          );
+        }
+      });
+    </script>
+
+    <script is:inline>
+      // AutoM8 reduced motion preference
+
+      const reducedMotionPreference = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      );
+
+      const syncReducedMotionPreference = () => {
+        document.documentElement.toggleAttribute(
+          'data-reduced-motion',
+          reducedMotionPreference.matches
+        );
+      };
+
+      syncReducedMotionPreference();
+
+      reducedMotionPreference.addEventListener?.(
+        'change',
+        syncReducedMotionPreference
+      );
+    </script>
+
   </body>
 </html>
