@@ -1,12 +1,26 @@
 services:
   autom8_site:
-    image: autom8-site:latest
+    image: ${AUTOM8_SITE_IMAGE:-autom8-site:latest}
     networks:
       - oslabs-public
     deploy:
-      replicas: 1
+      replicas: ${AUTOM8_REPLICAS:-1}
+      update_config:
+        parallelism: 1
+        delay: 5s
+        monitor: 30s
+        failure_action: rollback
+        order: start-first
+      rollback_config:
+        parallelism: 1
+        delay: 5s
+        monitor: 30s
+        order: stop-first
       restart_policy:
         condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 60s
       labels:
         - "traefik.enable=true"
         - "traefik.swarm.network=oslabs-public"
