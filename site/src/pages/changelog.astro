@@ -1,60 +1,348 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import changelog from '../data/changelog.json';
+
+const changelogEntries = changelog.map((release) => ({
+  ...release,
+  statusKey: release.status
+    .toLocaleLowerCase('pt-BR')
+    .includes('desenvolvimento')
+      ? 'in-progress'
+      : 'published'
+}));
+
+const changelogCounts = {
+  all: changelogEntries.length,
+  published: changelogEntries.filter(
+    (release) => release.statusKey === 'published'
+  ).length,
+  inProgress: changelogEntries.filter(
+    (release) => release.statusKey === 'in-progress'
+  ).length
+};
 ---
 
 <BaseLayout
   title="Changelog · AutoM8"
   description="Histórico publicado e mudanças em desenvolvimento."
 >
-  <section class="site-page-hero">
+  <section
+    class="site-page-hero modules-page-hero release-page-hero"
+  >
     <div class="site-page-hero__inner">
-      <p class="page-eyebrow">Changelog</p>
-      <h1 class="page-title">Histórico claro do que mudou.</h1>
-      <p class="page-description">
-        Publicações estáveis e alterações ainda presentes na branch
-        de desenvolvimento são apresentadas separadamente.
-      </p>
+      <h1 class="modules-page-visually-hidden">
+        Changelog do AutoM8
+      </h1>
+
+      <div
+        class="modules-page-toolbar release-page-toolbar"
+        aria-label="Buscar e filtrar o changelog"
+      >
+        <label class="modules-page-search">
+          <span class="modules-page-search__field">
+            <span
+              class="modules-page-search__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6.5"
+                ></circle>
+
+                <path d="m16 16 4.2 4.2"></path>
+              </svg>
+            </span>
+
+            <input
+              type="search"
+              placeholder="Busque uma versão, data ou alteração"
+              autocomplete="off"
+              aria-label="Buscar no changelog"
+              data-changelog-search
+            />
+          </span>
+        </label>
+
+        <div
+          class="release-page-filters release-page-filters--changelog"
+          aria-label="Filtrar versões por status"
+        >
+          <button
+            type="button"
+            class="release-page-filter release-page-filter--active"
+            data-changelog-filter="all"
+            aria-pressed="true"
+          >
+            Todas
+            <span>{changelogCounts.all}</span>
+          </button>
+
+          <button
+            type="button"
+            class="release-page-filter"
+            data-changelog-filter="published"
+            aria-pressed="false"
+          >
+            <i
+              class="release-page-filter-led release-page-filter-led--published"
+              aria-hidden="true"
+            ></i>
+
+            Publicadas
+            <span>{changelogCounts.published}</span>
+          </button>
+
+          <button
+            type="button"
+            class="release-page-filter"
+            data-changelog-filter="in-progress"
+            aria-pressed="false"
+          >
+            <i
+              class="release-page-filter-led release-page-filter-led--in-progress"
+              aria-hidden="true"
+            ></i>
+
+            Desenvolvimento
+            <span>{changelogCounts.inProgress}</span>
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="site-page-section">
+  <section
+    class="site-page-section modules-page-section release-page-section"
+  >
     <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Versões</p>
-        <h2>Publicações e desenvolvimento atual</h2>
-        <p>Lista de mudanças registradas no repositório.</p>
+      <div class="modules-page-heading release-page-heading">
+        <h2>
+          Histórico de versões
+        </h2>
       </div>
 
-      <div class="autom8-timeline">
-        {changelog.map((release) => (
-          <article class="autom8-release-card">
-            <div class="autom8-release-card__header">
-              <div>
-                <span class="autom8-version-badge">
-                  {release.version}
-                </span>
+      <div
+        class="changelog-page-list"
+        data-changelog-list
+      >
+        {changelogEntries.map((release, index) => (
+          <details
+            class:list={[
+              'release-page-card',
+              'changelog-page-card',
+              `release-page-card--${release.statusKey}`
+            ]}
+            open={index === 0}
+            data-changelog-card
+            data-status={release.statusKey}
+            data-search={`${release.version} ${release.date} ${release.status} ${release.title} ${release.changes.join(' ')}`.toLowerCase()}
+          >
+            <summary class="changelog-page-card__summary">
+              <div class="release-page-card__identity">
+                <div class="changelog-page-card__version-line">
+                  <span class="release-page-version">
+                    {release.version}
+                  </span>
 
-                <h3>{release.title}</h3>
+                  <time datetime={release.date}>
+                    {release.date}
+                  </time>
+                </div>
 
-                <p class="mt-2 text-sm text-slate-400">
-                  {release.date}
-                </p>
+                <h3>
+                  {release.title}
+                </h3>
               </div>
 
-              <span class="autom8-status-badge">
-                {release.status}
-              </span>
-            </div>
+              <div class="changelog-page-card__summary-side">
+                <span
+                  class:list={[
+                    'release-page-status',
+                    `release-page-status--${release.statusKey}`
+                  ]}
+                >
+                  <span aria-hidden="true"></span>
+                  {release.status}
+                </span>
 
-            <ul>
-              {release.changes.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </article>
+                <svg
+                  class="changelog-page-card__chevron"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="m7 10 5 5 5-5"></path>
+                </svg>
+              </div>
+            </summary>
+
+            <div class="changelog-page-card__content">
+              <ul class="release-page-items">
+                {release.changes.map((item) => (
+                  <li>
+                    <span
+                      class="release-page-item-marker"
+                      aria-hidden="true"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path d="m6 12 4 4 8-9"></path>
+                      </svg>
+                    </span>
+
+                    <span>
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </details>
         ))}
+      </div>
+
+      <div
+        class="release-page-empty"
+        data-changelog-empty
+        hidden
+      >
+        <span
+          class="modules-page-empty__icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="11"
+              cy="11"
+              r="6.5"
+            ></circle>
+
+            <path d="m16 16 4.2 4.2"></path>
+          </svg>
+        </span>
+
+        <strong>
+          Nenhuma versão encontrada
+        </strong>
+
+        <p>
+          Tente pesquisar outra versão, data ou alteração.
+        </p>
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    // AutoM8 changelog search and filters
+
+    const changelogSearch = document.querySelector(
+      '[data-changelog-search]'
+    );
+
+    const changelogEmpty = document.querySelector(
+      '[data-changelog-empty]'
+    );
+
+    const changelogCards = Array.from(
+      document.querySelectorAll(
+        '[data-changelog-card]'
+      )
+    );
+
+    const changelogFilters = Array.from(
+      document.querySelectorAll(
+        '[data-changelog-filter]'
+      )
+    );
+
+    let activeChangelogFilter = 'all';
+
+    const normalizeChangelogSearch = (value) => (
+      value
+        .toLocaleLowerCase('pt-BR')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+    );
+
+    changelogCards.forEach((card) => {
+      card.dataset.normalizedSearch =
+        normalizeChangelogSearch(
+          card.dataset.search || ''
+        );
+    });
+
+    const updateChangelog = () => {
+      const searchValue =
+        normalizeChangelogSearch(
+          changelogSearch?.value || ''
+        );
+
+      let visibleCards = 0;
+
+      changelogCards.forEach((card) => {
+        const matchesStatus =
+          activeChangelogFilter === 'all' ||
+          card.dataset.status ===
+            activeChangelogFilter;
+
+        const matchesSearch =
+          !searchValue ||
+          (
+            card.dataset.normalizedSearch || ''
+          ).includes(searchValue);
+
+        const shouldDisplay =
+          matchesStatus &&
+          matchesSearch;
+
+        card.hidden = !shouldDisplay;
+
+        if (shouldDisplay) {
+          visibleCards += 1;
+
+          if (searchValue) {
+            card.open = true;
+          }
+        }
+      });
+
+      if (changelogEmpty) {
+        changelogEmpty.hidden =
+          visibleCards !== 0;
+      }
+    };
+
+    changelogFilters.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeChangelogFilter =
+          button.dataset.changelogFilter ||
+          'all';
+
+        changelogFilters.forEach(
+          (filterButton) => {
+            const isActive =
+              filterButton === button;
+
+            filterButton.classList.toggle(
+              'release-page-filter--active',
+              isActive
+            );
+
+            filterButton.setAttribute(
+              'aria-pressed',
+              String(isActive)
+            );
+          }
+        );
+
+        updateChangelog();
+      });
+    });
+
+    changelogSearch?.addEventListener(
+      'input',
+      updateChangelog
+    );
+  </script>
 </BaseLayout>

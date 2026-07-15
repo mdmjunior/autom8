@@ -1,0 +1,166 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = "/branding/logo-autom8-site.png",
+  type = 'website',
+  noindex = false
+} = Astro.props;
+
+const fallbackSite = new URL(
+  "https://autom8.oslabs.com.br"
+);
+
+const site = Astro.site ?? fallbackSite;
+
+const normalizedPath =
+  Astro.url.pathname === '/'
+    ? '/'
+    : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
+
+const canonicalUrl = new URL(
+  normalizedPath,
+  site
+);
+
+const socialImageUrl = new URL(
+  image,
+  site
+);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'AutoM8',
+  alternateName: 'AutoM8 - Linux Management Suite',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Linux',
+  description,
+  url: canonicalUrl.toString(),
+  image: socialImageUrl.toString(),
+  softwareVersion: '0.2.0',
+  author: {
+    '@type': 'Organization',
+    name: 'OSLabs',
+    url: 'https://oslabs.com.br'
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'BRL'
+  }
+};
+---
+
+<title>{title}</title>
+
+<meta
+  name="description"
+  content={description}
+/>
+
+<meta
+  name="application-name"
+  content="AutoM8"
+/>
+
+<meta
+  name="theme-color"
+  content="#020617"
+/>
+
+<meta
+  name="color-scheme"
+  content="dark"
+/>
+
+<meta
+  name="robots"
+  content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
+  data-autom8-seo="robots"
+/>
+
+<link
+  rel="canonical"
+  href={canonicalUrl.toString()}
+/>
+
+<link
+  rel="manifest"
+  href="/site.webmanifest"
+/>
+
+<link rel="icon" href="/branding/favicon.svg" type="image/svg+xml" />
+
+<meta
+  property="og:locale"
+  content="pt_BR"
+/>
+
+<meta
+  property="og:type"
+  content={type}
+/>
+
+<meta
+  property="og:site_name"
+  content="AutoM8"
+/>
+
+<meta
+  property="og:title"
+  content={title}
+/>
+
+<meta
+  property="og:description"
+  content={description}
+/>
+
+<meta
+  property="og:url"
+  content={canonicalUrl.toString()}
+/>
+
+<meta
+  property="og:image"
+  content={socialImageUrl.toString()}
+/>
+
+<meta
+  property="og:image:alt"
+  content="AutoM8 - Linux Management Suite"
+/>
+
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+/>
+
+<meta
+  name="twitter:title"
+  content={title}
+/>
+
+<meta
+  name="twitter:description"
+  content={description}
+/>
+
+<meta
+  name="twitter:image"
+  content={socialImageUrl.toString()}
+/>
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(structuredData)}
+></script>

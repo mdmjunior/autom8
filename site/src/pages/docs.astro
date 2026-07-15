@@ -2,45 +2,34 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import documentation from '../data/documentation.json';
 
-const availableCommands = documentation.commands.filter(
-  (item) => item.status === 'available'
-);
-
-const evolvingCommands = documentation.commands.filter(
-  (item) => item.status !== 'available'
-);
-
 const publicRequirements = documentation.requirements.filter(
-  (item): item is string => typeof item === 'string'
+  (item) => typeof item === 'string'
 );
 
-const statusLabel: Record<string, string> = {
+const statusLabel = {
   available: 'Disponível',
   partial: 'Parcial',
   planned: 'Planejado'
 };
 
-const statusClass: Record<string, string> = {
-  available: 'autom8-status-badge',
-  partial: 'autom8-version-badge',
-  planned: 'autom8-card-kicker'
-};
-
 const compatibility = [
   {
     name: 'Ubuntu Desktop',
-    status: 'Validada',
+    status: 'available',
+    statusText: 'Validada',
     detail: 'Fluxos principais validados com apt.'
   },
   {
     name: 'Fedora Workstation',
-    status: 'Validada',
+    status: 'available',
+    statusText: 'Validada',
     detail: 'Fluxos principais validados com dnf.'
   },
   {
     name: 'Outras distribuições',
-    status: 'Compatibilidade',
-    detail: 'Há suporte por gerenciador para zypper e pacman, com cobertura de testes diferente.'
+    status: 'partial',
+    statusText: 'Compatibilidade',
+    detail: 'Suporte por gerenciador para zypper e pacman, com cobertura de testes diferente.'
   }
 ];
 
@@ -66,188 +55,773 @@ const repositoryDocs = [
     href: 'https://github.com/mdmjunior/autom8/blob/main/SECURITY.md'
   }
 ];
+
+const documentationSections = [
+  {
+    id: 'instalacao',
+    label: 'Instalação'
+  },
+  {
+    id: 'compatibilidade',
+    label: 'Compatibilidade'
+  },
+  {
+    id: 'comandos',
+    label: 'Comandos'
+  },
+  {
+    id: 'ajuda',
+    label: 'Ajuda'
+  },
+  {
+    id: 'repositorio',
+    label: 'Repositório'
+  }
+];
 ---
 
 <BaseLayout
   title="Documentação · AutoM8"
-  description="Guia conciso para instalar, validar e usar o AutoM8."
+  description="Guia para instalar, validar e usar o AutoM8."
 >
-  <section class="site-page-hero">
+  <section
+    class="site-page-hero modules-page-hero docs-page-hero"
+  >
     <div class="site-page-hero__inner">
-      <p class="page-eyebrow">Documentação</p>
-      <h1 class="page-title">Instale, valide e use.</h1>
-      <p class="page-description">
-        Guia rápido da versão {documentation.product.currentVersion}.
-        A documentação técnica permanece no repositório.
-      </p>
+      <h1 class="modules-page-visually-hidden">
+        Documentação do AutoM8
+      </h1>
 
-      <div class="page-actions">
-        <a href="#instalacao" class="autom8-primary-button">Instalar</a>
-        <a href="#comandos" class="autom8-secondary-button">Comandos</a>
-      </div>
-    </div>
-  </section>
+      <div
+        class="modules-page-toolbar docs-page-toolbar"
+        aria-label="Buscar na documentação"
+      >
+        <label class="modules-page-search">
+          <span class="modules-page-search__field">
+            <span
+              class="modules-page-search__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6.5"
+                ></circle>
 
-  <section id="instalacao" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Início rápido</p>
-        <h2>Instalação oficial</h2>
-        <p>
-          Execute como usuário comum com permissão de sudo.
-          O instalador bloqueia execução direta como root.
-        </p>
-      </div>
-
-      <div class="autom8-command-panel">
-        <div class="autom8-command-panel__header">
-          <span>terminal</span>
-          <strong>instalar</strong>
-        </div>
-        <pre><code>{documentation.install.command}</code></pre>
-      </div>
-
-      <div class="autom8-command-panel mt-6">
-        <div class="autom8-command-panel__header">
-          <span>terminal</span>
-          <strong>primeiro uso</strong>
-        </div>
-        <pre><code>{documentation.install.after.join('\n')}</code></pre>
-      </div>
-    </div>
-  </section>
-
-  <section id="compatibilidade" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Compatibilidade</p>
-        <h2>Ambientes suportados</h2>
-        <p>
-          O suporte administrativo depende do gerenciador de pacotes
-          reconhecido e da cobertura de testes da distribuição.
-        </p>
-      </div>
-
-      <div class="autom8-content-grid autom8-content-grid--three">
-        {compatibility.map((item) => (
-          <article class="autom8-standard-card">
-            <span class="autom8-status-badge">{item.status}</span>
-            <h3>{item.name}</h3>
-            <p>{item.detail}</p>
-          </article>
-        ))}
-      </div>
-
-      <div class="autom8-timeline mt-8">
-        {publicRequirements.map((item) => (
-          <article class="autom8-release-card">
-            <p>{item}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section id="comandos" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">CLI</p>
-        <h2>Comandos disponíveis</h2>
-        <p>
-          Use <code>autom8 help</code> para a lista local e
-          <code> autom8 help &lt;comando&gt;</code> para detalhes.
-        </p>
-      </div>
-
-      <div class="autom8-table-card">
-        <table class="autom8-data-table">
-          <thead>
-            <tr>
-              <th>Comando</th>
-              <th>Desde</th>
-              <th>Descrição</th>
-            </tr>
-          </thead>
-          <tbody>
-            {availableCommands.map((item) => (
-              <tr>
-                <td><code>{item.command}</code></td>
-                <td>{item.since}</td>
-                <td>{item.summary}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div class="section-heading mt-12">
-        <p class="section-eyebrow text-blue-300">Em evolução</p>
-        <h2>Parcial e planejado</h2>
-        <p>
-          Estes comandos existem na interface, mas ainda não representam
-          funcionalidade completa.
-        </p>
-      </div>
-
-      <div class="autom8-content-grid autom8-content-grid--three">
-        {evolvingCommands.map((item) => (
-          <article class="autom8-standard-card">
-            <span class={statusClass[item.status]}>
-              {statusLabel[item.status]}
+                <path d="m16 16 4.2 4.2"></path>
+              </svg>
             </span>
-            <h3><code>{item.command}</code></h3>
-            <p>{item.summary}</p>
-          </article>
-        ))}
+
+            <input
+              type="search"
+              placeholder="Busque comandos, instalação, compatibilidade ou ajuda"
+              autocomplete="off"
+              aria-label="Buscar na documentação"
+              data-docs-search
+            />
+          </span>
+        </label>
       </div>
     </div>
   </section>
 
-  <section id="ajuda" class="site-page-section">
+  <section class="site-page-section docs-page-section">
     <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Ajuda</p>
-        <h2>Problemas comuns</h2>
-        <p>Verificações rápidas antes de abrir um relato.</p>
+      <div class="docs-page-mobile-navigation">
+        <label for="docs-section-select">
+          Ir para uma seção
+        </label>
+
+        <select
+          id="docs-section-select"
+          data-docs-section-select
+        >
+          {documentationSections.map((section) => (
+            <option value={section.id}>
+              {section.label}
+            </option>
+          ))}
+        </select>
       </div>
 
-      <div class="autom8-content-grid autom8-content-grid--three">
-        {documentation.troubleshooting.map((item) => (
-          <article class="autom8-standard-card">
-            <span class="autom8-card-kicker">solução</span>
-            <h3>{item.title}</h3>
-            <p>{item.solution}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
+      <div class="docs-page-layout">
+        <aside
+          class="docs-page-sidebar"
+          aria-label="Navegação da documentação"
+        >
+          <p class="docs-page-sidebar__title">
+            Nesta página
+          </p>
 
-  <section id="repositorio" class="site-page-section">
-    <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Repositório</p>
-        <h2>Documentação técnica</h2>
-        <p>
-          Arquitetura, contribuição, segurança e operação ficam junto ao
-          código para acompanhar cada mudança.
-        </p>
-      </div>
+          <nav class="docs-page-navigation">
+            {documentationSections.map((section, index) => (
+              <a
+                href={`#${section.id}`}
+                class:list={[
+                  'docs-page-navigation__link',
+                  index === 0
+                    ? 'docs-page-navigation__link--active'
+                    : ''
+                ]}
+                data-docs-nav={section.id}
+              >
+                <span aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
 
-      <div class="autom8-content-grid autom8-content-grid--three">
-        {repositoryDocs.map((item) => (
-          <a
-            class="autom8-standard-card"
-            href={item.href}
-            target="_blank"
-            rel="noreferrer"
+                {section.label}
+              </a>
+            ))}
+          </nav>
+
+          <div class="docs-page-sidebar__version">
+            <span>Versão atual</span>
+            <strong>
+              {documentation.product.currentVersion}
+            </strong>
+          </div>
+        </aside>
+
+        <div class="docs-page-content">
+          <section
+            id="instalacao"
+            class="docs-page-panel"
+            data-docs-section
+            data-docs-section-id="instalacao"
           >
-            <span class="autom8-card-kicker">GitHub</span>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </a>
-        ))}
+            <header class="docs-page-panel__heading">
+              <span class="docs-page-panel__number">
+                01
+              </span>
+
+              <div>
+                <h2>
+                  Instalação
+                </h2>
+
+                <p>
+                  Instale como usuário comum com permissão de sudo.
+                  A execução direta como root é bloqueada.
+                </p>
+              </div>
+            </header>
+
+            <div
+              class="docs-page-installation"
+              data-docs-search-item
+              data-search={`instalação instalar primeiro uso sudo root ${documentation.install.command} ${documentation.install.after.join(' ')} ${documentation.install.notes.join(' ')}`.toLowerCase()}
+            >
+              <article class="docs-page-command">
+                <header class="docs-page-command__header">
+                  <span>
+                    Instalação oficial
+                  </span>
+
+                  <button
+                    type="button"
+                    class="docs-page-copy-button"
+                    data-copy-command
+                    data-copy-value={documentation.install.command}
+                    aria-label="Copiar comando de instalação"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect
+                        x="9"
+                        y="9"
+                        width="10"
+                        height="10"
+                        rx="2"
+                      ></rect>
+
+                      <path d="M15 9V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                    </svg>
+
+                    <span data-copy-label>
+                      Copiar
+                    </span>
+                  </button>
+                </header>
+
+                <pre><code>{documentation.install.command}</code></pre>
+              </article>
+
+              <article class="docs-page-command">
+                <header class="docs-page-command__header">
+                  <span>
+                    Primeiro uso
+                  </span>
+
+                  <button
+                    type="button"
+                    class="docs-page-copy-button"
+                    data-copy-command
+                    data-copy-value={documentation.install.after.join('\n')}
+                    aria-label="Copiar comandos do primeiro uso"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect
+                        x="9"
+                        y="9"
+                        width="10"
+                        height="10"
+                        rx="2"
+                      ></rect>
+
+                      <path d="M15 9V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                    </svg>
+
+                    <span data-copy-label>
+                      Copiar
+                    </span>
+                  </button>
+                </header>
+
+                <pre><code>{documentation.install.after.join('\n')}</code></pre>
+              </article>
+
+              <ul class="docs-page-notes">
+                {documentation.install.notes.map((note) => (
+                  <li>
+                    <span aria-hidden="true"></span>
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section
+            id="compatibilidade"
+            class="docs-page-panel"
+            data-docs-section
+            data-docs-section-id="compatibilidade"
+          >
+            <header class="docs-page-panel__heading">
+              <span class="docs-page-panel__number">
+                02
+              </span>
+
+              <div>
+                <h2>
+                  Compatibilidade
+                </h2>
+
+                <p>
+                  O suporte depende do gerenciador de pacotes
+                  reconhecido e da cobertura de testes.
+                </p>
+              </div>
+            </header>
+
+            <div class="docs-page-info-grid">
+              {compatibility.map((item) => (
+                <article
+                  class="docs-page-info-card"
+                  data-docs-search-item
+                  data-search={`compatibilidade ${item.name} ${item.statusText} ${item.detail}`.toLowerCase()}
+                >
+                  <div class="docs-page-info-card__heading">
+                    <h3>
+                      {item.name}
+                    </h3>
+
+                    <span
+                      class:list={[
+                        'docs-page-status',
+                        `docs-page-status--${item.status}`
+                      ]}
+                    >
+                      <span aria-hidden="true"></span>
+                      {item.statusText}
+                    </span>
+                  </div>
+
+                  <p>
+                    {item.detail}
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            <div class="docs-page-requirements">
+              {publicRequirements.map((item) => (
+                <article
+                  class="docs-page-requirement"
+                  data-docs-search-item
+                  data-search={`compatibilidade requisito ${item}`.toLowerCase()}
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m5 12 4 4L19 6"></path>
+                  </svg>
+
+                  <p>
+                    {item}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section
+            id="comandos"
+            class="docs-page-panel"
+            data-docs-section
+            data-docs-section-id="comandos"
+          >
+            <header class="docs-page-panel__heading">
+              <span class="docs-page-panel__number">
+                03
+              </span>
+
+              <div>
+                <h2>
+                  Comandos
+                </h2>
+
+                <p>
+                  Use <code>autom8 help</code> para consultar
+                  a lista local e os detalhes de cada comando.
+                </p>
+              </div>
+            </header>
+
+            <div class="docs-page-command-grid">
+              {documentation.commands.map((item) => (
+                <article
+                  class="docs-page-command-card"
+                  data-docs-search-item
+                  data-search={`comando ${item.command} ${item.summary} ${statusLabel[item.status]} ${item.since}`.toLowerCase()}
+                >
+                  <div class="docs-page-command-card__heading">
+                    <code>
+                      {item.command}
+                    </code>
+
+                    <span
+                      class:list={[
+                        'docs-page-status',
+                        `docs-page-status--${item.status}`
+                      ]}
+                    >
+                      <span aria-hidden="true"></span>
+                      {statusLabel[item.status]}
+                    </span>
+                  </div>
+
+                  <p>
+                    {item.summary}
+                  </p>
+
+                  <span class="docs-page-command-card__version">
+                    Desde {item.since}
+                  </span>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section
+            id="ajuda"
+            class="docs-page-panel"
+            data-docs-section
+            data-docs-section-id="ajuda"
+          >
+            <header class="docs-page-panel__heading">
+              <span class="docs-page-panel__number">
+                04
+              </span>
+
+              <div>
+                <h2>
+                  Ajuda
+                </h2>
+
+                <p>
+                  Verificações rápidas para os problemas
+                  mais frequentes.
+                </p>
+              </div>
+            </header>
+
+            <div class="docs-page-faq-list">
+              {documentation.troubleshooting.map((item) => (
+                <details
+                  class="docs-page-faq"
+                  data-docs-search-item
+                  data-search={`ajuda problema solução ${item.title} ${item.solution}`.toLowerCase()}
+                >
+                  <summary>
+                    <span
+                      class="docs-page-faq__icon"
+                      aria-hidden="true"
+                    >
+                      ?
+                    </span>
+
+                    <strong>
+                      {item.title}
+                    </strong>
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m7 10 5 5 5-5"></path>
+                    </svg>
+                  </summary>
+
+                  <p>
+                    {item.solution}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section
+            id="repositorio"
+            class="docs-page-panel"
+            data-docs-section
+            data-docs-section-id="repositorio"
+          >
+            <header class="docs-page-panel__heading">
+              <span class="docs-page-panel__number">
+                05
+              </span>
+
+              <div>
+                <h2>
+                  Documentação técnica
+                </h2>
+
+                <p>
+                  Arquitetura, contribuição e segurança
+                  permanecem junto ao código.
+                </p>
+              </div>
+            </header>
+
+            <div class="docs-page-repository-grid">
+              {repositoryDocs.map((item) => (
+                <a
+                  class="docs-page-repository-card"
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-docs-search-item
+                  data-search={`repositório github documentação técnica ${item.title} ${item.description}`.toLowerCase()}
+                >
+                  <span class="docs-page-repository-card__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M14 5h5v5"></path>
+                      <path d="m10 14 9-9"></path>
+                      <path d="M19 13v6H5V5h6"></path>
+                    </svg>
+                  </span>
+
+                  <div>
+                    <h3>
+                      {item.title}
+                    </h3>
+
+                    <p>
+                      {item.description}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <div
+            class="docs-page-empty"
+            data-docs-empty
+            hidden
+          >
+            <span
+              class="modules-page-empty__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6.5"
+                ></circle>
+
+                <path d="m16 16 4.2 4.2"></path>
+              </svg>
+            </span>
+
+            <strong>
+              Nenhum conteúdo encontrado
+            </strong>
+
+            <p>
+              Tente pesquisar outro comando, recurso ou problema.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    // AutoM8 documentation interface
+
+    const docsSearch = document.querySelector(
+      '[data-docs-search]'
+    );
+
+    const docsEmpty = document.querySelector(
+      '[data-docs-empty]'
+    );
+
+    const docsSections = Array.from(
+      document.querySelectorAll(
+        '[data-docs-section]'
+      )
+    );
+
+    const docsSearchItems = Array.from(
+      document.querySelectorAll(
+        '[data-docs-search-item]'
+      )
+    );
+
+    const docsNavigationLinks = Array.from(
+      document.querySelectorAll(
+        '[data-docs-nav]'
+      )
+    );
+
+    const docsSectionSelect = document.querySelector(
+      '[data-docs-section-select]'
+    );
+
+    const normalizeDocsSearch = (value) => (
+      value
+        .toLocaleLowerCase('pt-BR')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+    );
+
+    docsSearchItems.forEach((item) => {
+      item.dataset.normalizedSearch =
+        normalizeDocsSearch(
+          item.dataset.search || ''
+        );
+    });
+
+    const updateDocsSearch = () => {
+      const searchValue = normalizeDocsSearch(
+        docsSearch?.value || ''
+      );
+
+      let visibleSections = 0;
+
+      docsSearchItems.forEach((item) => {
+        const shouldDisplay =
+          !searchValue ||
+          (
+            item.dataset.normalizedSearch || ''
+          ).includes(searchValue);
+
+        item.hidden = !shouldDisplay;
+      });
+
+      docsSections.forEach((section) => {
+        const sectionItems = Array.from(
+          section.querySelectorAll(
+            '[data-docs-search-item]'
+          )
+        );
+
+        const sectionVisible =
+          sectionItems.some(
+            (item) => !item.hidden
+          );
+
+        section.hidden = !sectionVisible;
+
+        if (sectionVisible) {
+          visibleSections += 1;
+        }
+
+        const sectionId =
+          section.dataset.docsSectionId;
+
+        const navigationLink =
+          docsNavigationLinks.find(
+            (link) =>
+              link.dataset.docsNav === sectionId
+          );
+
+        if (navigationLink) {
+          navigationLink.hidden =
+            !sectionVisible;
+        }
+
+        const selectOption =
+          docsSectionSelect?.querySelector(
+            `option[value="${sectionId}"]`
+          );
+
+        if (selectOption) {
+          selectOption.hidden =
+            !sectionVisible;
+        }
+      });
+
+      if (docsEmpty) {
+        docsEmpty.hidden =
+          visibleSections !== 0;
+      }
+    };
+
+    docsSearch?.addEventListener(
+      'input',
+      updateDocsSearch
+    );
+
+    docsSectionSelect?.addEventListener(
+      'change',
+      () => {
+        const target = document.getElementById(
+          docsSectionSelect.value
+        );
+
+        target?.scrollIntoView({
+          behavior:
+            document.documentElement.hasAttribute(
+              'data-reduced-motion'
+            )
+              ? 'auto'
+              : 'smooth',
+          block: 'start'
+        });
+      }
+    );
+
+    const setActiveDocsNavigation = (
+      sectionId
+    ) => {
+      docsNavigationLinks.forEach((link) => {
+        const isActive =
+          link.dataset.docsNav === sectionId;
+
+        link.classList.toggle(
+          'docs-page-navigation__link--active',
+          isActive
+        );
+
+        if (isActive) {
+          link.setAttribute(
+            'aria-current',
+            'location'
+          );
+        } else {
+          link.removeAttribute(
+            'aria-current'
+          );
+        }
+      });
+
+      if (
+        docsSectionSelect &&
+        docsSectionSelect.value !== sectionId
+      ) {
+        docsSectionSelect.value =
+          sectionId;
+      }
+    };
+
+    if ('IntersectionObserver' in window) {
+      const docsObserver =
+        new IntersectionObserver(
+          (entries) => {
+            const visibleEntry = entries
+              .filter(
+                (entry) =>
+                  entry.isIntersecting &&
+                  !entry.target.hidden
+              )
+              .sort(
+                (first, second) =>
+                  second.intersectionRatio -
+                  first.intersectionRatio
+              )[0];
+
+            if (!visibleEntry) {
+              return;
+            }
+
+            setActiveDocsNavigation(
+              visibleEntry.target.dataset
+                .docsSectionId
+            );
+          },
+          {
+            rootMargin:
+              '-18% 0px -62% 0px',
+            threshold: [
+              0,
+              0.2,
+              0.5
+            ]
+          }
+        );
+
+      docsSections.forEach((section) => {
+        docsObserver.observe(section);
+      });
+    }
+
+    document.querySelectorAll(
+      '[data-copy-command]'
+    ).forEach((button) => {
+      button.addEventListener(
+        'click',
+        async () => {
+          const copyValue =
+            button.dataset.copyValue || '';
+
+          const copyLabel =
+            button.querySelector(
+              '[data-copy-label]'
+            );
+
+          try {
+            await navigator.clipboard.writeText(
+              copyValue
+            );
+
+            if (copyLabel) {
+              copyLabel.textContent =
+                'Copiado';
+            }
+
+            button.classList.add(
+              'docs-page-copy-button--copied'
+            );
+
+            window.setTimeout(() => {
+              if (copyLabel) {
+                copyLabel.textContent =
+                  'Copiar';
+              }
+
+              button.classList.remove(
+                'docs-page-copy-button--copied'
+              );
+            }, 1600);
+          } catch {
+            if (copyLabel) {
+              copyLabel.textContent =
+                'Erro';
+            }
+          }
+        }
+      );
+    });
+  </script>
 </BaseLayout>

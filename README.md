@@ -1,6 +1,6 @@
 # AutoM8
 
-AutoM8 é uma CLI local para instalar aplicativos, aplicar perfis e executar manutenção Linux com confirmação, logs e modo de simulação.
+AutoM8 é uma CLI local para instalar aplicativos, aplicar perfis e executar manutenção em desktops e servidores Linux com confirmações, logs e modo de simulação.
 
 [Site oficial](https://autom8.oslabs.com.br) · [Documentação](https://autom8.oslabs.com.br/docs) · [Releases](https://github.com/mdmjunior/autom8/releases)
 

@@ -38,6 +38,15 @@ jobs:
       - name: Validate website
         run: ./scripts/website/check.sh
 
+      - name: Validate Swarm stack
+        env:
+          AUTOM8_SITE_IMAGE: autom8-site:ci
+          AUTOM8_REPLICAS: '1'
+        run: |
+          docker stack config \
+            --compose-file infra/docker-stack.yml \
+            >/dev/null
+
       - name: Build container image
         run: docker build --tag autom8-site:ci site
 

@@ -8,10 +8,17 @@ const statusLabel = {
   planned: 'Planejado'
 };
 
-const statusClass = {
-  available: 'autom8-status-badge',
-  partial: 'autom8-version-badge',
-  planned: 'autom8-card-kicker'
+const moduleCounts = {
+  all: modules.length,
+  available: modules.filter(
+    (item) => item.status === 'available'
+  ).length,
+  partial: modules.filter(
+    (item) => item.status === 'partial'
+  ).length,
+  planned: modules.filter(
+    (item) => item.status === 'planned'
+  ).length
 };
 ---
 
@@ -19,36 +26,309 @@ const statusClass = {
   title="Módulos · AutoM8"
   description="Conheça os módulos disponíveis, parciais e planejados do AutoM8."
 >
-  <section class="site-page-hero">
+  <section class="site-page-hero modules-page-hero">
     <div class="site-page-hero__inner">
-      <p class="page-eyebrow">Módulos</p>
-      <h1 class="page-title">Uma suíte modular para manter o Linux em ordem.</h1>
-      <p class="page-description">
-        Cada módulo resolve uma tarefa específica e possui status explícito para separar o que já está disponível do que está planejado.
-      </p>
+      <h1 class="modules-page-visually-hidden">
+        Módulos do AutoM8
+      </h1>
+
+      <div
+        class="modules-page-toolbar"
+        aria-label="Buscar e filtrar módulos"
+      >
+        <label class="modules-page-search">
+          <span class="modules-page-search__field">
+            <span
+              class="modules-page-search__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6.5"
+                ></circle>
+
+                <path d="m16 16 4.2 4.2"></path>
+              </svg>
+            </span>
+
+            <input
+              type="search"
+              placeholder="Busque um módulo por nome ou recurso"
+              autocomplete="off"
+              aria-label="Buscar módulos"
+              data-modules-search
+            />
+          </span>
+        </label>
+
+        <div
+          class="modules-page-filters"
+          aria-label="Filtrar módulos por status"
+        >
+          <button
+            type="button"
+            class="modules-page-filter modules-page-filter--active"
+            data-module-filter="all"
+            aria-pressed="true"
+          >
+            Todos
+            <span>{moduleCounts.all}</span>
+          </button>
+
+          <button
+            type="button"
+            class="modules-page-filter"
+            data-module-filter="available"
+            aria-pressed="false"
+          >
+            <span
+              class="modules-page-filter-led modules-page-filter-led--available"
+              aria-hidden="true"
+            ></span>
+
+            Disponíveis
+            <span>{moduleCounts.available}</span>
+          </button>
+
+          <button
+            type="button"
+            class="modules-page-filter"
+            data-module-filter="partial"
+            aria-pressed="false"
+          >
+            <span
+              class="modules-page-filter-led modules-page-filter-led--partial"
+              aria-hidden="true"
+            ></span>
+
+            Parciais
+            <span>{moduleCounts.partial}</span>
+          </button>
+
+          <button
+            type="button"
+            class="modules-page-filter"
+            data-module-filter="planned"
+            aria-pressed="false"
+          >
+            <span
+              class="modules-page-filter-led modules-page-filter-led--planned"
+              aria-hidden="true"
+            ></span>
+
+            Planejados
+            <span>{moduleCounts.planned}</span>
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="site-page-section">
+  <section class="site-page-section modules-page-section">
     <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Recursos</p>
-        <h2>Módulos disponíveis e planejados</h2>
-        <p>A base inicial cobre manutenção, diagnóstico e preparação do sistema, com evolução incremental por versão.</p>
+      <div class="modules-page-heading">
+        <h2>
+          Explore os módulos
+        </h2>
       </div>
 
-      <div class="autom8-content-grid autom8-content-grid--three">
+      <div
+        class="modules-page-grid"
+        data-modules-grid
+      >
         {modules.map((item) => (
-          <article class="autom8-standard-card autom8-standard-card--module">
-            <div class="module-card-top">
-              <span class={statusClass[item.status]}>{statusLabel[item.status]}</span>
-              <span class="module-command">{item.command}</span>
+          <article
+            class:list={[
+              'modules-page-card',
+              `modules-page-card--${item.status}`
+            ]}
+            data-module-card
+            data-status={item.status}
+            data-search={`${item.name} ${item.description} ${statusLabel[item.status]}`.toLowerCase()}
+          >
+            <div class="modules-page-card__top">
+              <div class="modules-page-card__identity">
+                <span
+                  class="modules-page-card__icon"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <rect
+                      x="4"
+                      y="4"
+                      width="16"
+                      height="16"
+                      rx="4"
+                    ></rect>
+
+                    <path d="m8 9 2.5 2.5L8 14"></path>
+                    <path d="M13 14h3"></path>
+                  </svg>
+                </span>
+
+                <h3>
+                  {item.name}
+                </h3>
+              </div>
+
+              <span
+                class:list={[
+                  'modules-page-status-led',
+                  `modules-page-status-led--${item.status}`
+                ]}
+                role="img"
+                aria-label={statusLabel[item.status]}
+                title={statusLabel[item.status]}
+              >
+                <span class="modules-page-visually-hidden">
+                  {statusLabel[item.status]}
+                </span>
+              </span>
             </div>
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
+
+            <p class="modules-page-card__description">
+              {item.description}
+            </p>
           </article>
         ))}
       </div>
+
+      <div
+        class="modules-page-empty"
+        data-modules-empty
+        hidden
+      >
+        <span
+          class="modules-page-empty__icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="11"
+              cy="11"
+              r="6.5"
+            ></circle>
+
+            <path d="m16 16 4.2 4.2"></path>
+          </svg>
+        </span>
+
+        <strong>
+          Nenhum módulo encontrado
+        </strong>
+
+        <p>
+          Tente outro termo ou selecione um filtro diferente.
+        </p>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    // AutoM8 modules catalog filters
+
+    const modulesSearch = document.querySelector(
+      '[data-modules-search]'
+    );
+
+    const modulesEmpty = document.querySelector(
+      '[data-modules-empty]'
+    );
+
+    const moduleCards = Array.from(
+      document.querySelectorAll(
+        '[data-module-card]'
+      )
+    );
+
+    const moduleFilters = Array.from(
+      document.querySelectorAll(
+        '[data-module-filter]'
+      )
+    );
+
+    let activeModuleFilter = 'all';
+
+    const normalizeModuleSearch = (value) => (
+      value
+        .toLocaleLowerCase('pt-BR')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+    );
+
+    moduleCards.forEach((card) => {
+      card.dataset.normalizedSearch =
+        normalizeModuleSearch(
+          card.dataset.search || ''
+        );
+    });
+
+    const updateModulesCatalog = () => {
+      const searchValue = normalizeModuleSearch(
+        modulesSearch?.value || ''
+      );
+
+      let visibleModules = 0;
+
+      moduleCards.forEach((card) => {
+        const matchesStatus =
+          activeModuleFilter === 'all' ||
+          card.dataset.status === activeModuleFilter;
+
+        const matchesSearch =
+          !searchValue ||
+          (
+            card.dataset.normalizedSearch || ''
+          ).includes(searchValue);
+
+        const shouldDisplay =
+          matchesStatus &&
+          matchesSearch;
+
+        card.hidden = !shouldDisplay;
+
+        if (shouldDisplay) {
+          visibleModules += 1;
+        }
+      });
+
+      if (modulesEmpty) {
+        modulesEmpty.hidden =
+          visibleModules !== 0;
+      }
+    };
+
+    moduleFilters.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeModuleFilter =
+          button.dataset.moduleFilter || 'all';
+
+        moduleFilters.forEach((filterButton) => {
+          const isActive =
+            filterButton === button;
+
+          filterButton.classList.toggle(
+            'modules-page-filter--active',
+            isActive
+          );
+
+          filterButton.setAttribute(
+            'aria-pressed',
+            String(isActive)
+          );
+        });
+
+        updateModulesCatalog();
+      });
+    });
+
+    modulesSearch?.addEventListener(
+      'input',
+      updateModulesCatalog
+    );
+
+  </script>
 </BaseLayout>

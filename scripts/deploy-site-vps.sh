@@ -22,22 +22,39 @@ fi
 
 cd "$REPO_DIR"
 
-log "Branch atual no servidor: $(git rev-parse --abbrev-ref HEAD)"
-
 if [[ -n "$(git status --porcelain)" ]]; then
   error "O repositório remoto possui alterações locais não commitadas."
   error "Resolva antes de fazer deploy:"
+
   git status --short
   exit 1
 fi
 
-log "Atualizando código."
-git fetch origin "$BRANCH"
-git checkout "$BRANCH"
-git pull --ff-only origin "$BRANCH"
+log "Buscando a referência remota."
+git fetch --prune origin "$BRANCH"
 
-log "Garantindo permissão dos scripts."
-chmod +x infra/deploy-site.sh
+if ! git rev-parse \
+  --verify \
+  "origin/$BRANCH" \
+  >/dev/null 2>&1
+then
+  error "A branch origin/$BRANCH não foi localizada."
+  exit 1
+fi
+
+log "Atualizando código apenas por fast-forward."
+git checkout "$BRANCH"
+git merge --ff-only "origin/$BRANCH"
+
+revision="$(
+  git rev-parse --short=12 HEAD
+)"
+
+log "Revisão que será publicada: $revision"
+
+chmod +x \
+  infra/deploy-site.sh \
+  scripts/deploy-site-vps.sh
 
 log "Delegando deploy para infra/deploy-site.sh."
 exec ./infra/deploy-site.sh

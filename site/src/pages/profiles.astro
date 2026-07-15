@@ -7,46 +7,241 @@ import profiles from '../data/profiles.json';
   title="Perfis · AutoM8"
   description="Perfis disponíveis no AutoM8 para preparar ambientes Linux."
 >
-  <section class="site-page-hero">
+  <section
+    class="site-page-hero modules-page-hero profiles-page-hero"
+  >
     <div class="site-page-hero__inner">
-      <p class="page-eyebrow">Perfis</p>
-      <h1 class="page-title">Prepare o sistema conforme o uso.</h1>
-      <p class="page-description">
-        Seis perfis funcionais agrupam aplicativos do catálogo atual
-        em conjuntos revisáveis para desenvolvimento, desktop,
-        servidores, criação, containers e jogos.
-      </p>
+      <h1 class="modules-page-visually-hidden">
+        Perfis do AutoM8
+      </h1>
+
+      <div
+        class="modules-page-toolbar profiles-page-toolbar"
+        aria-label="Buscar perfis"
+      >
+        <label class="modules-page-search">
+          <span class="modules-page-search__field">
+            <span
+              class="modules-page-search__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6.5"
+                ></circle>
+
+                <path d="m16 16 4.2 4.2"></path>
+              </svg>
+            </span>
+
+            <input
+              type="search"
+              placeholder="Busque um perfil por nome, categoria ou recurso"
+              autocomplete="off"
+              aria-label="Buscar perfis"
+              data-profiles-search
+            />
+          </span>
+        </label>
+      </div>
     </div>
   </section>
 
-  <section class="site-page-section">
+  <section
+    class="site-page-section modules-page-section profiles-page-section"
+  >
     <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-blue-300">Versão 0.2.0</p>
-        <h2>Perfis disponíveis</h2>
-        <p>
-          Cada perfil pode ser listado, inspecionado, instalado ou
-          removido pelos comandos do módulo profiles.
-        </p>
+      <div class="modules-page-heading profiles-page-heading">
+        <h2>
+          Explore os perfis
+        </h2>
       </div>
 
-      <div class="autom8-content-grid autom8-content-grid--three">
+      <div
+        class="modules-page-grid profiles-page-grid"
+        data-profiles-grid
+      >
         {profiles.map((item) => (
-          <article class="autom8-standard-card">
-            <div class="module-card-top">
-              <span class="autom8-status-badge">Disponível</span>
-              <span class="module-command">{item.command}</span>
+          <article
+            class="modules-page-card profiles-page-card"
+            data-profile-card
+            data-search={`${item.name} ${item.summary} ${item.category} ${item.appsCount}`.toLowerCase()}
+          >
+            <div class="modules-page-card__top">
+              <div class="modules-page-card__identity">
+                <span
+                  class="modules-page-card__icon"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <rect
+                      x="4"
+                      y="4"
+                      width="7"
+                      height="7"
+                      rx="2"
+                    ></rect>
+
+                    <rect
+                      x="13"
+                      y="4"
+                      width="7"
+                      height="7"
+                      rx="2"
+                    ></rect>
+
+                    <rect
+                      x="4"
+                      y="13"
+                      width="7"
+                      height="7"
+                      rx="2"
+                    ></rect>
+
+                    <rect
+                      x="13"
+                      y="13"
+                      width="7"
+                      height="7"
+                      rx="2"
+                    ></rect>
+                  </svg>
+                </span>
+
+                <h3>
+                  {item.name}
+                </h3>
+              </div>
+
+              <span
+                class="modules-page-status-led modules-page-status-led--available"
+                role="img"
+                aria-label="Disponível"
+                title="Disponível"
+              >
+                <span class="modules-page-visually-hidden">
+                  Disponível
+                </span>
+              </span>
             </div>
 
-            <h3>{item.name}</h3>
-            <p>{item.summary}</p>
+            <p class="modules-page-card__description">
+              {item.summary}
+            </p>
 
-            <p class="mt-4 text-sm text-slate-500">
-              Categoria: {item.category} · {item.appsCount} apps
+            <p class="profiles-page-card__meta">
+              <span>
+                {item.category}
+              </span>
+
+              <span aria-hidden="true">
+                ·
+              </span>
+
+              <span>
+                {item.appsCount}
+                {item.appsCount === 1 ? ' aplicativo' : ' aplicativos'}
+              </span>
             </p>
           </article>
         ))}
       </div>
+
+      <div
+        class="modules-page-empty profiles-page-empty"
+        data-profiles-empty
+        hidden
+      >
+        <span
+          class="modules-page-empty__icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="11"
+              cy="11"
+              r="6.5"
+            ></circle>
+
+            <path d="m16 16 4.2 4.2"></path>
+          </svg>
+        </span>
+
+        <strong>
+          Nenhum perfil encontrado
+        </strong>
+
+        <p>
+          Tente pesquisar outro nome, categoria ou recurso.
+        </p>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    // AutoM8 profiles catalog search
+
+    const profilesSearch = document.querySelector(
+      '[data-profiles-search]'
+    );
+
+    const profilesEmpty = document.querySelector(
+      '[data-profiles-empty]'
+    );
+
+    const profileCards = Array.from(
+      document.querySelectorAll(
+        '[data-profile-card]'
+      )
+    );
+
+    const normalizeProfileSearch = (value) => (
+      value
+        .toLocaleLowerCase('pt-BR')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+    );
+
+    profileCards.forEach((card) => {
+      card.dataset.normalizedSearch =
+        normalizeProfileSearch(
+          card.dataset.search || ''
+        );
+    });
+
+    const updateProfilesCatalog = () => {
+      const searchValue = normalizeProfileSearch(
+        profilesSearch?.value || ''
+      );
+
+      let visibleProfiles = 0;
+
+      profileCards.forEach((card) => {
+        const shouldDisplay =
+          !searchValue ||
+          (
+            card.dataset.normalizedSearch || ''
+          ).includes(searchValue);
+
+        card.hidden = !shouldDisplay;
+
+        if (shouldDisplay) {
+          visibleProfiles += 1;
+        }
+      });
+
+      if (profilesEmpty) {
+        profilesEmpty.hidden =
+          visibleProfiles !== 0;
+      }
+    };
+
+    profilesSearch?.addEventListener(
+      'input',
+      updateProfilesCatalog
+    );
+  </script>
 </BaseLayout>

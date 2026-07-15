@@ -7,7 +7,7 @@
     "githubRepo": "mdmjunior/autom8",
     "currentVersion": "0.2.0",
     "currentDate": "2026-07-10",
-    "summary": "AutoM8 é uma CLI local para instalar aplicativos, aplicar perfis e executar manutenção Linux com confirmação, logs e modo de simulação.",
+    "summary": "AutoM8 é uma CLI local para instalar aplicativos, aplicar perfis e executar manutenção em desktops e servidores Linux com confirmações, logs e modo de simulação.",
     "positioning": "Automação Linux local, auditável e previsível para desktops e servidores."
   },
   "releasePolicy": {

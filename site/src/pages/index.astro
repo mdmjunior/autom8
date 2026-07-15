@@ -3,88 +3,128 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import modules from '../data/modules.json';
 import terminalSessions from '../data/terminal-sessions.json';
 import catalogSummary from '../data/catalog-summary.json';
+import documentation from '../data/documentation.json';
 
 
 
 
-const moduleStatusLabel: Record<string, string> = {
-  available: 'Disponível',
-  partial: 'Parcial',
-  planned: 'Planejado'
-};
-
-const moduleStatusClass: Record<string, string> = {
-  available: 'autom8-status-badge',
-  partial: 'autom8-version-badge',
-  planned: 'autom8-card-kicker'
-};
+const product = documentation.product;
 
 const productStats = [
   {
     value: `v${catalogSummary.version}`,
     label: 'Versão estável',
-    description: 'Release distribuída pelo instalador oficial.'
+    icon: 'version',
+    tone: 'blue'
   },
   {
     value: catalogSummary.appsCount,
     label: 'Aplicativos',
-    description: 'Apps organizados no catálogo consolidado.'
+    icon: 'apps',
+    tone: 'green'
   },
   {
     value: catalogSummary.categories.length,
     label: 'Categorias',
-    description: 'Grupos para localizar ferramentas rapidamente.'
+    icon: 'categories',
+    tone: 'violet'
   },
   {
     value: catalogSummary.profilesCount,
     label: 'Perfis',
-    description: 'Ambientes completos disponíveis na CLI.'
+    icon: 'profiles',
+    tone: 'amber'
   }
 ];
 
 const distros = [
-  { name: 'Ubuntu', slug: 'ubuntu', status: 'Validada', level: 'validated' },
-  { name: 'Fedora', slug: 'fedora', status: 'Validada', level: 'validated' },
-  { name: 'openSUSE', slug: 'opensuse', status: 'Compatível', level: 'compatible' },
-  { name: 'Arch Linux', slug: 'arch', status: 'Compatível', level: 'compatible' },
-  { name: 'Debian', slug: 'debian', status: 'Planejada', level: 'planned' },
-  { name: 'Rocky Linux', slug: 'rocky', status: 'Planejada', level: 'planned' },
-  { name: 'AlmaLinux', slug: 'alma', status: 'Planejada', level: 'planned' },
-  { name: 'Manjaro', slug: 'manjaro', status: 'Planejada', level: 'planned' }
+  {
+    name: 'Fedora',
+    slug: 'fedora'
+  },
+  {
+    name: 'Ubuntu',
+    slug: 'ubuntu'
+  },
+  {
+    name: 'Red Hat',
+    slug: 'redhat'
+  },
+  {
+    name: 'Debian',
+    slug: 'debian'
+  }
 ];
 
 const carouselItems = [
   {
     eyebrow: 'Como funciona',
-    title: 'Escolha. Revise. Execute.',
-    description: 'O AutoM8 automatiza o que é repetitivo sem esconder o processo. Você entende o que será executado antes de aplicar.',
+    description: 'Escolha uma tarefa, revise as ações propostas e confirme somente quando estiver pronto para executar.',
     type: 'text',
-    icon: '01'
+    icon: 'workflow'
   },
   {
     eyebrow: 'Segurança e transparência',
-    title: 'Automação com controle.',
-    description: 'O AutoM8 foi feito para evitar execução cega. A proposta é organizar tarefas, reduzir repetição e manter o usuário consciente.',
+    description: 'As operações permanecem locais, registradas em logs e protegidas por confirmações explícitas.',
     type: 'text',
-    icon: '02'
+    icon: 'shield'
   },
   {
     eyebrow: 'Para quem é',
-    title: 'Do iniciante ao usuário avançado.',
-    description: 'Uma suíte para quem quer usar Linux com menos fricção e mais visibilidade.',
+    description: 'Uma experiência previsível para usuários de desktop, desenvolvedores e administradores Linux.',
     type: 'text',
-    icon: '03'
+    icon: 'audience'
   },
   {
     eyebrow: 'Compatibilidade',
-    title: '',
     description: '',
     type: 'distroGroup',
-    icon: 'distros',
+    icon: 'linux',
     distros
   }
 ];
 
+
+const statIcons: Record<string, string> = {
+  version: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4V5Zm2 2v10h12V7H6Zm2 2h4v2H8V9Zm0 4h8v2H8v-2Z"/></svg>`,
+  apps: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/></svg>`,
+  categories: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h8v6H3V5Zm10 0h8v6h-8V5ZM3 13h8v6H3v-6Zm10 0h8v6h-8v-6Z"/></svg>`,
+  profiles: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5Z"/></svg>`
+};
+
+const carouselIcons: Record<string, string> = {
+  workflow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h6v6H5V3Zm8 12h6v6h-6v-6ZM7 11h2v3a3 3 0 0 0 3 3h1v2h-1a5 5 0 0 1-5-5v-3Zm6-4h2v4a3 3 0 0 1-3 3h-1v-2h1a1 1 0 0 0 1-1V7Z"/></svg>`,
+  shield: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 5v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3Zm0 2.2L6 6.45V11c0 3.85 2.42 7.28 6 8.82 3.58-1.54 6-4.97 6-8.82V6.45l-6-2.25Zm-1 4.8h2v4h-2V9Zm0 6h2v2h-2v-2Z"/></svg>`,
+  audience: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.31 0-6 1.79-6 4v2h12v-2c0-2.21-2.69-4-6-4Zm8-1a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm0 2c-.75 0-1.46.1-2.1.28A5.2 5.2 0 0 1 17 19v1h5v-1c0-2.21-2.24-4-5-4Z"/></svg>`,
+  linux: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.7 5 6 0 1.3-.3 2.5-.8 3.5 1.7 1.5 2.8 3.7 2.8 6.5H5c0-2.8 1.1-5 2.8-6.5A7.4 7.4 0 0 1 7 8c0-3.3 2-6 5-6Zm-2 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm4 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm-4.5 2.5c.7.7 1.6 1 2.5 1s1.8-.3 2.5-1L13 10h-2l-1.5.5Z"/></svg>`
+};
+
+const productNews = [
+  {
+    category: 'Release',
+    title: `AutoM8 ${catalogSummary.version} já está disponível`,
+    description: 'Conheça as mudanças, correções e melhorias incluídas na versão atual do produto.',
+    href: '/changelog',
+    linkLabel: 'Ler novidades',
+    external: false
+  },
+  {
+    category: 'Catálogo',
+    title: `${catalogSummary.appsCount} aplicativos organizados em ${catalogSummary.categories.length} categorias`,
+    description: 'Explore as ferramentas disponíveis para desenvolvimento, produtividade, servidores e uso diário.',
+    href: '/modules',
+    linkLabel: 'Explorar módulos',
+    external: false
+  },
+  {
+    category: 'Comunidade',
+    title: 'Ajude a definir os próximos recursos',
+    description: 'Envie sugestões, relate problemas e participe da evolução do AutoM8 pelo GitHub.',
+    href: 'https://github.com/mdmjunior/autom8/issues',
+    linkLabel: 'Participar',
+    external: true
+  }
+];
 
 const moduleIcons = {
   update: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 0 1 7.75 6h-2.1A6 6 0 1 0 12 18a5.9 5.9 0 0 0 4.24-1.76l1.42 1.42A8 8 0 1 1 12 4Zm7 1v5h-5l1.9-1.9A5.95 5.95 0 0 0 12 6V4a7.95 7.95 0 0 1 5.31 2.04L19 4.35V5Z"/></svg>`,
@@ -106,13 +146,75 @@ const moduleIcons = {
   <section class="modern-hero px-6 py-14 md:py-20">
     <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
       <div class="hero-copy">
-        <h1 class="max-w-4xl text-5xl font-black leading-[1.02] tracking-tight text-white md:text-7xl">
-          Automatize tarefas Linux com clareza e controle.
+        <h1 class="max-w-4xl text-[2.25rem] font-black leading-[1.02] tracking-tight text-white md:text-[3.375rem]">
+          Não perca mais tempo configurando seu Desktop.
         </h1>
 
         <p class="mt-7 max-w-2xl text-xl leading-9 text-slate-300">
-          AutoM8 é uma suíte local para instalar, diagnosticar, limpar e preparar ambientes Linux sem esconder o que será executado.
+          {product.summary}
         </p>
+
+                <div class="hero-copy__actions">
+  <div class="hero-actions">
+            <a
+              href="/docs"
+              class="hero-action-button hero-action-button--primary"
+            >
+              <span
+                class="hero-action-button__icon"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 4.5h10a4 4 0 0 1 4 4V20H9a4 4 0 0 1-4-4V4.5Z"></path>
+                  <path d="M9 20V8.5a4 4 0 0 1 4-4"></path>
+                  <path d="M12 9h4"></path>
+                  <path d="M12 13h4"></path>
+                </svg>
+              </span>
+
+              <span>Documentação</span>
+
+              <svg
+                class="hero-action-button__arrow"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m14 7 5 5-5 5"></path>
+              </svg>
+            </a>
+
+            <a
+              href="https://github.com/mdmjunior/autom8"
+              class="hero-action-button hero-action-button--secondary"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span
+                class="hero-action-button__icon"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2.8a9.2 9.2 0 0 0-2.91 17.93c.46.08.63-.2.63-.44v-1.76c-2.57.56-3.11-1.09-3.11-1.09-.42-1.07-1.03-1.35-1.03-1.35-.84-.58.06-.57.06-.57.93.07 1.42.96 1.42.96.83 1.42 2.17 1.01 2.7.77.08-.6.32-1.01.59-1.24-2.05-.23-4.2-1.03-4.2-4.57 0-1.01.36-1.84.95-2.49-.1-.23-.41-1.18.09-2.45 0 0 .78-.25 2.53.95A8.8 8.8 0 0 1 12 7.14a8.8 8.8 0 0 1 2.31.31c1.75-1.2 2.53-.95 2.53-.95.5 1.27.19 2.22.09 2.45.59.65.95 1.48.95 2.49 0 3.55-2.16 4.33-4.21 4.56.33.29.62.85.62 1.71v2.58c0 .24.17.52.64.44A9.2 9.2 0 0 0 12 2.8Z"></path>
+                </svg>
+              </span>
+
+              <span>GitHub</span>
+
+              <svg
+                class="hero-action-button__arrow"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M7 17 17 7"></path>
+                <path d="M8 7h9v9"></path>
+              </svg>
+            </a>
+          </div>
+
+
+        </div>
+
 
       </div>
 
@@ -136,13 +238,22 @@ const moduleIcons = {
     </div>
   </section>
 
-  <section class="product-stats-section px-6" aria-label="Estado atual do AutoM8">
+  <section
+    class="product-stats-section px-6"
+    aria-label="Estado atual do AutoM8"
+  >
     <div class="product-stats mx-auto max-w-7xl">
       {productStats.map((stat) => (
         <article class="product-stat-card">
-          <strong>{stat.value}</strong>
-          <span>{stat.label}</span>
-          <p>{stat.description}</p>
+          <div
+            class={`product-stat-icon product-stat-icon--${stat.tone}`}
+            set:html={statIcons[stat.icon]}
+          ></div>
+
+          <div class="product-stat-content">
+            <strong>{stat.value}</strong>
+            <span>{stat.label}</span>
+          </div>
         </article>
       ))}
     </div>
@@ -150,25 +261,15 @@ const moduleIcons = {
 
 
 
-  <section class="px-6 py-14">
+    <section class="px-6 py-14 home-info-section">
     <div class="mx-auto max-w-7xl">
       <div class="home-carousel-header">
-        <div>
-          <p class="section-eyebrow text-blue-300">Visão geral</p>
-          <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Entenda o AutoM8 em poucos minutos.</h2>
-        </div>
-
-        <div class="home-carousel-controls">
-          <button type="button" class="home-carousel-button" data-carousel-prev aria-label="Item anterior">
-            ‹
-          </button>
-          <button type="button" class="home-carousel-button" data-carousel-next aria-label="Próximo item">
-            ›
-          </button>
-        </div>
+        <h2 class="mt-3 text-[1.6875rem] font-black tracking-tight text-white">
+          Entenda o AutoM8 em poucos minutos.
+        </h2>
       </div>
 
-      <div class="home-carousel" data-home-carousel>
+      <div class="home-info-grid">
         {carouselItems.map((item) => (
           <article
             class:list={[
@@ -178,36 +279,28 @@ const moduleIcons = {
             ]}
           >
             <div class="home-carousel-card__top">
-              {item.type === 'distroGroup' ? (
-                <span class="home-carousel-card__number">OS</span>
-              ) : (
-                <span class="home-carousel-card__number">{item.icon}</span>
-              )}
+              <div
+                class={`home-carousel-card__icon home-carousel-card__icon--${item.icon}`}
+                set:html={carouselIcons[item.icon]}
+              ></div>
 
-              <span class="home-carousel-card__eyebrow">{item.eyebrow}</span>
+              <span class="home-carousel-card__eyebrow">
+                {item.eyebrow}
+              </span>
             </div>
 
             {item.type === 'distroGroup' ? (
               <div class="home-carousel-distro-icons">
                 {item.distros.map((distro) => (
-                  <div
-                    class={`home-carousel-distro-item home-carousel-distro-item--${distro.level}`}
-                    title={`${distro.name}: ${distro.status}`}
-                  >
-                    <img
-                      src={`/branding/distros/${distro.slug}.svg`}
-                      alt={`Ícone ${distro.name}`}
-                    />
-                    <span>{distro.name}</span>
-                    <small>{distro.status}</small>
-                  </div>
+                  <img
+                    src={`/branding/distros/${distro.slug}.svg`}
+                    alt={`Distribuição ${distro.name}`}
+                    title={distro.name}
+                  />
                 ))}
               </div>
             ) : (
-              <>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </>
+              <p>{item.description}</p>
             )}
           </article>
         ))}
@@ -216,51 +309,111 @@ const moduleIcons = {
   </section>
 
 
-  <section class="px-6 py-16">
+  <section class="px-6 py-16 home-modules-section">
     <div class="mx-auto max-w-7xl">
       <div class="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div>
-          <p class="section-eyebrow text-green-300">Recursos</p>
-          <h2 class="mt-3 text-4xl font-black tracking-tight text-white">Módulos principais</h2>
+          <h2 class="mt-3 text-[1.6875rem] font-black tracking-tight text-white">
+            Módulos principais
+          </h2>
+
           <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-400">
-            Módulos independentes ajudam a manter o sistema organizado, com ações revisáveis e foco em segurança.
+            Instale, configure e mantenha o Linux com módulos independentes.
           </p>
         </div>
-        <a href="/modules" class="modern-link">
-          Ver todos
-        </a>
       </div>
 
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {modules.slice(0, 9).map((item) => (
-          <article class="modern-module-card">
-            <div class="module-card-top">
-              <div
-                class="module-icon"
-                set:html={moduleIcons[item.slug] ?? moduleIcons.diagnose}
-              ></div>
+      <div
+        class="autom8-carousel-shell"
+        data-carousel-shell
+      >
+        <button
+          type="button"
+          class="autom8-carousel-button autom8-carousel-button--prev"
+          data-carousel-prev
+          aria-label="Módulos anteriores"
+          hidden
+        >
+          ‹
+        </button>
 
-              <div class="module-card-meta">
-                <span class={
-                  moduleStatusClass[item.status] ??
-                  moduleStatusClass.planned
-                }>
-                  {
-                    moduleStatusLabel[item.status] ??
-                    moduleStatusLabel.planned
-                  }
-                </span>
+        <div
+          class="modules-carousel"
+          data-carousel-viewport
+        >
+          {modules.slice(0, 9).map((item) => (
+            <article class="modern-module-card">
+              <div class="module-card-heading">
+                <div
+                  class="module-icon"
+                  set:html={moduleIcons[item.slug] ?? moduleIcons.diagnose}
+                ></div>
 
-                <div class="module-command">{item.command}</div>
+                <h3 class="text-[0.9375rem] font-black text-white">
+                  {item.name}
+                </h3>
               </div>
+
+              <p class="mt-3 leading-7 text-slate-400">
+                {item.description}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          class="autom8-carousel-button autom8-carousel-button--next"
+          data-carousel-next
+          aria-label="Próximos módulos"
+          hidden
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </section>
+
+    <section class="product-news-section px-6 pb-16 home-news-section">
+    <div class="mx-auto max-w-7xl">
+      <div class="product-news-heading">
+        <h2>
+          Acompanhe a evolução do AutoM8
+        </h2>
+      </div>
+
+      <div class="product-news-grid">
+        {productNews.map((news) => (
+          <article class="product-news-item">
+            <div class="product-news-item__body">
+              <span class="product-news-item__category">
+                {news.category}
+              </span>
+
+              <h3>
+                {news.title}
+              </h3>
+
+              <p>
+                {news.description}
+              </p>
             </div>
-            <h3 class="text-xl font-black text-white">{item.name}</h3>
-            <p class="mt-3 leading-7 text-slate-400">{item.description}</p>
+
+            <a
+              href={news.href}
+              class="product-news-item__link"
+              target={news.external ? '_blank' : undefined}
+              rel={news.external ? 'noreferrer' : undefined}
+            >
+              <span>{news.linkLabel}</span>
+              <span aria-hidden="true">→</span>
+            </a>
           </article>
         ))}
       </div>
     </div>
   </section>
+
 
 
 
@@ -271,29 +424,86 @@ const moduleIcons = {
 
 
   <script>
-    const carousel = document.querySelector('[data-home-carousel]');
-    const prevButton = document.querySelector('[data-carousel-prev]');
-    const nextButton = document.querySelector('[data-carousel-next]');
+    function setupAutom8Carousel(shell) {
+      const viewport = shell.querySelector(
+        '[data-carousel-viewport]'
+      );
+      const previousButton = shell.querySelector(
+        '[data-carousel-prev]'
+      );
+      const nextButton = shell.querySelector(
+        '[data-carousel-next]'
+      );
 
-    if (carousel && prevButton && nextButton) {
+      if (!viewport || !previousButton || !nextButton) {
+        return;
+      }
+
       const getStep = () => {
-        const card = carousel.querySelector('.home-carousel-card');
-        if (!card) return 360;
+        const card = viewport.firstElementChild;
 
-        const styles = window.getComputedStyle(carousel);
-        const gap = Number.parseFloat(styles.columnGap || styles.gap || '24');
+        if (!card) {
+          return viewport.clientWidth;
+        }
+
+        const styles = window.getComputedStyle(viewport);
+        const gap = Number.parseFloat(
+          styles.columnGap || styles.gap || '20'
+        );
 
         return card.getBoundingClientRect().width + gap;
       };
 
-      prevButton.addEventListener('click', () => {
-        carousel.scrollBy({ left: -getStep(), behavior: 'smooth' });
+      const updateButtons = () => {
+        const hasOverflow =
+          viewport.scrollWidth > viewport.clientWidth + 2;
+
+        const atStart = viewport.scrollLeft <= 2;
+
+        const atEnd =
+          viewport.scrollLeft + viewport.clientWidth >=
+          viewport.scrollWidth - 2;
+
+        shell.classList.toggle(
+          'autom8-carousel-shell--overflow',
+          hasOverflow
+        );
+
+        previousButton.hidden = !hasOverflow || atStart;
+        nextButton.hidden = !hasOverflow || atEnd;
+      };
+
+      previousButton.addEventListener('click', () => {
+        viewport.scrollBy({
+          left: -getStep(),
+          behavior: 'smooth'
+        });
       });
 
       nextButton.addEventListener('click', () => {
-        carousel.scrollBy({ left: getStep(), behavior: 'smooth' });
+        viewport.scrollBy({
+          left: getStep(),
+          behavior: 'smooth'
+        });
       });
+
+      viewport.addEventListener('scroll', updateButtons, {
+        passive: true
+      });
+
+      window.addEventListener('resize', updateButtons);
+
+      if ('ResizeObserver' in window) {
+        const observer = new ResizeObserver(updateButtons);
+        observer.observe(viewport);
+      }
+
+      window.requestAnimationFrame(updateButtons);
     }
+
+    document
+      .querySelectorAll('[data-carousel-shell]')
+      .forEach(setupAutom8Carousel);
   </script>
 
   <script define:vars={{ terminalSessions }}>
@@ -327,7 +537,7 @@ const moduleIcons = {
 
       for (const char of command) {
         typed.textContent += char;
-        await sleep(18 + Math.random() * 22);
+        await sleep(42 + Math.random() * 30);
       }
 
       typed.classList.remove('is-typing');
@@ -342,14 +552,14 @@ const moduleIcons = {
         screen.innerHTML = '';
 
         await typeCommand(session.command);
-        await sleep(350);
+        await sleep(700);
 
         for (const item of session.output) {
           addLine(item.text, item.type);
-          await sleep(180);
+          await sleep(380);
         }
 
-        await sleep(2600);
+        await sleep(4800);
         index += 1;
       }
     }
@@ -358,4 +568,7 @@ const moduleIcons = {
       runTerminal();
     }
   </script>
+
+
+
 </BaseLayout>

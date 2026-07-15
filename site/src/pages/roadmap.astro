@@ -8,10 +8,17 @@ const statusLabel: Record<string, string> = {
   planned: 'Planejado'
 };
 
-const statusClass: Record<string, string> = {
-  published: 'autom8-status-badge',
-  'in-progress': 'autom8-version-badge',
-  planned: 'autom8-card-kicker'
+const roadmapCounts = {
+  all: roadmap.length,
+  published: roadmap.filter(
+    (release) => release.status === 'published'
+  ).length,
+  inProgress: roadmap.filter(
+    (release) => release.status === 'in-progress'
+  ).length,
+  planned: roadmap.filter(
+    (release) => release.status === 'planned'
+  ).length
 };
 ---
 
@@ -19,58 +26,324 @@ const statusClass: Record<string, string> = {
   title="Roadmap · AutoM8"
   description="Marcos publicados e próximos ciclos do AutoM8."
 >
-  <section class="site-page-hero">
+  <section
+    class="site-page-hero modules-page-hero release-page-hero"
+  >
     <div class="site-page-hero__inner">
-      <p class="page-eyebrow">Roadmap</p>
-      <h1 class="page-title">Evolução baseada no estado real do produto.</h1>
-      <p class="page-description">
-        O roadmap separa versões publicadas, trabalho em andamento e
-        recursos planejados para os próximos ciclos.
-      </p>
+      <h1 class="modules-page-visually-hidden">
+        Roadmap do AutoM8
+      </h1>
+
+      <div
+        class="modules-page-toolbar release-page-toolbar"
+        aria-label="Buscar e filtrar o roadmap"
+      >
+        <label class="modules-page-search">
+          <span class="modules-page-search__field">
+            <span
+              class="modules-page-search__icon"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24">
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="6.5"
+                ></circle>
+
+                <path d="m16 16 4.2 4.2"></path>
+              </svg>
+            </span>
+
+            <input
+              type="search"
+              placeholder="Busque uma versão, marco ou recurso"
+              autocomplete="off"
+              aria-label="Buscar no roadmap"
+              data-roadmap-search
+            />
+          </span>
+        </label>
+
+        <div
+          class="release-page-filters"
+          aria-label="Filtrar o roadmap por status"
+        >
+          <button
+            type="button"
+            class="release-page-filter release-page-filter--active"
+            data-roadmap-filter="all"
+            aria-pressed="true"
+          >
+            Todos
+            <span>{roadmapCounts.all}</span>
+          </button>
+
+          <button
+            type="button"
+            class="release-page-filter"
+            data-roadmap-filter="published"
+            aria-pressed="false"
+          >
+            <i
+              class="release-page-filter-led release-page-filter-led--published"
+              aria-hidden="true"
+            ></i>
+
+            Publicados
+            <span>{roadmapCounts.published}</span>
+          </button>
+
+          <button
+            type="button"
+            class="release-page-filter"
+            data-roadmap-filter="in-progress"
+            aria-pressed="false"
+          >
+            <i
+              class="release-page-filter-led release-page-filter-led--in-progress"
+              aria-hidden="true"
+            ></i>
+
+            Em andamento
+            <span>{roadmapCounts.inProgress}</span>
+          </button>
+
+          <button
+            type="button"
+            class="release-page-filter"
+            data-roadmap-filter="planned"
+            aria-pressed="false"
+          >
+            <i
+              class="release-page-filter-led release-page-filter-led--planned"
+              aria-hidden="true"
+            ></i>
+
+            Planejados
+            <span>{roadmapCounts.planned}</span>
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="site-page-section">
+  <section
+    class="site-page-section modules-page-section release-page-section"
+  >
     <div class="site-page-section__inner">
-      <div class="section-heading">
-        <p class="section-eyebrow text-green-300">Planejamento</p>
-        <h2>Marcos publicados e próximos ciclos</h2>
-        <p>
-          A evolução prioriza estabilidade da CLI, qualidade do
-          repositório e entrega segura antes de ampliar automações.
-        </p>
+      <div class="modules-page-heading release-page-heading">
+        <h2>
+          Evolução do AutoM8
+        </h2>
       </div>
 
-      <div class="autom8-timeline">
-        {roadmap.map((release) => (
-          <article class="autom8-release-card">
-            <div class="autom8-release-card__header">
-              <div>
-                <span class="autom8-version-badge">
-                  {release.version}
+      <div
+        class="roadmap-page-list"
+        data-roadmap-list
+      >
+        {roadmap.map((release, index) => (
+          <article
+            class:list={[
+              'release-page-card',
+              'roadmap-page-card',
+              `release-page-card--${release.status}`
+            ]}
+            data-roadmap-card
+            data-status={release.status}
+            data-search={`${release.version} ${release.title} ${statusLabel[release.status]} ${release.items.join(' ')}`.toLowerCase()}
+          >
+            <span
+              class="roadmap-page-card__sequence"
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+
+            <div class="release-page-card__body">
+              <header class="release-page-card__header">
+                <div class="release-page-card__identity">
+                  <span class="release-page-version">
+                    {release.version}
+                  </span>
+
+                  <h3>
+                    {release.title}
+                  </h3>
+                </div>
+
+                <span
+                  class:list={[
+                    'release-page-status',
+                    `release-page-status--${release.status}`
+                  ]}
+                >
+                  <span aria-hidden="true"></span>
+
+                  {
+                    statusLabel[release.status] ??
+                    statusLabel.planned
+                  }
                 </span>
-                <h3>{release.title}</h3>
-              </div>
+              </header>
 
-              <span class={
-                statusClass[release.status] ??
-                statusClass.planned
-              }>
-                {
-                  statusLabel[release.status] ??
-                  statusLabel.planned
-                }
-              </span>
+              <ul class="release-page-items">
+                {release.items.map((item) => (
+                  <li>
+                    <span
+                      class="release-page-item-marker"
+                      aria-hidden="true"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path d="m6 12 4 4 8-9"></path>
+                      </svg>
+                    </span>
+
+                    <span>
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <ul>
-              {release.items.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
           </article>
         ))}
       </div>
+
+      <div
+        class="release-page-empty"
+        data-roadmap-empty
+        hidden
+      >
+        <span
+          class="modules-page-empty__icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="11"
+              cy="11"
+              r="6.5"
+            ></circle>
+
+            <path d="m16 16 4.2 4.2"></path>
+          </svg>
+        </span>
+
+        <strong>
+          Nenhum marco encontrado
+        </strong>
+
+        <p>
+          Tente pesquisar outro recurso ou alterar o filtro.
+        </p>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    // AutoM8 roadmap search and filters
+
+    const roadmapSearch = document.querySelector(
+      '[data-roadmap-search]'
+    );
+
+    const roadmapEmpty = document.querySelector(
+      '[data-roadmap-empty]'
+    );
+
+    const roadmapCards = Array.from(
+      document.querySelectorAll(
+        '[data-roadmap-card]'
+      )
+    );
+
+    const roadmapFilters = Array.from(
+      document.querySelectorAll(
+        '[data-roadmap-filter]'
+      )
+    );
+
+    let activeRoadmapFilter = 'all';
+
+    const normalizeRoadmapSearch = (value) => (
+      value
+        .toLocaleLowerCase('pt-BR')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+    );
+
+    roadmapCards.forEach((card) => {
+      card.dataset.normalizedSearch =
+        normalizeRoadmapSearch(
+          card.dataset.search || ''
+        );
+    });
+
+    const updateRoadmap = () => {
+      const searchValue = normalizeRoadmapSearch(
+        roadmapSearch?.value || ''
+      );
+
+      let visibleCards = 0;
+
+      roadmapCards.forEach((card) => {
+        const matchesStatus =
+          activeRoadmapFilter === 'all' ||
+          card.dataset.status ===
+            activeRoadmapFilter;
+
+        const matchesSearch =
+          !searchValue ||
+          (
+            card.dataset.normalizedSearch || ''
+          ).includes(searchValue);
+
+        const shouldDisplay =
+          matchesStatus &&
+          matchesSearch;
+
+        card.hidden = !shouldDisplay;
+
+        if (shouldDisplay) {
+          visibleCards += 1;
+        }
+      });
+
+      if (roadmapEmpty) {
+        roadmapEmpty.hidden =
+          visibleCards !== 0;
+      }
+    };
+
+    roadmapFilters.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeRoadmapFilter =
+          button.dataset.roadmapFilter || 'all';
+
+        roadmapFilters.forEach((filterButton) => {
+          const isActive =
+            filterButton === button;
+
+          filterButton.classList.toggle(
+            'release-page-filter--active',
+            isActive
+          );
+
+          filterButton.setAttribute(
+            'aria-pressed',
+            String(isActive)
+          );
+        });
+
+        updateRoadmap();
+      });
+    });
+
+    roadmapSearch?.addEventListener(
+      'input',
+      updateRoadmap
+    );
+  </script>
 </BaseLayout>
