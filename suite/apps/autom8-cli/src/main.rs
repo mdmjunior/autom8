@@ -5,18 +5,10 @@ use std::io::{self, Write};
 use std::process::ExitCode;
 
 use autom8_core::ProductInfo;
-use autom8_core::navigation::{NavigationSection, navigation_items};
+use autom8_core::bootstrap::{BootstrapAnswers, ProbeLevel, run_preflight};
 use autom8_core::status::{StatusError, SystemStatus};
 use clap::Parser;
-use cli::{Cli, Commands, StatusArgs};
-
-const NAVIGATION_SECTIONS: [NavigationSection; 5] = [
-    NavigationSection::Overview,
-    NavigationSection::Diagnostics,
-    NavigationSection::Management,
-    NavigationSection::System,
-    NavigationSection::Results,
-];
+use cli::{BootstrapArgs, Cli, Commands, StatusArgs};
 
 fn write_home(cli: &Cli) -> io::Result<()> {
     let product = ProductInfo::current();
@@ -34,29 +26,84 @@ fn write_home(cli: &Cli) -> io::Result<()> {
         "Execução local · Sem telemetria · Seguro por padrão"
     )?;
 
-    for section in NAVIGATION_SECTIONS {
+    writeln!(output)?;
+    writeln!(output, "BOOTSTRAP")?;
+    writeln!(output, "  bootstrap      Configuração inicial da máquina")?;
+    writeln!(output)?;
+    writeln!(output, "SUPORTE")?;
+    writeln!(output, "  status         Informações somente leitura")?;
+    writeln!(output)?;
+    writeln!(output, "Use 'autom8 bootstrap --help' para iniciar.")
+}
+
+fn write_bootstrap(arguments: &BootstrapArgs) -> Result<(), BootstrapCommandError> {
+    let answers = BootstrapAnswers {
+        hostname: arguments.hostname.clone(),
+        timezone: arguments.timezone.clone(),
+        refresh_repositories: arguments.refresh_repositories,
+        upgrade_packages: arguments.upgrade_packages,
+        install_dependencies: arguments.install_dependencies,
+        configure_directories: arguments.configure_directories,
+        validate_network: arguments.validate_network,
+        identify_hardware: arguments.identify_hardware,
+        install_basic_packages: arguments.install_basic_packages,
+        editor: arguments.editor.clone(),
+        new_user: None,
+    };
+    let errors = answers.validate();
+    if !errors.is_empty() {
+        return Err(BootstrapCommandError::Validation(errors));
+    }
+
+    let plan = answers.plan();
+    let probes = arguments.check.then(|| run_preflight(&answers));
+    let stdout = io::stdout();
+    let mut output = stdout.lock();
+
+    if arguments.json {
+        let document = serde_json::json!({
+            "answers": answers,
+            "plan": plan,
+            "preflight": probes,
+            "changes_applied": false,
+        });
+        serde_json::to_writer_pretty(&mut output, &document)?;
         writeln!(output)?;
-        writeln!(output, "{}", section.title().to_uppercase())?;
+        return Ok(());
+    }
 
-        for item in navigation_items()
-            .iter()
-            .filter(|item| item.section == section)
-        {
-            let state = if item.available { "" } else { " [em breve]" };
+    writeln!(output, "AutoM8 · Bootstrap")?;
+    writeln!(output, "────────────────────────────────────────")?;
+    writeln!(output, "Hostname    {}", answers.hostname)?;
+    writeln!(output, "Timezone    {}", answers.timezone)?;
+    writeln!(output, "Editor      {}", answers.editor)?;
+    writeln!(output)?;
+    writeln!(output, "Plano")?;
+    for step in plan.iter().filter(|step| step.enabled) {
+        let privilege = if step.privileged {
+            "autenticação"
+        } else {
+            "leitura"
+        };
+        writeln!(output, "  • {:<30} {privilege}", step.title)?;
+    }
 
-            writeln!(
-                output,
-                "  {:<14} {}{}",
-                item.command, item.description, state
-            )?;
+    if let Some(probes) = probes {
+        writeln!(output)?;
+        writeln!(output, "Verificações locais")?;
+        for probe in probes {
+            let marker = match probe.level {
+                ProbeLevel::Success => "✓",
+                ProbeLevel::Warning => "!",
+                ProbeLevel::Failure => "✕",
+            };
+            writeln!(output, "  {marker} {} — {}", probe.title, probe.detail)?;
         }
     }
 
     writeln!(output)?;
-    writeln!(
-        output,
-        "Use 'autom8 <comando> --help' para ver opções específicas."
-    )
+    writeln!(output, "Nenhuma alteração foi aplicada.")?;
+    Ok(())
 }
 
 fn write_status(arguments: &StatusArgs) -> Result<(), StatusCommandError> {
@@ -106,6 +153,25 @@ enum StatusCommandError {
     Output(io::Error),
 }
 
+#[derive(Debug)]
+enum BootstrapCommandError {
+    Validation(Vec<String>),
+    Json(serde_json::Error),
+    Output(io::Error),
+}
+
+impl From<serde_json::Error> for BootstrapCommandError {
+    fn from(error: serde_json::Error) -> Self {
+        Self::Json(error)
+    }
+}
+
+impl From<io::Error> for BootstrapCommandError {
+    fn from(error: io::Error) -> Self {
+        Self::Output(error)
+    }
+}
+
 impl From<StatusError> for StatusCommandError {
     fn from(error: StatusError) -> Self {
         Self::Collection(error)
@@ -132,6 +198,28 @@ fn main() -> ExitCode {
             Ok(()) => ExitCode::SUCCESS,
             Err(error) if error.kind() == io::ErrorKind::BrokenPipe => ExitCode::SUCCESS,
             Err(error) => {
+                eprintln!("autom8: falha ao escrever a saída: {error}");
+                ExitCode::FAILURE
+            }
+        },
+        Some(Commands::Bootstrap(arguments)) => match write_bootstrap(arguments) {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(BootstrapCommandError::Output(error))
+                if error.kind() == io::ErrorKind::BrokenPipe =>
+            {
+                ExitCode::SUCCESS
+            }
+            Err(BootstrapCommandError::Validation(errors)) => {
+                for error in errors {
+                    eprintln!("autom8: {error}");
+                }
+                ExitCode::from(2)
+            }
+            Err(BootstrapCommandError::Json(error)) => {
+                eprintln!("autom8: não foi possível gerar o JSON: {error}");
+                ExitCode::FAILURE
+            }
+            Err(BootstrapCommandError::Output(error)) => {
                 eprintln!("autom8: falha ao escrever a saída: {error}");
                 ExitCode::FAILURE
             }

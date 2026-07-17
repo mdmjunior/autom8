@@ -76,7 +76,7 @@ log "Validando o primeiro comando funcional..."
 "$cli_binary" status >"${temporary_directory}/status.txt"
 "$cli_binary" status --json >"${temporary_directory}/status.json"
 
-grep -Fq 'AutoM8 — status do sistema' "${temporary_directory}/status.txt" ||
+grep -Fq 'AutoM8 · Visão geral' "${temporary_directory}/status.txt" ||
   error "Cabeçalho do status não encontrado."
 
 jq -e '
@@ -87,5 +87,24 @@ jq -e '
   (.uptime_seconds | type == "number" and . >= 0)
 ' "${temporary_directory}/status.json" >/dev/null ||
   error "Contrato JSON do status é inválido."
+
+log "Validando o plano e as verificações do Bootstrap..."
+"$cli_binary" bootstrap \
+  --hostname autom8-smoke \
+  --timezone America/Sao_Paulo \
+  --editor nano \
+  --validate-network \
+  --identify-hardware \
+  --check \
+  --json >"${temporary_directory}/bootstrap.json"
+
+jq -e '
+  (.answers.hostname == "autom8-smoke") and
+  (.answers.timezone == "America/Sao_Paulo") and
+  (.plan | type == "array" and length == 11) and
+  (.preflight | type == "array" and length >= 4) and
+  (.changes_applied == false)
+' "${temporary_directory}/bootstrap.json" >/dev/null ||
+  error "Contrato JSON do Bootstrap é inválido."
 
 log "Smoke da fundação concluído em ${PRETTY_NAME:-$expected_distribution}."

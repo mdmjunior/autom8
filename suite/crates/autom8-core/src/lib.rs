@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+pub mod bootstrap;
 pub mod navigation;
 pub mod status;
 

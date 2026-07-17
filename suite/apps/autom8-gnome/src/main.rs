@@ -1,253 +1,50 @@
-use std::cell::RefCell;
-use std::rc::Rc;
+use std::path::Path;
 
 use adw::prelude::*;
-use autom8_core::navigation::navigation_items;
-use autom8_core::{
-    APPLICATION_ID, ProductInfo,
-    status::{StatusError, SystemStatus},
+use autom8_core::bootstrap::{
+    BOOTSTRAP_STATE_PATH, BootstrapAnswers, NewUser, ProbeLevel, completed_state, run_preflight,
 };
+use autom8_core::{APPLICATION_ID, ProductInfo};
 use gtk::glib;
 
 const STYLE: &str = r#"
-window,
-.autom8-root {
-  background: #0b1220;
-  color: #f8fafc;
-}
-
-.autom8-window-bar {
-  min-height: 50px;
-  background: rgba(11, 18, 32, 0.96);
-  color: #f8fafc;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-}
-
-.autom8-sidebar {
-  min-width: 278px;
-  background: #0b1324;
-  border-right: 1px solid rgba(148, 163, 184, 0.18);
-  padding: 24px 18px 20px;
-}
-
-.autom8-brand-name {
-  color: #f8fafc;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.autom8-brand-name-accent {
-  color: #38bdf8;
-}
-
-.autom8-muted {
-  color: #94a3b8;
-}
-
-.autom8-section {
-  margin-top: 16px;
-  margin-bottom: 5px;
-  color: #64748b;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.autom8-menu-button {
-  min-height: 44px;
-  margin: 2px 0;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: transparent;
-  color: #94a3b8;
-  box-shadow: none;
-}
-
-.autom8-menu-button:hover {
-  border-color: rgba(56, 189, 248, 0.22);
-  background: rgba(37, 99, 235, 0.10);
-  color: #dbeafe;
-}
-
-.autom8-menu-button-active {
-  border-color: rgba(56, 189, 248, 0.42);
-  background: linear-gradient(90deg, rgba(37, 99, 235, 0.34), rgba(56, 189, 248, 0.10));
-  color: #f8fafc;
-}
-
-.autom8-coming-soon {
-  color: #64748b;
-  font-size: 9px;
-  font-weight: 800;
-}
-
-.autom8-content {
-  padding: 0;
-}
-
-.autom8-page-title {
-  color: #f8fafc;
-  font-size: 30px;
-  font-weight: 900;
-}
-
-.autom8-kicker {
-  color: #22c55e;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.autom8-card {
-  min-height: 126px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.88);
-  padding: 20px;
-}
-
-.autom8-card:hover {
-  border-color: rgba(56, 189, 248, 0.38);
-  background: #111c31;
-}
-
-.autom8-card-icon {
-  color: #38bdf8;
-}
-
-.autom8-card-title {
-  color: #94a3b8;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.autom8-card-value {
-  color: #f8fafc;
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.autom8-success {
-  border: 1px solid rgba(34, 197, 94, 0.25);
-  border-radius: 14px;
-  background: rgba(34, 197, 94, 0.08);
-  color: #86efac;
-  padding: 12px 14px;
-}
-
-.autom8-error {
-  border: 1px solid rgba(239, 68, 68, 0.28);
-  border-radius: 14px;
-  background: rgba(239, 68, 68, 0.08);
-  color: #fca5a5;
-  padding: 12px 14px;
-}
-
-.autom8-refresh {
-  min-height: 40px;
-  border-radius: 12px;
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 800;
-}
-
-.autom8-page {
-  padding: 30px 34px 38px;
-}
-
-.autom8-hero {
-  min-height: 170px;
-  padding: 28px 30px;
-  border: 1px solid rgba(56, 189, 248, 0.22);
-  border-radius: 22px;
-  background: linear-gradient(125deg, rgba(37, 99, 235, 0.30), rgba(15, 23, 42, 0.96) 55%, rgba(34, 197, 94, 0.10));
-}
-
-.autom8-hero-eyebrow {
-  color: #7dd3fc;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 1px;
-}
-
-.autom8-hero-title {
-  color: #f8fafc;
-  font-size: 32px;
-  font-weight: 900;
-}
-
-.autom8-hero-copy {
-  color: #cbd5e1;
-  font-size: 14px;
-}
-
-.autom8-online-pill {
-  padding: 8px 12px;
-  border: 1px solid rgba(34, 197, 94, 0.30);
-  border-radius: 999px;
-  background: rgba(34, 197, 94, 0.10);
-  color: #86efac;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.autom8-block-title {
-  color: #f8fafc;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.autom8-action-card {
-  min-height: 82px;
-  padding: 14px 16px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  border-radius: 14px;
-  background: #0f172a;
-  color: #f8fafc;
-  box-shadow: none;
-}
-
-.autom8-action-card:hover {
-  border-color: rgba(56, 189, 248, 0.40);
-  background: #111e34;
-}
-
-.autom8-action-title {
-  color: #f8fafc;
-  font-weight: 800;
-}
-
-.autom8-action-copy {
-  color: #94a3b8;
-  font-size: 11px;
-}
-
-.autom8-footer {
-  color: #64748b;
-  font-size: 11px;
-}
-
-.autom8-sidebar-toggle {
-  min-width: 36px;
-  min-height: 36px;
-  border-radius: 10px;
-  color: #cbd5e1;
-}
+window, .autom8-root { background: #050b18; color: #f8fafc; }
+.autom8-header { background: #081224; border-bottom: 1px solid rgba(56,189,248,.18); }
+.autom8-page { padding: 24px 30px 36px; }
+.autom8-hero { padding: 18px 20px; border-left: 4px solid #0866ff; border-radius: 12px; background: #0b1528; }
+.autom8-title { color: #f8fafc; font-size: 23px; font-weight: 900; }
+.autom8-copy { color: #94a3b8; font-size: 13px; }
+.autom8-section { margin-top: 18px; color: #f8fafc; font-size: 16px; font-weight: 900; }
+.autom8-card { padding: 18px; border: 1px solid rgba(148,163,184,.16); border-radius: 12px; background: #0b1528; }
+.autom8-entry { min-height: 42px; border-radius: 10px; }
+.autom8-primary { min-height: 44px; border-radius: 11px; background: #0866ff; color: white; font-weight: 900; }
+.autom8-success { padding: 12px 14px; border-radius: 10px; background: rgba(34,197,94,.10); color: #86efac; }
+.autom8-error { padding: 12px 14px; border-radius: 10px; background: rgba(239,68,68,.10); color: #fca5a5; }
+.autom8-plan { padding: 14px; border-radius: 12px; background: #020817; color: #dbeafe; font-family: monospace; }
 "#;
 
-struct StatusCards {
-    hostname: gtk::Label,
-    distribution: gtk::Label,
-    kernel: gtk::Label,
-    architecture: gtk::Label,
-    desktop: gtk::Label,
-    uptime: gtk::Label,
-    message: gtk::Label,
+#[derive(Clone)]
+struct Form {
+    hostname: gtk::Entry,
+    timezone: gtk::Entry,
+    refresh_repositories: gtk::Switch,
+    upgrade_packages: gtk::Switch,
+    install_dependencies: gtk::Switch,
+    configure_directories: gtk::Switch,
+    validate_network: gtk::Switch,
+    identify_hardware: gtk::Switch,
+    install_basic_packages: gtk::Switch,
+    editor: gtk::Entry,
+    create_user: gtk::Switch,
+    username: gtk::Entry,
+    full_name: gtk::Entry,
+    administrator: gtk::Switch,
 }
 
 fn main() -> glib::ExitCode {
     let application = adw::Application::builder()
         .application_id(APPLICATION_ID)
         .build();
-
     application.connect_startup(|_| install_style());
     application.connect_activate(build_ui);
     application.run()
@@ -256,7 +53,6 @@ fn main() -> glib::ExitCode {
 fn install_style() {
     let provider = gtk::CssProvider::new();
     provider.load_from_data(STYLE);
-
     if let Some(display) = gtk::gdk::Display::default() {
         gtk::style_context_add_provider_for_display(
             &display,
@@ -271,313 +67,138 @@ fn build_ui(application: &adw::Application) {
     let shell = gtk::Box::new(gtk::Orientation::Vertical, 0);
     shell.add_css_class("autom8-root");
 
-    let window_title = adw::WindowTitle::new(product.name, product.description);
-    let window_bar = adw::HeaderBar::builder()
-        .title_widget(&window_title)
+    let header = adw::HeaderBar::builder()
+        .title_widget(&adw::WindowTitle::new(product.name, "Bootstrap inicial"))
         .build();
-    window_bar.add_css_class("autom8-window-bar");
+    header.add_css_class("autom8-header");
+    shell.append(&header);
 
-    let root = gtk::Box::new(gtk::Orientation::Horizontal, 0);
-    root.set_vexpand(true);
-
-    let sidebar = build_sidebar(&product);
-    let (main_content, cards, refresh_button) = build_dashboard();
-
-    let sidebar_icon = gtk::Image::from_icon_name("sidebar-hide-symbolic");
-    sidebar_icon.set_pixel_size(18);
-    let sidebar_toggle = gtk::Button::builder()
-        .child(&sidebar_icon)
-        .tooltip_text("Recolher menu")
-        .build();
-    sidebar_toggle.add_css_class("flat");
-    sidebar_toggle.add_css_class("autom8-sidebar-toggle");
-    window_bar.pack_start(&sidebar_toggle);
-
-    let sidebar_for_toggle = sidebar.clone();
-    sidebar_toggle.connect_clicked(move |button| {
-        let visible = !sidebar_for_toggle.is_visible();
-        sidebar_for_toggle.set_visible(visible);
-        sidebar_icon.set_icon_name(Some(if visible {
-            "sidebar-hide-symbolic"
-        } else {
-            "sidebar-show-symbolic"
-        }));
-        button.set_tooltip_text(Some(if visible {
-            "Recolher menu"
-        } else {
-            "Expandir menu"
-        }));
-    });
-
-    root.append(&sidebar);
-    root.append(&main_content);
-    shell.append(&window_bar);
-    shell.append(&root);
-
-    let cards = Rc::new(cards);
-    let refresh_cards = Rc::clone(&cards);
-
-    refresh_button.connect_clicked(move |_| {
-        refresh_status(&refresh_cards);
-    });
-
-    refresh_status(&cards);
+    if completed_state(Path::new(BOOTSTRAP_STATE_PATH)) {
+        let done = adw::StatusPage::builder()
+            .icon_name("emblem-ok-symbolic")
+            .title("Bootstrap concluído")
+            .description("Esta máquina já possui um bootstrap concluído sem erros.")
+            .vexpand(true)
+            .build();
+        shell.append(&done);
+    } else {
+        shell.append(&bootstrap_page());
+    }
 
     let window = adw::ApplicationWindow::builder()
         .application(application)
         .title(product.name)
-        .default_width(1180)
-        .default_height(760)
+        .default_width(1040)
+        .default_height(820)
         .content(&shell)
         .build();
-
     window.present();
 }
 
-fn build_sidebar(product: &ProductInfo) -> gtk::Box {
-    let sidebar = gtk::Box::new(gtk::Orientation::Vertical, 0);
-    sidebar.add_css_class("autom8-sidebar");
-
-    let brand = gtk::Box::new(gtk::Orientation::Horizontal, 13);
-    brand.set_margin_bottom(18);
-    brand.set_margin_start(5);
-    brand.set_margin_end(5);
-
-    let logo = brand_logo();
-    let brand_text = gtk::Box::new(gtk::Orientation::Vertical, 2);
-    brand_text.set_valign(gtk::Align::Center);
-
-    let product_name = gtk::Label::builder()
-        .label(product.name)
-        .halign(gtk::Align::Start)
-        .build();
-    product_name.add_css_class("autom8-brand-name");
-
-    let version = gtk::Label::builder()
-        .label(format!("{} · {}", product.version, product.description))
-        .halign(gtk::Align::Start)
-        .build();
-    version.add_css_class("autom8-muted");
-
-    brand_text.append(&product_name);
-    brand_text.append(&version);
-    brand.append(&logo);
-    brand.append(&brand_text);
-    sidebar.append(&brand);
-
-    let menu_content = gtk::Box::new(gtk::Orientation::Vertical, 0);
-    let current_section = RefCell::new(None);
-
-    for item in navigation_items() {
-        if *current_section.borrow() != Some(item.section) {
-            let section = gtk::Label::builder()
-                .label(item.section.title().to_uppercase())
-                .halign(gtk::Align::Start)
-                .build();
-            section.add_css_class("autom8-section");
-            menu_content.append(&section);
-            current_section.replace(Some(item.section));
-        }
-
-        menu_content.append(&navigation_button(item));
-    }
-
-    let menu_scroll = gtk::ScrolledWindow::builder()
-        .hscrollbar_policy(gtk::PolicyType::Never)
-        .vexpand(true)
-        .child(&menu_content)
-        .build();
-
-    let footer = gtk::Label::builder()
-        .label("● Execução local · Sem telemetria")
-        .halign(gtk::Align::Start)
-        .build();
-    footer.add_css_class("autom8-footer");
-    footer.set_margin_top(14);
-
-    sidebar.append(&menu_scroll);
-    sidebar.append(&footer);
-    sidebar
-}
-
-fn brand_logo() -> gtk::Picture {
-    let picture = gtk::Picture::for_filename(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/assets/logo-autom8-icon.svg"
-    ));
-
-    picture.set_size_request(40, 40);
-    picture.set_can_shrink(true);
-    picture
-}
-
-fn navigation_button(item: &autom8_core::navigation::NavigationItem) -> gtk::Button {
-    let content = gtk::Box::new(gtk::Orientation::Horizontal, 10);
-    content.set_margin_start(5);
-    content.set_margin_end(5);
-
-    let icon = gtk::Image::from_icon_name(item.icon);
-    icon.set_pixel_size(18);
-
-    let label = gtk::Label::builder()
-        .label(item.title)
-        .hexpand(true)
-        .halign(gtk::Align::Start)
-        .build();
-
-    content.append(&icon);
-    content.append(&label);
-
-    if !item.available {
-        let badge = gtk::Label::new(Some("EM BREVE"));
-        badge.add_css_class("autom8-coming-soon");
-        content.append(&badge);
-    }
-
-    let button = gtk::Button::builder()
-        .child(&content)
-        .sensitive(item.available)
-        .build();
-
-    button.add_css_class("autom8-menu-button");
-
-    if item.command == "status" {
-        button.add_css_class("autom8-menu-button-active");
-    }
-
-    button
-}
-
-fn build_dashboard() -> (gtk::Box, StatusCards, gtk::Button) {
-    let content = gtk::Box::new(gtk::Orientation::Vertical, 0);
-    content.add_css_class("autom8-content");
-    content.set_hexpand(true);
-
+fn bootstrap_page() -> gtk::ScrolledWindow {
     let page = gtk::Box::new(gtk::Orientation::Vertical, 0);
     page.add_css_class("autom8-page");
 
     let hero = gtk::Box::new(gtk::Orientation::Horizontal, 24);
     hero.add_css_class("autom8-hero");
-    hero.set_margin_bottom(26);
+    hero.set_margin_bottom(22);
 
-    let hero_copy = gtk::Box::new(gtk::Orientation::Vertical, 7);
-    hero_copy.set_hexpand(true);
-    hero_copy.set_valign(gtk::Align::Center);
+    let logo = gtk::Picture::for_filename(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/assets/logo-autom8-bootstrap.png"
+    ));
+    logo.set_size_request(220, 52);
+    logo.set_can_shrink(true);
 
-    let eyebrow = gtk::Label::builder()
-        .label("AUTOM8 · LINUX MANAGEMENT SUITE")
-        .halign(gtk::Align::Start)
-        .build();
-    eyebrow.add_css_class("autom8-hero-eyebrow");
-
-    let title = gtk::Label::builder()
-        .label("Seu Linux, sob controle.")
-        .halign(gtk::Align::Start)
-        .build();
-    title.add_css_class("autom8-hero-title");
-
-    let description = gtk::Label::builder()
-        .label("Gerencie, diagnostique e proteja sua estação com operações locais, previsíveis e seguras.")
-        .halign(gtk::Align::Start)
-        .wrap(true)
-        .max_width_chars(64)
-        .build();
-    description.add_css_class("autom8-hero-copy");
-
-    hero_copy.append(&eyebrow);
-    hero_copy.append(&title);
-    hero_copy.append(&description);
-
-    let hero_side = gtk::Box::new(gtk::Orientation::Vertical, 14);
-    hero_side.set_valign(gtk::Align::Center);
-    hero_side.set_halign(gtk::Align::End);
-
-    let online = gtk::Label::new(Some("● SISTEMA CONECTADO"));
-    online.add_css_class("autom8-online-pill");
-
-    let refresh_button = gtk::Button::builder()
-        .label("Atualizar status")
-        .icon_name("view-refresh-symbolic")
-        .valign(gtk::Align::Center)
-        .build();
-    refresh_button.add_css_class("autom8-refresh");
-
-    hero_side.append(&online);
-    hero_side.append(&refresh_button);
-    hero.append(&hero_copy);
-    hero.append(&hero_side);
-
-    let system_heading = section_heading(
-        "Visão geral do sistema",
-        "Informações essenciais coletadas localmente nesta estação.",
+    let hero_text = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    hero_text.set_valign(gtk::Align::Center);
+    hero_text.set_hexpand(true);
+    let title = label("Configuração inicial", "autom8-title");
+    let copy = label(
+        "Prepare esta estação Linux antes de habilitar os demais módulos do AutoM8.",
+        "autom8-copy",
     );
-    system_heading.set_margin_bottom(14);
+    copy.set_wrap(true);
+    hero_text.append(&title);
+    hero_text.append(&copy);
+    hero.append(&logo);
+    hero.append(&hero_text);
+    page.append(&hero);
 
-    let cards_grid = gtk::Grid::builder()
-        .column_spacing(14)
-        .row_spacing(14)
+    page.append(&label("Identidade da máquina", "autom8-section"));
+    let identity = gtk::Grid::builder()
+        .column_spacing(16)
+        .row_spacing(12)
         .column_homogeneous(true)
         .build();
+    identity.add_css_class("autom8-card");
+    identity.set_margin_top(10);
 
-    let (hostname_card, hostname) = status_card("computer-symbolic", "Hostname");
-    let (distribution_card, distribution) =
-        status_card("drive-harddisk-system-symbolic", "Distribuição");
-    let (desktop_card, desktop) = status_card("video-display-symbolic", "Ambiente gráfico");
-    let (kernel_card, kernel) = status_card("utilities-terminal-symbolic", "Kernel");
-    let (architecture_card, architecture) = status_card("cpu-symbolic", "Arquitetura");
-    let (uptime_card, uptime) = status_card("appointment-soon-symbolic", "Tempo ligado");
+    let hostname = entry("autom8-workstation");
+    let timezone = entry("America/Sao_Paulo");
+    let editor = entry("nano");
+    field(&identity, 0, 0, "Hostname", &hostname);
+    field(&identity, 1, 0, "Timezone", &timezone);
+    field(&identity, 0, 2, "Editor padrão", &editor);
+    page.append(&identity);
 
-    cards_grid.attach(&hostname_card, 0, 0, 1, 1);
-    cards_grid.attach(&distribution_card, 1, 0, 1, 1);
-    cards_grid.attach(&desktop_card, 2, 0, 1, 1);
-    cards_grid.attach(&kernel_card, 0, 1, 1, 1);
-    cards_grid.attach(&architecture_card, 1, 1, 1, 1);
-    cards_grid.attach(&uptime_card, 2, 1, 1, 1);
-
-    let actions_heading = section_heading(
-        "Próximas ferramentas",
-        "A fundação visual já está preparada para os próximos módulos.",
-    );
-    actions_heading.set_margin_top(28);
-    actions_heading.set_margin_bottom(14);
-
-    let actions = gtk::Grid::builder()
-        .column_spacing(14)
+    page.append(&label("Operações iniciais", "autom8-section"));
+    let operations = gtk::Grid::builder()
+        .column_spacing(24)
+        .row_spacing(12)
         .column_homogeneous(true)
         .build();
-    actions.attach(
-        &action_card(
-            "system-search-symbolic",
-            "Diagnóstico",
-            "Verifique a saúde do ambiente",
-        ),
-        0,
-        0,
-        1,
-        1,
-    );
-    actions.attach(
-        &action_card(
-            "system-software-install-symbolic",
-            "Aplicativos",
-            "Instale programas com segurança",
-        ),
-        1,
-        0,
-        1,
-        1,
-    );
-    actions.attach(
-        &action_card(
-            "security-high-symbolic",
-            "Segurança",
-            "Fortaleça a proteção local",
-        ),
-        2,
-        0,
-        1,
-        1,
-    );
+    operations.add_css_class("autom8-card");
+    operations.set_margin_top(10);
+
+    let refresh_repositories = operation(&operations, 0, 0, "Atualizar repositórios", true);
+    let upgrade_packages = operation(&operations, 1, 0, "Atualizar pacotes instalados", false);
+    let install_dependencies = operation(&operations, 0, 1, "Instalar dependências", true);
+    let configure_directories = operation(&operations, 1, 1, "Configurar diretórios", true);
+    let validate_network = operation(&operations, 0, 2, "Validar rede e DNS", true);
+    let identify_hardware = operation(&operations, 1, 2, "Identificar hardware", true);
+    let install_basic_packages = operation(&operations, 0, 3, "Instalar pacotes básicos", true);
+    page.append(&operations);
+
+    page.append(&label("Usuário adicional", "autom8-section"));
+    let user_card = gtk::Box::new(gtk::Orientation::Vertical, 12);
+    user_card.add_css_class("autom8-card");
+    user_card.set_margin_top(10);
+    let create_user = row_switch("Criar um novo usuário", false);
+    let create_user_switch = create_user.1.clone();
+    user_card.append(&create_user.0);
+
+    let user_fields = gtk::Grid::builder()
+        .column_spacing(16)
+        .row_spacing(12)
+        .column_homogeneous(true)
+        .visible(false)
+        .build();
+    let username = entry("usuario");
+    let full_name = entry("Nome completo");
+    field(&user_fields, 0, 0, "Login", &username);
+    field(&user_fields, 1, 0, "Nome completo", &full_name);
+    let admin = row_switch("Conceder acesso administrativo", false);
+    user_fields.attach(&admin.0, 0, 2, 2, 1);
+    let administrator = admin.1;
+    let user_fields_for_toggle = user_fields.clone();
+    create_user_switch.connect_active_notify(move |control| {
+        user_fields_for_toggle.set_visible(control.is_active());
+    });
+    user_card.append(&user_fields);
+    page.append(&user_card);
+
+    page.append(&label("Plano para aprovação", "autom8-section"));
+    let plan = gtk::TextView::builder()
+        .editable(false)
+        .cursor_visible(false)
+        .monospace(true)
+        .vexpand(false)
+        .build();
+    plan.add_css_class("autom8-plan");
+    plan.set_margin_top(10);
+    plan.set_size_request(-1, 250);
+    page.append(&plan);
 
     let message = gtk::Label::builder()
         .halign(gtk::Align::Fill)
@@ -585,180 +206,216 @@ fn build_dashboard() -> (gtk::Box, StatusCards, gtk::Button) {
         .wrap(true)
         .visible(false)
         .build();
-    message.set_margin_top(18);
-
-    page.append(&hero);
-    page.append(&system_heading);
-    page.append(&cards_grid);
-    page.append(&actions_heading);
-    page.append(&actions);
+    message.set_margin_top(14);
     page.append(&message);
 
-    let scrolled = gtk::ScrolledWindow::builder()
+    let approval = gtk::CheckButton::with_label("Revisei e aprovo este plano");
+    approval.set_margin_top(16);
+    page.append(&approval);
+
+    let actions = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+    actions.set_halign(gtk::Align::End);
+    actions.set_margin_top(14);
+    let preview = gtk::Button::with_label("Gerar plano");
+    let execute = gtk::Button::with_label("Executar verificações");
+    execute.add_css_class("autom8-primary");
+    execute.set_sensitive(false);
+    actions.append(&preview);
+    actions.append(&execute);
+    page.append(&actions);
+
+    let form = Form {
+        hostname,
+        timezone,
+        refresh_repositories,
+        upgrade_packages,
+        install_dependencies,
+        configure_directories,
+        validate_network,
+        identify_hardware,
+        install_basic_packages,
+        editor,
+        create_user: create_user_switch,
+        username,
+        full_name,
+        administrator,
+    };
+
+    let form_for_preview = form.clone();
+    let plan_for_preview = plan.clone();
+    let message_for_preview = message.clone();
+    preview.connect_clicked(move |_| {
+        render_plan(&form_for_preview, &plan_for_preview, &message_for_preview);
+    });
+
+    let execute_for_approval = execute.clone();
+    approval.connect_toggled(move |control| {
+        execute_for_approval.set_sensitive(control.is_active());
+    });
+
+    let form_for_execute = form;
+    let plan_for_execute = plan;
+    execute.connect_clicked(move |_| {
+        if render_plan(&form_for_execute, &plan_for_execute, &message) {
+            render_preflight(&form_for_execute, &plan_for_execute, &message);
+        }
+    });
+
+    gtk::ScrolledWindow::builder()
         .hscrollbar_policy(gtk::PolicyType::Never)
         .vexpand(true)
         .child(&page)
-        .build();
-
-    content.append(&scrolled);
-
-    (
-        content,
-        StatusCards {
-            hostname,
-            distribution,
-            kernel,
-            architecture,
-            desktop,
-            uptime,
-            message,
-        },
-        refresh_button,
-    )
+        .build()
 }
 
-fn section_heading(title: &str, copy: &str) -> gtk::Box {
-    let heading = gtk::Box::new(gtk::Orientation::Vertical, 3);
+fn render_preflight(form: &Form, view: &gtk::TextView, message: &gtk::Label) {
+    let answers = answers(form);
+    let results = run_preflight(&answers);
+    let failures = results
+        .iter()
+        .filter(|result| result.level == ProbeLevel::Failure)
+        .count();
 
-    let title = gtk::Label::builder()
-        .label(title)
-        .halign(gtk::Align::Start)
-        .build();
-    title.add_css_class("autom8-block-title");
-
-    let copy = gtk::Label::builder()
-        .label(copy)
-        .halign(gtk::Align::Start)
-        .build();
-    copy.add_css_class("autom8-muted");
-
-    heading.append(&title);
-    heading.append(&copy);
-    heading
-}
-
-fn action_card(icon_name: &str, title: &str, copy: &str) -> gtk::Button {
-    let row = gtk::Box::new(gtk::Orientation::Horizontal, 12);
-
-    let icon = gtk::Image::from_icon_name(icon_name);
-    icon.set_pixel_size(22);
-    icon.add_css_class("autom8-card-icon");
-
-    let labels = gtk::Box::new(gtk::Orientation::Vertical, 3);
-    labels.set_hexpand(true);
-
-    let title = gtk::Label::builder()
-        .label(title)
-        .halign(gtk::Align::Start)
-        .build();
-    title.add_css_class("autom8-action-title");
-
-    let copy = gtk::Label::builder()
-        .label(copy)
-        .halign(gtk::Align::Start)
-        .ellipsize(gtk::pango::EllipsizeMode::End)
-        .build();
-    copy.add_css_class("autom8-action-copy");
-
-    let arrow = gtk::Image::from_icon_name("go-next-symbolic");
-    arrow.add_css_class("autom8-muted");
-
-    labels.append(&title);
-    labels.append(&copy);
-    row.append(&icon);
-    row.append(&labels);
-    row.append(&arrow);
-
-    let button = gtk::Button::builder().child(&row).sensitive(false).build();
-    button.add_css_class("autom8-action-card");
-    button
-}
-
-fn status_card(icon_name: &str, title: &str) -> (gtk::Box, gtk::Label) {
-    let card = gtk::Box::new(gtk::Orientation::Vertical, 9);
-    card.add_css_class("autom8-card");
-    card.set_hexpand(true);
-
-    let icon = gtk::Image::from_icon_name(icon_name);
-    icon.set_pixel_size(24);
-    icon.set_halign(gtk::Align::Start);
-    icon.add_css_class("autom8-card-icon");
-
-    let title_label = gtk::Label::builder()
-        .label(title)
-        .halign(gtk::Align::Start)
-        .build();
-    title_label.add_css_class("autom8-card-title");
-
-    let value = gtk::Label::builder()
-        .label("Carregando…")
-        .halign(gtk::Align::Start)
-        .ellipsize(gtk::pango::EllipsizeMode::End)
-        .build();
-    value.add_css_class("autom8-card-value");
-
-    card.append(&icon);
-    card.append(&title_label);
-    card.append(&value);
-
-    (card, value)
-}
-
-fn refresh_status(cards: &StatusCards) {
-    match SystemStatus::collect() {
-        Ok(status) => display_status(cards, &status),
-        Err(error) => display_error(cards, &error),
-    }
-}
-
-fn display_status(cards: &StatusCards, status: &SystemStatus) {
-    cards.hostname.set_text(&status.hostname);
-    cards.distribution.set_text(&distribution_name(status));
-    cards.kernel.set_text(&status.kernel);
-    cards.architecture.set_text(&status.architecture);
-    cards
-        .desktop
-        .set_text(status.desktop.as_deref().unwrap_or("Não detectado"));
-    cards.uptime.set_text(&format_uptime(status.uptime_seconds));
-
-    cards.message.remove_css_class("autom8-error");
-    cards.message.add_css_class("autom8-success");
-    cards
-        .message
-        .set_text("✓ Informações atualizadas com sucesso.");
-    cards.message.set_visible(true);
-}
-
-fn display_error(cards: &StatusCards, error: &StatusError) {
-    cards.message.remove_css_class("autom8-success");
-    cards.message.add_css_class("autom8-error");
-    cards.message.set_text(&format!(
-        "Não foi possível atualizar as informações: {error}"
-    ));
-    cards.message.set_visible(true);
-}
-
-fn distribution_name(status: &SystemStatus) -> String {
-    if status.distribution.version.is_empty() {
-        status.distribution.name.clone()
-    } else {
-        format!(
-            "{} {}",
-            status.distribution.name, status.distribution.version
+    let mut output = view
+        .buffer()
+        .text(
+            &view.buffer().start_iter(),
+            &view.buffer().end_iter(),
+            false,
         )
+        .to_string();
+    output.push_str("\nVERIFICAÇÕES LOCAIS\n");
+
+    for result in &results {
+        let marker = match result.level {
+            ProbeLevel::Success => "✓",
+            ProbeLevel::Warning => "!",
+            ProbeLevel::Failure => "✕",
+        };
+        output.push_str(&format!(
+            "  {marker} {} — {}\n",
+            result.title, result.detail
+        ));
+    }
+
+    view.buffer().set_text(&output);
+    if failures == 0 {
+        show_message(
+            message,
+            "Verificações concluídas. As operações privilegiadas ainda não foram executadas.",
+            false,
+        );
+    } else {
+        show_message(
+            message,
+            "Uma ou mais verificações críticas falharam. O Bootstrap permanece incompleto.",
+            true,
+        );
     }
 }
 
-fn format_uptime(total_seconds: u64) -> String {
-    let days = total_seconds / 86_400;
-    let hours = total_seconds % 86_400 / 3_600;
-    let minutes = total_seconds % 3_600 / 60;
-
-    if days > 0 {
-        format!("{days}d {hours}h {minutes}min")
-    } else if hours > 0 {
-        format!("{hours}h {minutes}min")
-    } else {
-        format!("{minutes}min")
+fn answers(form: &Form) -> BootstrapAnswers {
+    BootstrapAnswers {
+        hostname: form.hostname.text().to_string(),
+        timezone: form.timezone.text().to_string(),
+        refresh_repositories: form.refresh_repositories.is_active(),
+        upgrade_packages: form.upgrade_packages.is_active(),
+        install_dependencies: form.install_dependencies.is_active(),
+        configure_directories: form.configure_directories.is_active(),
+        validate_network: form.validate_network.is_active(),
+        identify_hardware: form.identify_hardware.is_active(),
+        install_basic_packages: form.install_basic_packages.is_active(),
+        editor: form.editor.text().to_string(),
+        new_user: form.create_user.is_active().then(|| NewUser {
+            username: form.username.text().to_string(),
+            full_name: form.full_name.text().to_string(),
+            administrator: form.administrator.is_active(),
+        }),
     }
+}
+
+fn render_plan(form: &Form, view: &gtk::TextView, message: &gtk::Label) -> bool {
+    let answers = answers(form);
+    let errors = answers.validate();
+    if !errors.is_empty() {
+        show_message(message, &errors.join("\n"), true);
+        return false;
+    }
+
+    let mut output = format!(
+        "Hostname: {}\nTimezone: {}\nEditor: {}\n\nETAPAS\n",
+        answers.hostname, answers.timezone, answers.editor
+    );
+    for step in answers.plan().iter().filter(|step| step.enabled) {
+        let privilege = if step.privileged {
+            "requer autenticação"
+        } else {
+            "somente leitura"
+        };
+        output.push_str(&format!("  • {} — {}\n", step.title, privilege));
+    }
+    view.buffer().set_text(&output);
+    show_message(message, "Plano válido. Revise antes de aprovar.", false);
+    true
+}
+
+fn show_message(label: &gtk::Label, text: &str, error: bool) {
+    label.remove_css_class(if error {
+        "autom8-success"
+    } else {
+        "autom8-error"
+    });
+    label.add_css_class(if error {
+        "autom8-error"
+    } else {
+        "autom8-success"
+    });
+    label.set_text(text);
+    label.set_visible(true);
+}
+
+fn label(text: &str, class: &str) -> gtk::Label {
+    let label = gtk::Label::builder()
+        .label(text)
+        .halign(gtk::Align::Start)
+        .build();
+    label.add_css_class(class);
+    label
+}
+
+fn entry(placeholder: &str) -> gtk::Entry {
+    let entry = gtk::Entry::builder()
+        .placeholder_text(placeholder)
+        .hexpand(true)
+        .build();
+    entry.add_css_class("autom8-entry");
+    entry
+}
+
+fn field(grid: &gtk::Grid, column: i32, row: i32, title: &str, entry: &gtk::Entry) {
+    let title = label(title, "autom8-copy");
+    grid.attach(&title, column, row, 1, 1);
+    grid.attach(entry, column, row + 1, 1, 1);
+}
+
+fn operation(grid: &gtk::Grid, column: i32, row: i32, title: &str, active: bool) -> gtk::Switch {
+    let (container, control) = row_switch(title, active);
+    grid.attach(&container, column, row, 1, 1);
+    control
+}
+
+fn row_switch(title: &str, active: bool) -> (gtk::Box, gtk::Switch) {
+    let row = gtk::Box::new(gtk::Orientation::Horizontal, 12);
+    let title = gtk::Label::builder()
+        .label(title)
+        .halign(gtk::Align::Start)
+        .hexpand(true)
+        .build();
+    let control = gtk::Switch::builder()
+        .active(active)
+        .valign(gtk::Align::Center)
+        .build();
+    row.append(&title);
+    row.append(&control);
+    (row, control)
 }
