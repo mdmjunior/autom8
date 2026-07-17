@@ -152,8 +152,25 @@ if [[ "$plain_output" == *$'\033['* ]]; then
   error "A saída sem cores contém sequência ANSI."
 fi
 
-if "$cli_binary" status >/dev/null 2>&1; then
-  error "O comando ainda não implementado 'status' deveria falhar."
-fi
+log "Validando o comando status..."
+status_output="$("$cli_binary" status)"
+[[ "$status_output" == *"AutoM8 — status do sistema"* ]] ||
+  error "A saída humana do status é inválida."
 
-log "Fundação da CLI aprovada."
+status_json="$("$cli_binary" status --json)"
+jq -e '
+  (.hostname | type == "string" and length > 0) and
+  (.distribution.id | type == "string" and length > 0) and
+  (.distribution.name | type == "string" and length > 0) and
+  (.distribution.version | type == "string") and
+  (.kernel | type == "string" and length > 0) and
+  (.architecture | type == "string" and length > 0) and
+  ((.desktop == null) or (.desktop | type == "string")) and
+  (.uptime_seconds | type == "number" and . >= 0)
+' <<<"$status_json" >/dev/null ||
+  error "O contrato JSON do status é inválido."
+
+[[ "$status_json" != *"AutoM8 — status do sistema"* ]] ||
+  error "A saída JSON contém texto destinado a humanos."
+
+log "CLI e comando status aprovados."

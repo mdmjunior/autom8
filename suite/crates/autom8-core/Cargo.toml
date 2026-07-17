@@ -8,5 +8,8 @@ repository.workspace = true
 authors.workspace = true
 description = "Contratos compartilhados do AutoM8"
 
+[dependencies]
+serde.workspace = true
+
 [lints]
 workspace = true

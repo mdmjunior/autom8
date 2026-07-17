@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+pub mod status;
+
 /// Nome público do produto.
 pub const PRODUCT_NAME: &str = "AutoM8";
 
