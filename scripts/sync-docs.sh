@@ -330,9 +330,9 @@ for c in commands:
 
 # DOCS:README:START
 status_labels = {
-    "available": "Disponível",
-    "partial": "Parcial",
-    "planned": "Planejado"
+    "available": "🟢 Disponível",
+    "partial": "🟡 Parcial",
+    "planned": "⚪ Planejado"
 }
 
 essential_slugs = [
@@ -357,31 +357,156 @@ essential_commands = [
     if slug in commands_by_slug
 ]
 
+github_url = (
+    "https://github.com/"
+    + product["githubRepo"]
+)
+
+apps_count = len(
+    apps_catalog["apps"]
+)
+
+categories_count = len(
+    apps_catalog["categories"]
+)
+
+profiles_count = len(
+    profiles
+)
+
 readme = [
-    f"# {product['name']}",
+    "<!--",
+    "  Este arquivo é gerado por scripts/sync-docs.sh.",
+    "  Atualize docs/source/autom8-docs.json, os catálogos",
+    "  ou o bloco DOCS:README do gerador.",
+    "-->",
     "",
-    product["summary"],
+    '<p align="center">',
+    f'  <a href="{product["siteUrl"]}">',
+    "    <img",
+    '      src="site/public/branding/logo-autom8-site.png"',
+    '      alt="AutoM8 - Linux Management Suite"',
+    '      width="620"',
+    "    />",
+    "  </a>",
+    "</p>",
     "",
+    '<p align="center">',
+    f"  <strong>{product['positioning']}</strong>",
+    "</p>",
+    "",
+    '<p align="center">',
+    f"  {product['summary']}",
+    "</p>",
+    "",
+    '<p align="center">',
+    f'  <a href="{product["siteUrl"]}">',
+    "    <img",
+    '      alt="Site oficial"',
+    '      src="https://img.shields.io/badge/SITE-020617?style=for-the-badge&logo=googlechrome&logoColor=38bdf8"',
+    "    />",
+    "  </a>",
+    f'  <a href="{product["siteUrl"]}/docs">',
+    "    <img",
+    '      alt="Documentação"',
+    '      src="https://img.shields.io/badge/DOCUMENTA%C3%87%C3%83O-020617?style=for-the-badge&logo=readthedocs&logoColor=22c55e"',
+    "    />",
+    "  </a>",
+    f'  <a href="{product["siteUrl"]}/install">',
+    "    <img",
+    '      alt="Instalar AutoM8"',
+    '      src="https://img.shields.io/badge/INSTALAR-020617?style=for-the-badge&logo=gnubash&logoColor=facc15"',
+    "    />",
+    "  </a>",
+    f'  <a href="{github_url}/releases">',
+    "    <img",
+    '      alt="GitHub Releases"',
+    '      src="https://img.shields.io/badge/RELEASES-020617?style=for-the-badge&logo=github&logoColor=ffffff"',
+    "    />",
+    "  </a>",
+    "</p>",
+    "",
+    '<p align="center">',
+    "  <img",
+    f'    alt="Versão {product["currentVersion"]}"',
     (
-        f"[Site oficial]({product['siteUrl']}) · "
-        f"[Documentação]({product['siteUrl']}/docs) · "
-        f"[Releases](https://github.com/{product['githubRepo']}/releases)"
+        '    src="https://img.shields.io/badge/vers%C3%A3o-'
+        f'{product["currentVersion"]}'
+        '-22c55e?style=flat-square"'
     ),
-    "",
-    "## Estado atual",
-    "",
-    f"- Versão estável: `{product['currentVersion']}`",
+    "  />",
+    "  <img",
+    f'    alt="{apps_count} aplicativos"',
     (
-        f"- Catálogo: **{len(apps_catalog['apps'])} apps**, "
-        f"**{len(apps_catalog['categories'])} categorias** e "
-        f"**{len(profiles)} perfis**"
+        '    src="https://img.shields.io/badge/apps-'
+        f'{apps_count}'
+        '-38bdf8?style=flat-square"'
     ),
-    "- Validado em Ubuntu Desktop e Fedora Workstation.",
-    "- Compatível com fluxos baseados em `apt`, `dnf`, `zypper` e `pacman`.",
+    "  />",
+    "  <img",
+    f'    alt="{categories_count} categorias"',
+    (
+        '    src="https://img.shields.io/badge/categorias-'
+        f'{categories_count}'
+        '-a78bfa?style=flat-square"'
+    ),
+    "  />",
+    "  <img",
+    f'    alt="{profiles_count} perfis"',
+    (
+        '    src="https://img.shields.io/badge/perfis-'
+        f'{profiles_count}'
+        '-f59e0b?style=flat-square"'
+    ),
+    "  />",
+    "  <a href=\"LICENSE\">",
+    "    <img",
+    '      alt="Licença GPL-3.0"',
+    '      src="https://img.shields.io/badge/licen%C3%A7a-GPL--3.0-64748b?style=flat-square"',
+    "    />",
+    "  </a>",
+    (
+        f'  <a href="{github_url}/actions/workflows/'
+        'quality.yml">'
+    ),
+    "    <img",
+    '      alt="Quality Gate"',
+    (
+        f'      src="{github_url}/actions/workflows/'
+        'quality.yml/badge.svg?branch=main"'
+    ),
+    "    />",
+    "  </a>",
+    "</p>",
+    "",
+    "---",
+    "",
+    "## AutoM8 em números",
+    "",
+    '<table align="center">',
+    "  <tr>",
+    '    <td align="center" width="25%">',
+    f"      <strong>{product['currentVersion']}</strong><br />",
+    "      <sub>versão estável</sub>",
+    "    </td>",
+    '    <td align="center" width="25%">',
+    f"      <strong>{apps_count}</strong><br />",
+    "      <sub>aplicativos</sub>",
+    "    </td>",
+    '    <td align="center" width="25%">',
+    f"      <strong>{categories_count}</strong><br />",
+    "      <sub>categorias</sub>",
+    "    </td>",
+    '    <td align="center" width="25%">',
+    f"      <strong>{profiles_count}</strong><br />",
+    "      <sub>perfis</sub>",
+    "    </td>",
+    "  </tr>",
+    "</table>",
     "",
     "## Instalação",
     "",
-    "Execute com um usuário comum que tenha permissão de `sudo`:",
+    "Execute como usuário comum com permissão de `sudo`:",
     "",
     "```bash",
     install["command"],
@@ -395,11 +520,143 @@ readme = [
     "autom8 profiles list",
     "```",
     "",
+    "> [!IMPORTANT]",
+    "> Não execute o instalador diretamente como `root`.",
+    "> A instalação padrão é feita em `/opt/autom8`.",
+    "",
+    "## Por que AutoM8?",
+    "",
+    "| Local e auditável | Seguro por padrão | Multidistro |",
+    "| --- | --- | --- |",
+    (
+        "| Funciona localmente, sem painel remoto obrigatório. "
+        "| Confirmações explícitas antes de alterações reais. "
+        "| Fluxos para `apt`, `dnf`, `zypper` e `pacman`. |"
+    ),
+    (
+        "| Logs e relatórios permanecem sob controle do usuário. "
+        "| Modo `--dry-run` para visualizar ações antecipadamente. "
+        "| Direcionado a desktops e servidores Linux. |"
+    ),
+    (
+        "| Diagnósticos privados podem ser sanitizados. "
+        "| Catálogos locais e atualizáveis. "
+        "| Ubuntu e Fedora validados no ciclo atual. |"
+    ),
+    "",
+    "## Experiência no terminal",
+    "",
+    "```console",
+    "$ autom8 doctor",
+    "",
+    "AutoM8 · diagnóstico",
+    "",
+    "  ✓ Instalação validada",
+    "  ✓ Dependências disponíveis",
+    "  ✓ Catálogo carregado",
+    f"  ✓ Versão estável: {product['currentVersion']}",
+    "",
+    "$ autom8 apps search docker",
+    "",
+    "  docker · Containers e ambientes isolados",
+    "  docker-compose · Orquestração local",
+    "",
+    "$ autom8 profiles list",
+    "",
+    "  desenvolvimento",
+    "  produtividade",
+    "  servidor",
+    "```",
+    "",
+    "## Stack do projeto",
+    "",
+    "### CLI e runtime",
+    "",
+    '<p>',
+    '  <img alt="Linux" src="https://img.shields.io/badge/Linux-111827?style=for-the-badge&logo=linux&logoColor=ffffff" />',
+    '  <img alt="Bash" src="https://img.shields.io/badge/Bash-111827?style=for-the-badge&logo=gnubash&logoColor=22c55e" />',
+    '  <img alt="jq" src="https://img.shields.io/badge/jq-111827?style=for-the-badge&logo=jq&logoColor=38bdf8" />',
+    '  <img alt="gum" src="https://img.shields.io/badge/gum-111827?style=for-the-badge&logoColor=facc15" />',
+    "</p>",
+    "",
+    "### Website",
+    "",
+    '<p>',
+    '  <img alt="Astro" src="https://img.shields.io/badge/Astro-111827?style=for-the-badge&logo=astro&logoColor=ff5d01" />',
+    '  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-111827?style=for-the-badge&logo=tailwindcss&logoColor=38bdf8" />',
+    '  <img alt="Node.js" src="https://img.shields.io/badge/Node.js_22-111827?style=for-the-badge&logo=nodedotjs&logoColor=22c55e" />',
+    '  <img alt="Simple Icons" src="https://img.shields.io/badge/Simple_Icons-111827?style=for-the-badge&logo=simpleicons&logoColor=ffffff" />',
+    "</p>",
+    "",
+    "### Infraestrutura e entrega",
+    "",
+    '<p>',
+    '  <img alt="Docker" src="https://img.shields.io/badge/Docker-111827?style=for-the-badge&logo=docker&logoColor=2496ed" />',
+    '  <img alt="Docker Swarm" src="https://img.shields.io/badge/Docker_Swarm-111827?style=for-the-badge&logo=docker&logoColor=38bdf8" />',
+    '  <img alt="Nginx" src="https://img.shields.io/badge/Nginx-111827?style=for-the-badge&logo=nginx&logoColor=22c55e" />',
+    '  <img alt="Traefik" src="https://img.shields.io/badge/Traefik-111827?style=for-the-badge&logo=traefikproxy&logoColor=38bdf8" />',
+    '  <img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-111827?style=for-the-badge&logo=githubactions&logoColor=2088ff" />',
+    '  <img alt="ShellCheck" src="https://img.shields.io/badge/ShellCheck-111827?style=for-the-badge&logo=gnu&logoColor=facc15" />',
+    "</p>",
+    "",
+    "## Arquitetura",
+    "",
+    "```mermaid",
+    "flowchart LR",
+    "    User[Usuário Linux] --> Installer[install.sh]",
+    "    Installer --> Release[GitHub Releases]",
+    "    Release --> CLI[AutoM8 CLI]",
+    "",
+    "    CLI --> Apps[Catálogo de apps]",
+    "    CLI --> Profiles[Perfis]",
+    "    CLI --> Modules[Módulos]",
+    "    CLI --> Reports[Logs e relatórios]",
+    "",
+    "    Source[docs/source/autom8-docs.json] --> Sync[sync-docs.sh]",
+    "    Sync --> Website[Website Astro]",
+    "    Sync --> Help[Ajuda da CLI]",
+    "    Sync --> Readme[README]",
+    "",
+    "    Website --> Image[Docker + Nginx]",
+    "    Image --> Swarm[Docker Swarm]",
+    "    Swarm --> Proxy[Traefik + TLS]",
+    "```",
+    "",
+    "> O website publica o instalador e a documentação.",
+    "> Os pacotes estáveis da suíte são distribuídos exclusivamente",
+    "> pelo GitHub Releases.",
+    "",
+    "## Recursos",
+    "",
+    "| Comando | Estado | Desde | Descrição |",
+    "| --- | --- | --- | --- |"
+]
+
+for command in commands:
+    readme.append(
+        f"| `{command['command']}` "
+        f"| {status_labels[command['status']]} "
+        f"| `{command['since']}` "
+        f"| {command['summary']} |"
+    )
+
+readme.extend([
+    "",
+    "## Compatibilidade",
+    "",
+    "| Plataforma | Estado atual | Gerenciador |",
+    "| --- | --- | --- |",
+    "| Ubuntu Desktop | 🟢 Validado | `apt` |",
+    "| Fedora Workstation | 🟢 Validado | `dnf` |",
+    "| Debian e derivados | 🟡 Compatível, testes em expansão | `apt` |",
+    "| openSUSE | 🟡 Compatível, testes em expansão | `zypper` |",
+    "| Arch Linux e derivados | 🟡 Compatível, testes em expansão | `pacman` |",
+    "",
     "## Comandos essenciais",
     "",
     "| Comando | Descrição |",
     "| --- | --- |"
-]
+])
 
 for command in essential_commands:
     readme.append(
@@ -408,60 +665,77 @@ for command in essential_commands:
 
 readme.extend([
     "",
-    "Use `autom8 help` para a lista completa e "
+    "Use `autom8 help` para a lista completa e",
     "`autom8 help <comando>` para detalhes.",
-    "",
-    "### Em evolução",
-    ""
-])
-
-for command in partial + planned:
-    readme.append(
-        f"- **{status_labels[command['status']]}:** "
-        f"`{command['command']}` — {command['summary']}"
-    )
-
-readme.extend([
     "",
     "## Desenvolvimento",
     "",
     "```bash",
+    "git checkout develop",
     "./scripts/bootstrap-dev.sh",
     "./scripts/sync-docs.sh",
     "./scripts/check.sh all",
     "./scripts/website/build.sh",
     "```",
     "",
-    "Fluxo do projeto: mudanças entram em `develop`; "
-    "a promoção para `main` ocorre por pull request com Quality Gate.",
+    "Mudanças entram em `develop` e são promovidas para `main`",
+    "por Pull Request com Quality Gate obrigatório.",
     "",
-    "## Estrutura",
+    "## Estrutura do repositório",
     "",
     "```text",
-    "suite/      CLI instalada em /opt/autom8",
-    "installer/  instalador público",
-    "site/       website Astro",
-    "docs/       fonte e documentos técnicos",
-    "scripts/    validação, build, pacote e release",
+    "autom8/",
+    "├── suite/       # CLI instalada em /opt/autom8",
+    "├── installer/   # instalador público",
+    "├── site/        # website Astro",
+    "├── docs/        # documentação e fonte canônica",
+    "├── infra/       # Docker Swarm e deploy",
+    "└── scripts/     # build, validação, pacote e release",
     "```",
     "",
-    "## Documentação do repositório",
+    "## Documentação",
     "",
     "- [Índice técnico](docs/README.md)",
     "- [Arquitetura](docs/ARCHITECTURE.md)",
+    "- [Deploy](docs/DEPLOY.md)",
     "- [Releases](docs/RELEASES.md)",
     "- [Variáveis](docs/VARIABLES.md)",
     "- [Como contribuir](CONTRIBUTING.md)",
     "- [Segurança](SECURITY.md)",
     "",
-    "A fonte canônica é `docs/source/autom8-docs.json`. "
-    "Arquivos gerados não devem ser editados isoladamente.",
+    "A fonte canônica é `docs/source/autom8-docs.json`.",
+    "O README, os dados do website e a ajuda da CLI são",
+    "sincronizados por `scripts/sync-docs.sh`.",
+    "",
+    "## Roadmap",
+    "",
+    "1. concluir `autom8 self-update`;",
+    "2. ampliar os testes multidistro;",
+    "3. implementar `autom8 backup`;",
+    "4. adicionar rollback antes de operações sensíveis;",
+    "5. fortalecer a cadeia de releases com checksum e SBOM.",
+    "",
+    "Acompanhe a visão completa no",
+    f"[roadmap oficial]({product['siteUrl']}/roadmap).",
     "",
     "## Licença",
     "",
-    "[GNU GPL-3.0](LICENSE).",
+    "Distribuído sob a [GNU GPL-3.0](LICENSE).",
     "",
-    "AutoM8 é um produto OSLabs para a comunidade Linux."
+    "---",
+    "",
+    '<p align="center">',
+    "  <img",
+    '    src="site/public/branding/favicon.png"',
+    '    alt=""',
+    '    width="52"',
+    "  />",
+    "</p>",
+    "",
+    '<p align="center">',
+    "  <strong>AutoM8</strong><br />",
+    "  Um produto OSLabs para a comunidade Linux.",
+    "</p>"
 ])
 
 write_text("README.md", md(readme))
