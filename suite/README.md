@@ -9,8 +9,14 @@ O workspace possui três pacotes:
 - `autom8-cli`: interface rápida para terminal;
 - `autom8-gnome`: aplicação nativa GTK 4/libadwaita.
 
-Nesta primeira etapa, a CLI implementa somente banner, `--help` e `--version`.
-A aplicação GNOME é apenas uma janela inicial, sem operações no sistema.
+A CLI implementa banner, `--help`, `--version` e o primeiro comando funcional:
+
+```bash
+autom8 status
+autom8 status --json
+```
+
+A aplicação GNOME permanece como janela inicial, sem operações no sistema.
 
 ## Metadados estáveis preservados
 

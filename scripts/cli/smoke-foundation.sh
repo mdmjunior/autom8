@@ -20,6 +20,7 @@ esac
 require_command awk
 require_command cargo
 require_command grep
+require_command jq
 require_command mktemp
 
 if [[ ! -r /etc/os-release ]]; then
@@ -71,8 +72,20 @@ if grep -Fq $'\033[' "${temporary_directory}/banner.txt"; then
   error "O banner sem cores contém sequência ANSI."
 fi
 
-if "$cli_binary" status >"${temporary_directory}/invalid.txt" 2>&1; then
-  error "O comando ainda não implementado 'status' deveria retornar falha."
-fi
+log "Validando o primeiro comando funcional..."
+"$cli_binary" status >"${temporary_directory}/status.txt"
+"$cli_binary" status --json >"${temporary_directory}/status.json"
+
+grep -Fq 'AutoM8 — status do sistema' "${temporary_directory}/status.txt" ||
+  error "Cabeçalho do status não encontrado."
+
+jq -e '
+  (.hostname | type == "string" and length > 0) and
+  (.distribution.id | type == "string" and length > 0) and
+  (.kernel | type == "string" and length > 0) and
+  (.architecture | type == "string" and length > 0) and
+  (.uptime_seconds | type == "number" and . >= 0)
+' "${temporary_directory}/status.json" >/dev/null ||
+  error "Contrato JSON do status é inválido."
 
 log "Smoke da fundação concluído em ${PRETTY_NAME:-$expected_distribution}."
