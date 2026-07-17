@@ -7,14 +7,15 @@ Thumbs.db
 # Logs/temp
 *.log
 tmp/
-suite/logs/*
-suite/tmp/*
-suite/backups/*
-suite/reports/*
-!suite/logs/.keep
-!suite/tmp/.keep
-!suite/backups/.keep
-!suite/reports/.keep
+
+# Dados operacionais locais preservados durante a migração
+/suite/backups/
+/suite/logs/
+/suite/reports/
+/suite/tmp/
+
+# Rust
+/suite/target/
 
 # Node/Astro
 site/node_modules/

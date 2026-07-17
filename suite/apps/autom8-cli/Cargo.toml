@@ -1,0 +1,20 @@
+[package]
+name = "autom8-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Interface de linha de comando do AutoM8"
+
+[[bin]]
+name = "autom8"
+path = "src/main.rs"
+
+[dependencies]
+autom8-core.workspace = true
+clap.workspace = true
+
+[lints]
+workspace = true

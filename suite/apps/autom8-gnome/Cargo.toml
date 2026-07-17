@@ -1,0 +1,21 @@
+[package]
+name = "autom8-gnome"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Interface GNOME nativa do AutoM8"
+
+[[bin]]
+name = "autom8-gnome"
+path = "src/main.rs"
+
+[dependencies]
+adw.workspace = true
+autom8-core.workspace = true
+gtk.workspace = true
+
+[lints]
+workspace = true

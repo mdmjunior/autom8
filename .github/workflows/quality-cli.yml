@@ -10,7 +10,7 @@ jobs:
   cli:
     name: CLI quality
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     steps:
       - name: Checkout
@@ -18,63 +18,33 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install CLI dependencies
+      - name: Install native dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes jq
+          sudo apt-get update --quiet
+          sudo apt-get install --yes --quiet \
+            jq \
+            libadwaita-1-dev \
+            libgtk-4-dev \
+            pkg-config
 
-      - name: Validate CLI
+      - name: Prepare Rust toolchain
+        run: rustup component add clippy rustfmt
+
+      - name: Validate CLI and GNOME foundation
         run: ./scripts/cli/check.sh
 
       - name: Check generated catalog
         run: git diff --exit-code -- suite/catalog/apps.json
 
-      - name: Run CLI smoke checks
+      - name: Run Ubuntu foundation smoke test
+        run: ./scripts/smoke-ubuntu-desktop.sh
+
+      - name: Confirm legacy packaging is blocked
         run: |
-          ./suite/bin/autom8 --version
-          ./suite/bin/autom8 --help >/dev/null
-          ./suite/bin/autom8 apps categories >/dev/null
-          ./suite/bin/autom8 profiles list >/dev/null
+          if ./scripts/package.sh >package-output.txt 2>&1; then
+            cat package-output.txt
+            echo "O empacotador legado deveria estar bloqueado." >&2
+            exit 1
+          fi
 
-      - name: Build and inspect package
-        run: |
-          set -Eeuo pipefail
-
-          version="$(tr -d '[:space:]' < suite/VERSION)"
-          package_dir="${RUNNER_TEMP}/autom8-package"
-
-          mkdir -p "$package_dir"
-
-          AUTOM8_PACKAGE_OUTPUT_DIR="$package_dir" \
-            ./scripts/package.sh
-
-          versioned="$package_dir/autom8-${version}.tar.gz"
-          latest="$package_dir/autom8-latest.tar.gz"
-
-          test -s "$versioned"
-          test -s "$latest"
-          cmp -s "$versioned" "$latest"
-
-          archive_listing="$(tar -tzf "$versioned")"
-
-          required_paths=(
-            bin/autom8
-            VERSION
-            catalog/apps.json
-            catalog/profiles.json
-            modules/apps.sh
-            modules/profiles.sh
-            lib/apps/catalog.sh
-          )
-
-          for required_path in "${required_paths[@]}"; do
-            grep -Eq "(^./)?${required_path}$" \
-              <<< "$archive_listing"
-          done
-
-          packaged_version="$(
-            tar -xOf "$versioned" ./VERSION |
-              tr -d '[:space:]'
-          )"
-
-          [[ "$packaged_version" == "$version" ]]
+          grep -Fq "Etapa 8" package-output.txt
