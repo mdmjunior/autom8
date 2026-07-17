@@ -5,9 +5,18 @@ use std::io::{self, Write};
 use std::process::ExitCode;
 
 use autom8_core::ProductInfo;
+use autom8_core::navigation::{NavigationSection, navigation_items};
 use autom8_core::status::{StatusError, SystemStatus};
 use clap::Parser;
 use cli::{Cli, Commands, StatusArgs};
+
+const NAVIGATION_SECTIONS: [NavigationSection; 5] = [
+    NavigationSection::Overview,
+    NavigationSection::Diagnostics,
+    NavigationSection::Management,
+    NavigationSection::System,
+    NavigationSection::Results,
+];
 
 fn write_home(cli: &Cli) -> io::Result<()> {
     let product = ProductInfo::current();
@@ -22,7 +31,31 @@ fn write_home(cli: &Cli) -> io::Result<()> {
     )?;
     writeln!(
         output,
-        "Use 'autom8 --help' para ver as opções disponíveis."
+        "Execução local · Sem telemetria · Seguro por padrão"
+    )?;
+
+    for section in NAVIGATION_SECTIONS {
+        writeln!(output)?;
+        writeln!(output, "{}", section.title().to_uppercase())?;
+
+        for item in navigation_items()
+            .iter()
+            .filter(|item| item.section == section)
+        {
+            let state = if item.available { "" } else { " [em breve]" };
+
+            writeln!(
+                output,
+                "  {:<14} {}{}",
+                item.command, item.description, state
+            )?;
+        }
+    }
+
+    writeln!(output)?;
+    writeln!(
+        output,
+        "Use 'autom8 <comando> --help' para ver opções específicas."
     )
 }
 
@@ -35,22 +68,32 @@ fn write_status(arguments: &StatusArgs) -> Result<(), StatusCommandError> {
         serde_json::to_writer_pretty(&mut output, &status)?;
         writeln!(output)?;
     } else {
-        writeln!(output, "AutoM8 — status do sistema")?;
-        writeln!(output, "Hostname: {}", status.hostname)?;
+        writeln!(output, "AutoM8 · Visão geral")?;
+        writeln!(output, "────────────────────────────────────────")?;
+        writeln!(output, "Sistema")?;
+        writeln!(output, "  Hostname       {}", status.hostname)?;
         writeln!(
             output,
-            "Distribuição: {} ({})",
+            "  Distribuição   {} ({})",
             status.distribution.name, status.distribution.id
         )?;
-        writeln!(output, "Versão: {}", status.distribution.version)?;
-        writeln!(output, "Kernel: {}", status.kernel)?;
-        writeln!(output, "Arquitetura: {}", status.architecture)?;
+        writeln!(output, "  Versão         {}", status.distribution.version)?;
+        writeln!(output)?;
+        writeln!(output, "Ambiente")?;
+        writeln!(output, "  Kernel         {}", status.kernel)?;
+        writeln!(output, "  Arquitetura    {}", status.architecture)?;
         writeln!(
             output,
-            "Desktop: {}",
+            "  Desktop        {}",
             status.desktop.as_deref().unwrap_or("não detectado")
         )?;
-        writeln!(output, "Uptime: {} segundos", status.uptime_seconds)?;
+        writeln!(
+            output,
+            "  Uptime         {} segundos",
+            status.uptime_seconds
+        )?;
+        writeln!(output)?;
+        writeln!(output, "✓ Informações atualizadas com sucesso")?;
     }
 
     Ok(())

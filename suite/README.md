@@ -16,7 +16,7 @@ autom8 status
 autom8 status --json
 ```
 
-A aplicação GNOME permanece como janela inicial, sem operações no sistema.
+A aplicação GNOME apresenta navegação completa, identidade visual compartilhada com o website e um painel funcional de status do sistema.
 
 ## Metadados estáveis preservados
 

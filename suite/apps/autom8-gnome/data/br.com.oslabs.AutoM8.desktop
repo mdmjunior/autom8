@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=AutoM8
+GenericName=Linux Management Suite
+Comment=Gerenciamento local, previsível e seguro para Linux
+Exec=autom8-gnome
+Icon=br.com.oslabs.AutoM8
+Terminal=false
+Categories=System;Settings;
+Keywords=Linux;System;Management;Automation;
+StartupNotify=true
+StartupWMClass=br.com.oslabs.AutoM8

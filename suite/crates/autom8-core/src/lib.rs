@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+pub mod navigation;
 pub mod status;
 
 /// Nome público do produto.
