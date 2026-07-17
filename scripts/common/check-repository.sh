@@ -111,7 +111,6 @@ PY
 log "Verificando arquivos executáveis..."
 
 required_executables=(
-  suite/bin/autom8
   installer/install.sh
   scripts/check.sh
   scripts/cli/check.sh
@@ -123,15 +122,39 @@ for executable in "${required_executables[@]}"; do
     error "Arquivo deveria ser executável: ${executable}"
 done
 
+log "Verificando a fundação Rust da CLI..."
+
+required_rust_files=(
+  suite/Cargo.toml
+  suite/rust-toolchain.toml
+  suite/crates/autom8-core/Cargo.toml
+  suite/crates/autom8-core/src/lib.rs
+  suite/apps/autom8-cli/Cargo.toml
+  suite/apps/autom8-cli/src/main.rs
+  suite/apps/autom8-gnome/Cargo.toml
+  suite/apps/autom8-gnome/src/main.rs
+)
+
+for required_file in "${required_rust_files[@]}"; do
+  [[ -f "$required_file" ]] ||
+    error "Arquivo obrigatório não encontrado: ${required_file}"
+done
+
 log "Verificando resíduos de estruturas antigas..."
 
 legacy_paths=(
+  suite/bin
   suite/catalog/appimage.yaml
   suite/catalog/apps-fedora.yaml
   suite/catalog/apps-ubuntu.yaml
   suite/catalog/external-repos.yaml
   suite/catalog/flatpak.yaml
   suite/catalog/snap.yaml
+  suite/config
+  suite/core
+  suite/i18n
+  suite/lib
+  suite/modules
   suite/profiles
 )
 
@@ -163,10 +186,11 @@ mapfile -t tracked_runtime_files < <(
     'site/node_modules/**' \
     'site/dist/**' \
     'site/.astro/**' \
-    'suite/logs/**' \
-    'suite/tmp/**' \
     'suite/backups/**' \
-    'suite/reports/**' |
+    'suite/logs/**' \
+    'suite/reports/**' \
+    'suite/tmp/**' \
+    'suite/target/**' |
     grep -vE '/(\.keep|\.gitkeep)$' || true
 )
 

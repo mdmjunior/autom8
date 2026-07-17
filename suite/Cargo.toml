@@ -1,0 +1,36 @@
+[workspace]
+members = [
+  "apps/autom8-cli",
+  "apps/autom8-gnome",
+  "crates/autom8-core",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.3.0-alpha.1"
+edition = "2024"
+rust-version = "1.85"
+license = "GPL-3.0-only"
+repository = "https://github.com/mdmjunior/autom8"
+authors = ["OSLabs"]
+
+[workspace.dependencies]
+adw = { package = "libadwaita", version = "=0.9.2" }
+autom8-core = { path = "crates/autom8-core" }
+clap = { version = "=4.6.2", features = ["derive"] }
+gtk = { package = "gtk4", version = "=0.11.4" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+unused_must_use = "deny"
+
+[workspace.lints.clippy]
+dbg_macro = "deny"
+expect_used = "deny"
+todo = "deny"
+unwrap_used = "deny"
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+strip = "symbols"

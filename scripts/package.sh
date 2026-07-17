@@ -1,65 +1,12 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SUITE_DIR="$PROJECT_ROOT/suite"
+set -o errexit
+set -o nounset
+set -o pipefail
 
-VERSION="$(tr -d '[:space:]' < "$SUITE_DIR/VERSION")"
+printf '%s\n' \
+  '[AutoM8] ERRO: o empacotador Bash da versão 0.2 não é compatível com a nova fundação Rust.' \
+  '[AutoM8] O empacotamento da versão 0.3 será implementado na Etapa 8, com checksum, assinatura e SBOM.' \
+  '[AutoM8] Nenhum pacote foi criado.' >&2
 
-if [[ -z "$VERSION" ]]; then
-  echo "ERRO: suite/VERSION está vazio." >&2
-  exit 1
-fi
-
-if [[ -x "$PROJECT_ROOT/scripts/build-apps-catalog.sh" && "${AUTOM8_SKIP_APPS_CATALOG_BUILD:-0}" != "1" ]]; then
-  "$PROJECT_ROOT/scripts/build-apps-catalog.sh"
-fi
-
-if [[ ! -f "$SUITE_DIR/catalog/apps.json" ]]; then
-  echo "ERRO: catálogo consolidado não encontrado: suite/catalog/apps.json" >&2
-  exit 1
-fi
-
-python3 -m json.tool "$SUITE_DIR/catalog/apps.json" >/dev/null
-
-if [[ -x "$PROJECT_ROOT/scripts/validate-apps-catalog.sh" && "${AUTOM8_SKIP_APPS_CATALOG_VALIDATE:-0}" != "1" ]]; then
-  "$PROJECT_ROOT/scripts/validate-apps-catalog.sh"
-fi
-
-if [[ -x "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh" ]]; then
-  "$PROJECT_ROOT/scripts/validate-profiles-catalog.sh"
-fi
-
-if [[ -n "${AUTOM8_PACKAGE_OUTPUT_DIR:-}" ]]; then
-  OUTPUT_DIR="$AUTOM8_PACKAGE_OUTPUT_DIR"
-else
-  OUTPUT_DIR="$(mktemp -d "/tmp/autom8-package-${VERSION}-XXXXXX")"
-fi
-
-mkdir -p "$OUTPUT_DIR"
-
-PACKAGE_VERSIONED="$OUTPUT_DIR/autom8-${VERSION}.tar.gz"
-PACKAGE_LATEST="$OUTPUT_DIR/autom8-latest.tar.gz"
-
-tar \
-  --exclude='logs/*' \
-  --exclude='tmp/*' \
-  --exclude='backups/*' \
-  --exclude='reports/*' \
-  -czf "$PACKAGE_VERSIONED" \
-  -C "$SUITE_DIR" .
-
-cp "$PACKAGE_VERSIONED" "$PACKAGE_LATEST"
-
-echo "Pacotes gerados temporariamente:"
-echo "$PACKAGE_VERSIONED"
-echo "$PACKAGE_LATEST"
-echo
-echo "Diretório temporário:"
-echo "$OUTPUT_DIR"
-echo
-echo "Observação:"
-echo "Os pacotes não são copiados para o site, VPS ou repositório local."
-echo "Use scripts/release-stable.sh para publicar no GitHub Releases."
-
-
+exit 1
